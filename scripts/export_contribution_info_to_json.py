@@ -52,27 +52,28 @@ def unique_sheet_columns_sum(identifier_column, summed_column, *args):
     return pandas.Series(dict_totals)
 
 
-contribution_sheets = load_sheets_from_years([2019, 2020], CONTRIBUTION_NAMES)
-expenditure_sheets = load_sheets_from_years([2019, 2020], EXPENDITURE_NAMES)
+if __name__ == '__main__':
+    contribution_sheets = load_sheets_from_years([2019, 2020], CONTRIBUTION_NAMES)
+    expenditure_sheets = load_sheets_from_years([2019, 2020], EXPENDITURE_NAMES)
 
-total_contributions = sum_of_sheet_columns("Tran_Amt2", *contribution_sheets)
-total_expenditures = sum_of_sheet_columns("Amount", *expenditure_sheets)
-expenditures_by_zip = unique_sheet_columns_sum("Tran_Zip4", "Tran_Amt2",
-                                               *contribution_sheets)
-expenditures_by_occupation = unique_sheet_columns_sum("Tran_Occ", "Tran_Amt2",
-                                                      *contribution_sheets)
+    total_contributions = sum_of_sheet_columns("Tran_Amt2", *contribution_sheets)
+    total_expenditures = sum_of_sheet_columns("Amount", *expenditure_sheets)
+    expenditures_by_zip = unique_sheet_columns_sum("Tran_Zip4", "Tran_Amt2",
+                                                   *contribution_sheets)
+    expenditures_by_occupation = unique_sheet_columns_sum("Tran_Occ", "Tran_Amt2",
+                                                          *contribution_sheets)
 
-if not path.exists("raw/"):
-    makedirs("raw/")
+    if not path.exists("raw/"):
+        makedirs("raw/")
 
-expenditures_by_zip.to_json("raw/expenditures_by_zip.json")
-expenditures_by_occupation.to_json("raw/expenditures_by_occupation.json",
-                                   orient="columns")
+    expenditures_by_zip.to_json("raw/expenditures_by_zip.json")
+    expenditures_by_occupation.to_json("raw/expenditures_by_occupation.json",
+                                       orient="columns")
 
-series_total_contributions = pandas.Series(total_contributions,
-                                           index=["total_contributions"])
-series_total_contributions.to_json("raw/total_contributions.json")
+    series_total_contributions = pandas.Series(total_contributions,
+                                               index=["total_contributions"])
+    series_total_contributions.to_json("raw/total_contributions.json")
 
-series_total_expenditures = pandas.Series(total_expenditures,
-                                          index=["total_expenditures"])
-series_total_expenditures.to_json("raw/total_expenditures.json")
+    series_total_expenditures = pandas.Series(total_expenditures,
+                                              index=["total_expenditures"])
+    series_total_expenditures.to_json("raw/total_expenditures.json")
