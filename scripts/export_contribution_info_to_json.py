@@ -33,17 +33,12 @@ def sum_of_sheet_columns(summed_column, *args):
 def unique_sheet_columns_sum(identifier_column, summed_column, *args):
     '''
     returns pandas series with the sum each identifier's column
-    combined from every sheet. If the identifier from the column is a
-    string, takes the lower case form of that string. Takes *args of
-    sheets and a string of the column name and the identifier column
+    combined from every sheet.Takes *args of sheets and a string of
+    the column name and the identifier column.
     '''
     dict_totals = {}
     for sheet in args:
         for c, identifier in enumerate(sheet[identifier_column]):
-            try:
-                identifier = identifier.lower()
-            except AttributeError:
-                pass
             if dict_totals.get(identifier) is None:
                 dict_totals.update({identifier: sheet[summed_column].iloc[c]})
             else:
