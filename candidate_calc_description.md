@@ -34,5 +34,24 @@ the A-Contributions, C-Contributions, I-Contributions sheets
   5. Take the top 5 values sorted by most contributions.
   6. Output the Tran_Emp name, total amount from Tran_Emp and the percent of money over total contributions for this candidate.
 
-* Oppose - TBD
-* Support - TBD
+* Support - Taken from netfile_2020.xlsx and outside_ependitures_total.csv
+  1. Download the candidate's from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
+  2. Create a for loop to run through the Candidate_Name column
+  3. Import the PAC committee spreadsheet located here (src/assets/data/outside_expenditures_total .csv)
+  4. Filter by the candidate's name
+  5. Filter the support column for 1 (1 for support, 0 for opposed)
+  6. Copy all the IDs from the Filer_ID column
+  7. From the netfile_2020.xlsx spreadsheet, go to the F496P3-Contributions and F461P5-Expenditure sheets and filter by all Filer_IDs
+  8. Sum the total and save
+  9. Update the support support key in the candidate's json file (example src/assests/candidates/2020/mayor/barbara_bry/barbara_bry.json) 
+
+* Opposed - Taken from netfile_2020.xlsx and outside_ependitures_total.csv
+  1. Download the candidate's spreadsheet from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
+  2. Create a for loop to run through the Candidate_Name column
+  3. Import the PAC committee spreadsheet located here (src/assets/data/outside_expenditures_total.csv)
+  4. Filter by the candidate's name
+  5. Filter the support column for 0 (1 for support, 0 for opposed)
+  6. Copy all the IDs from the Filer_ID column
+  7. From the src/assests/data/netfile_2020.xlsx spreadsheet, go to the F496P3-Contributions and F461P5-Expenditure sheets and filter by all Filer_IDs
+  8. Sum the total and save
+  9. Update the oppose support key in the candidate's json file (example src/assests/candidates/2020/mayor/barbara_bry/barbara_bry.json) 
