@@ -29,8 +29,8 @@ the A-Contributions, C-Contributions, I-Contributions sheets
 * "by industry" - Taken from efile_CSD_2020.xlsx.   
   1. Look at the A-Contributions, C-Contributions and I-Contributions sheet.
   2. Filter by "Committee Name (Filer_Name)" which is found in the google drive spreadsheet 
-  3. Find all unique values in Tran_Emp column.
-  4. Sum all values for each unique value.
+  3. Find all unique values in Tran_Occ column.
+  4. Sum all values for each unique group in Tran_Occ.
   5. Take the top 5 values sorted by most contributions.
   6. Output the Tran_Emp name, total amount from Tran_Emp and the percent of money over total contributions for this candidate.
 
