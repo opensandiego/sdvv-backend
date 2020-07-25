@@ -1,7 +1,7 @@
+import os
 import pandas
-from os import path, chdir, makedirs
 
-chdir("../downloads/")
+os.chdir("../downloads/")
 CONTRIBUTION_NAMES = ["A-Contributions", "C-Contributions", "I-Contributions"]
 EXPENDITURE_NAMES = ["D-Expenditure", "G-Expenditure", "E-Expenditure"]
 
@@ -48,6 +48,17 @@ def unique_sheet_columns_sum(identifier_column, summed_column, *args):
     return pandas.Series(dict_totals)
 
 
+def newline_to_json(pd_obj, path, *args, **kwargs):
+    """
+    Calls `pd_obj.to_json`, and writes a newline at the end of the file.
+
+    `paths`, `*args`, and `**kwargs` are passed to `pd_obj`.to_json.
+    """
+    pd_obj.to_json(path, *args, **kwargs)
+    with open(path, "a") as f:
+        f.write("\n")
+
+
 def export_contribution_info_to_json():
     contribution_sheets = load_sheets_from_years([2019, 2020], CONTRIBUTION_NAMES)
     expenditure_sheets = load_sheets_from_years([2019, 2020], EXPENDITURE_NAMES)
@@ -61,23 +72,28 @@ def export_contribution_info_to_json():
         "Tran_Occ", "Tran_Amt2", *contribution_sheets
     )
 
-    if not path.exists("raw/"):
-        makedirs("raw/")
+    if not os.path.exists("raw/"):
+        os.makedirs("raw/")
 
-    expenditures_by_zip.to_json("raw/expenditures_by_zip.json")
-    expenditures_by_occupation.to_json(
-        "raw/expenditures_by_occupation.json", orient="columns"
+    newline_to_json(expenditures_by_zip, "raw/expenditures_by_zip.json", indent=2)
+    newline_to_json(
+        expenditures_by_occupation,
+        "raw/expenditures_by_occupation.json",
+        orient="columns",
+        indent=2,
     )
 
     series_total_contributions = pandas.Series(
         total_contributions, index=["total_contributions"]
     )
-    series_total_contributions.to_json("raw/total_contributions.json")
+    newline_to_json(
+        series_total_contributions, "raw/total_contributions.json", indent=2
+    )
 
     series_total_expenditures = pandas.Series(
         total_expenditures, index=["total_expenditures"]
     )
-    series_total_expenditures.to_json("raw/total_expenditures.json")
+    newline_to_json(series_total_expenditures, "raw/total_expenditures.json", indent=2)
 
 
 if __name__ == "__main__":
