@@ -13,7 +13,7 @@ Google drive - https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvB
   1. taken from efile_CSD_2020.xlsx. Look at
 the A-Contributions, C-Contributions, I-Contributions sheets
   2. Filter by "Committee Name (Filer_Name)" which is found in the google drive spreadsheet 
-  3. There is a Tran_Amt2 column. Take the sum of each sheet and add them together
+  3. There is a Tran_Amt1 column. Take the sum of each sheet and add them together
 
 * "spent" - similar to raise.
   1. Use efile_CSD_2020.xlsx at look at all sheets D-Expenditure, G-Expenditure, E-Expenditure sheets. 
@@ -44,6 +44,14 @@ the A-Contributions, C-Contributions, I-Contributions sheets
   7. From the netfile_2020.xlsx spreadsheet, go to the F496P3-Contributions and F461P5-Expenditure sheets and filter by all Filer_IDs
   8. Sum the total and save
   9. Update the support support key in the candidate's json file (example src/assests/candidates/2020/mayor/barbara_bry/barbara_bry.json) 
+  
+* Average Donation 
+  1. Download the candidate's from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
+  2. Create a for loop to run through the Candidate_Name column
+  3. Filter by the candidate's name
+  4. Sum the total for each contribution in the Trans_Amt1 column and divide by the number of contributions
+  5. Round this number by dollar unit (44.30 will be 44) 
+  6. Update the average donation key in the candidate's json file (example src/assests/candidates/2020/mayor/barbara_bry/barbara_bry.json) 
 
 * Opposed - Taken from netfile_2020.xlsx and outside_ependitures_total.csv
   1. Download the candidate's spreadsheet from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
