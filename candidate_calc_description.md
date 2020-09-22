@@ -63,3 +63,26 @@ the A-Contributions, C-Contributions, I-Contributions sheets
   7. From the src/assests/data/netfile_2020.xlsx spreadsheet, go to the F496P3-Contributions and F461P5-Expenditure sheets and filter by all Filer_IDs
   8. Sum the total and save
   9. Update the oppose support key in the candidate's json file (example src/assests/candidates/2020/mayor/barbara_bry/barbara_bry.json) 
+  
+* In vs Out - Mayor calculation - data taken from netfile_api_2020.csv, netfile_api_2029.csv and sd_zipcodes.csv
+ 1. Download the candidate's spreadsheet from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
+ 2. Fiter office for mayor candidate's
+ 3. Create a loop to filter through each mayor candidate name in the "Committee Name (Filer_Name)" column
+ 4. Import all zipcodes found in sd_zipcodes.csv file (src/assests/data) 
+ 5. Filter data found in netfile_api_20**.csv files (2018,2019,2020). Sum the total for A,C,I column Form_Types and FilerName (step 2) if the zip code is in the valid zip code list in step 4. 
+ 6. Update candidate json for key ""in vs out district" key for in the "in" key. The value should be a string rounded to the nearest dollar
+ 7. Perform steps 4,5 again except sum the total for all zip codes that are not in the sd_zipcodes.csv file. 
+ 8. Update candidate json for key "in vs out district" key for the "out" key. The value should be a string rounded to the nearest dollar
+ (Questions look at the candidate json file src/assets/candidates/2020/mayor/barbara_bry/barbara_bry.json)
+ 
+ *THis is still being worked on*
+ * In vs Out - City Council calculation - data taken from netfile_api_2020.csv, netfile_api_2029.csv and sd_zipcodes.csv
+ 1. Download the candidate's spreadsheet from the following file (https://docs.google.com/spreadsheets/d/1mENueYg0PhXE_MA9AypWWBJvBLdY03b8H_N_aIW-Ohw/edit#gid=0)
+ 2. Fiter office for "city council." Store the "Committee Name (Filer_Name)" and take of the district in the "District" column
+ 3. Create a loop to filter through each city council candidate name in the "Committee Name (Filer_Name)" column
+ 4. Import all zipcodes found in sd_zipcodes.csv file (src/assests/data) 
+ 5. Filter data found in netfile_api_20**.csv files (2018,2019,2020). Sum the total for A,C,I column Form_Types and FilerName (step 2) if the zip code is in the valid zip code list in step 4. 
+ 6. Update candidate json for key ""in vs out district" key for in the "in" key. The value should be a string rounded to the nearest dollar
+ 7. Perform steps 4,5 again except sum the total for all zip codes that are not in the sd_zipcodes.csv file. 
+ 8. Update candidate json for key "in vs out district" key for the "out" key. The value should be a string rounded to the nearest dollar
+ (Questions look at the candidate json file src/assets/candidates/2020/mayor/barbara_bry/barbara_bry.json)
