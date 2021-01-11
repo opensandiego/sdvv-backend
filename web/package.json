@@ -1,0 +1,27 @@
+{
+  "name": "sdvv-backend",
+  "version": "0.0.0",
+  "description": "San Diego Voters Voice backend and data store",
+  "engines": {
+    "node": "14.x"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Open San Diego",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "ioredis": "^4.19.4",
+    "pg": "^8.5.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.7"
+  }
+}
