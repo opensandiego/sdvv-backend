@@ -1,9 +1,5 @@
 # This heroku.yml is used to run containers on Heroku. 
 # This will be used instead of a Procfile.
-setup:
-  addons:
-    - plan: heroku-postgresql
-    - plan: heroku-redis
 build:
   docker:
     web: web/Dockerfile.production
