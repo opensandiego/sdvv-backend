@@ -3,3 +3,5 @@
 build:
   docker:
     web: web/Dockerfile.production
+  config: 
+    NODE_ENV: production
