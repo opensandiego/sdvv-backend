@@ -4,14 +4,14 @@ services:
   web:
     container_name: sdvv_test    
     build:
-      context: ./web
+      context: ./api
       dockerfile: Dockerfile
     working_dir: /app
     command: [ "nodemon", "-L", "app.js" ]
     ports:
       - "5000:5000"
     volumes:
-      - ./web:/app
+      - ./api:/app
       - /app/node_modules
 
   db:
