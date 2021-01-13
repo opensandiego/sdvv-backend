@@ -1,18 +1,14 @@
-# FROM baseImage
 FROM node:14-alpine
-
-ENV NODE_ENV=production
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --production
+RUN npm install -g nodemon
+RUN npm install
 
-# COPY . .
 
-ENV PORT=5000
 
 EXPOSE 5000
 
-CMD [ "node", "app.js" ]
+CMD [ "node",  "app.js" ]

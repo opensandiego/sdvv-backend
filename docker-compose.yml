@@ -1,0 +1,27 @@
+# This docker-compose.yml is only used to run containers locally for development.
+version: '3'
+services:
+  web:
+    container_name: sdvv_test    
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: [ "nodemon", "-L", "app.js" ]
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
