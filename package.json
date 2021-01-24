@@ -5,20 +5,32 @@
   "engines": {
     "node": "14.x"
   },
+  "author": "Open San Diego",
+  "license": "MIT",  
   "main": "api/app.js",
   "scripts": {
+    "start": "node api/app.js",
+    "dev": "nodemon api/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/opensandiego/sdvv-backend#readme",  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/opensandiego/sdvv-backend.git"
   },
-  "author": "Open San Diego",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/opensandiego/sdvv-backend/issues"
   },
-  "homepage": "https://github.com/opensandiego/sdvv-backend#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "ioredis": "^4.19.4",
+    "pg": "^8.5.1",
+    "puppeteer": "^5.5.0",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.7"
+  }
 }
