@@ -4,7 +4,7 @@ services:
   web:
     container_name: sdvv_test    
     build:
-      context: ./api
+      context: ./
       dockerfile: Dockerfile
     working_dir: /app
     command: [ "nodemon", "-L", "app.js" ]
