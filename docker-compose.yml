@@ -2,7 +2,7 @@
 version: '3'
 services:
   web:
-    container_name: sdvv_test    
+    container_name: sdvv_web    
     build:
       context: ./
       dockerfile: Dockerfile
@@ -14,14 +14,40 @@ services:
       - ./api:/app
       - /app/node_modules
 
-  db:
+  postgres_db:
     image: postgres:latest
-    restart: always
+    container_name: postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+    networks:
+      - db_network
+    depends_on:
+      - postgres_db
+    # When using Create > Server in pgAdmin use the name under depends_on for the "Host name/address" in Connection
+
   redis:
     image: redis:alpine
+    container_name: redis
     ports:
       - "6379:6379"
+
+networks: 
+  db_network:
+    driver: bridge
