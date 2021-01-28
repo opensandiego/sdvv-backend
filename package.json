@@ -7,10 +7,10 @@
   },
   "author": "Open San Diego",
   "license": "MIT",
-  "main": "api/app.js",
+  "main": "app/app.js",
   "scripts": {
-    "start": "node api/app.js",
-    "dev": "nodemon api/app.js",
+    "start": "node app/app.js",
+    "dev": "nodemon app/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "homepage": "https://github.com/opensandiego/sdvv-backend#readme",
