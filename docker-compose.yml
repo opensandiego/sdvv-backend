@@ -7,11 +7,11 @@ services:
       context: ./
       dockerfile: Dockerfile
     working_dir: /app
-    command: [ "nodemon", "-L", "app.js" ]
+    command: [ "nodemon", "-L", "server.js" ]
     ports:
       - "5000:5000"
     volumes:
-      - ./api:/app
+      - ./app:/app
       - /app/node_modules
 
   postgres_db:
