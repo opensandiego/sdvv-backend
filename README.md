@@ -7,3 +7,11 @@ View the README.md guide for the front end website for further details
 ## Usage
 To run, start the containers with `docker-compose up`.
 
+### Ports
+
+| Service | Port |
+| :-------| :---:|
+| API     | 5000 |
+| Database| 5432 |
+| Redis   | 6379 |
+
