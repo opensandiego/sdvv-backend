@@ -7,11 +7,12 @@
     "logging": false
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
+    "username": "postgres",
+    "database": "postgres",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "port": "5430",
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL",

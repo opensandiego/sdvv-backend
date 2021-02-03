@@ -1,4 +1,4 @@
-# This docker-compose.yml is only used to run containers locally for development.
+# This docker-compose.yml is only used to run containers locally for development and testing.
 version: '3'
 services:
   web:
@@ -13,10 +13,13 @@ services:
     volumes:
       - ./app:/app
       - /app/node_modules
+    depends_on:
+      - postgres_db_dev
+      - postgres_db_test
 
-  postgres_db:
+  postgres_db_dev:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres_dev
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -27,8 +30,21 @@ services:
     networks:
       - db_network
 
+  postgres_db_test:
+    image: postgres:latest
+    container_name: postgres_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5430:5432"
+    networks:
+      - db_network
+
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:latest
     container_name: pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
@@ -39,7 +55,7 @@ services:
     networks:
       - db_network
     depends_on:
-      - postgres_db
+      - postgres_db_dev
     # When using Create > Server in pgAdmin use the name under depends_on for the "Host name/address" in Connection
 
   redis:
