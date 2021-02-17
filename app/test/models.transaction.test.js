@@ -107,27 +107,6 @@ describe('Transaction Database Model', function() {
       expect(results.length).to.equal(2);    
     });
 
-    it('should return 1 when a Transactions with the same netFileKey is added', async function() {
-      const uuid = faker.random.uuid();
-
-      const newTransaction1 = { 
-        netFileKey: uuid, 
-        filingId: '123456',
-        filerName: faker.name.findName(),
-      };
-      const newTransaction2 = { 
-        netFileKey: uuid, 
-        filingId: '234567',
-        filerName: faker.name.findName(),
-      };
-
-      await Transaction.createMultiple(newTransaction1);
-      await Transaction.createMultiple(newTransaction2);
-
-      const results = await Transaction.findAll();
-      expect(results.length).to.equal(1);
-    });
-
     it('transaction.vvIncludeInCalculations should be false for two Filings in an array that are added', async function() {
 
       const uuid1 = faker.random.uuid();
@@ -273,4 +252,46 @@ describe('Transaction Database Model', function() {
 
   });
 
+  describe('Transaction.addTransactions', function() {
+    const randomTransactions = Array.from({length: 30}, () => {
+      return {
+        netFileKey: faker.random.uuid(), 
+        filingId: faker.random.number(999999).toString(), 
+        filerName: faker.name.findName(),
+        vvIncludeInCalculations: faker.random.boolean(),
+      }
+    });
+
+    it('should change filingId when a transaction with the same netFileKey is added', async function() {
+      const uuid = faker.random.uuid();
+
+      const newTransaction1 = { 
+        netFileKey: uuid, 
+        filingId: '123456',
+        filerName: faker.name.findName(),
+      };
+      const newTransaction2 = { 
+        netFileKey: uuid, 
+        filingId: '234567',
+        filerName: faker.name.findName(),
+      };
+
+      await Transaction.addTransactions(null, newTransaction1);
+      const results1 = await Transaction.findOne({
+        where: {
+          netFileKey: uuid
+        }
+      });
+      expect(results1.filingId).to.equal('123456');
+
+      await Transaction.addTransactions(null, newTransaction2);
+      const results2 = await Transaction.findOne({
+        where: {
+          netFileKey: uuid
+        }
+      });
+      expect(results2.filingId).to.equal('234567');
+  
+    });
+  });
 });
