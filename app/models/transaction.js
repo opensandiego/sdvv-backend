@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Transaction extends Model {
 
-    static async createMultiple(transactions) {
+    static async createMultiple(transactions, options = {}) {
 
       transactions = Array.isArray(transactions) ? transactions : [ transactions ];
 
@@ -24,10 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         "xref_Match", "int_Rate", "int_CmteId", "tran_ChkNo", "tran_Code", "cmte_Id", "g_From_E_F", 
         "beg_Bal", "amt_Incur", "amt_Paid", "end_Bal", "loan_Amt1", "loan_Amt2", "loan_Amt3", 
         "loan_Amt4", "loan_Amt5", "loan_Amt6", "loan_Amt7", "loan_Amt8", "loan_Date1", "loan_Date2", 
-        "loan_Rate", "lender_Name", "elec_Date", "latitude", "longitude", "vvIncludeInCalculations" 
+        "loan_Rate", "lender_Name", "elec_Date", "latitude", "longitude", "vvCandidateFullName", "vvTran_Zip4_five_digits", "vvIncludeInCalculations" 
       ];
-  
-      await Transaction.bulkCreate(transactions, { fields: modelFields, validate: true, ignoreDuplicates: true });
+
+      const localOptions = { fields: modelFields, validate: true, ignoreDuplicates: true };
+
+      options = { ...localOptions, ...options };
+
+      await Transaction.bulkCreate(transactions, options);
 
       return transactions.map(transaction => transaction.netFileKey);
 
@@ -86,6 +90,46 @@ module.exports = (sequelize, DataTypes) => {
 
     }
 
+    static async addTransactions(filingIds, transactions) {
+
+      try {
+
+        const result = await sequelize.transaction(async (t) => {
+      
+          transactions = Array.isArray(transactions) ? transactions : [ transactions ];
+          const netFileKeys = transactions.map(transaction => transaction.netFileKey);
+
+          await Transaction.destroy({
+            where: {
+              netFileKey: netFileKeys
+            }
+          }, { transaction: t });
+
+          if (filingIds) {
+
+            await Transaction.destroy({
+              where: {
+                filingId: filingIds
+              }
+            }, { transaction: t });
+            
+          }
+
+          await Transaction.createMultiple(transactions, { transaction: t });
+
+        });
+      
+        // If the execution reaches this line, the transaction has been committed successfully
+        // `result` is whatever was returned from the transaction callback
+      
+      } catch (error) {
+        
+        // If the execution reaches this line, an error occurred.
+        // The transaction has already been rolled back automatically by Sequelize!
+        
+      }
+      
+    }
 
     /**
      * Helper method for defining associations.
@@ -201,11 +245,28 @@ module.exports = (sequelize, DataTypes) => {
     "elec_Date": DataTypes.STRING,
     "latitude": DataTypes.DECIMAL,
     "longitude": DataTypes.DECIMAL,
+    vvCandidateFullName: DataTypes.STRING,
+    vvTran_Zip4_five_digits: DataTypes.STRING,
     vvIncludeInCalculations: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
   }, {
+    hooks: {
+      beforeBulkCreate: (transactions, options) => {
+        for (const transaction of transactions) {
+          transaction.vvCandidateFullName
+            = transaction.cand_NamF === '' || transaction.cand_NamF === null
+            ? transaction.cand_NamL 
+            : `${transaction.cand_NamF} ${transaction.cand_NamL}`;
+
+          transaction.vvTran_Zip4_five_digits 
+            = transaction.tran_Zip4 
+            ? transaction.tran_Zip4.slice(0, 5) 
+            : '';
+        }
+      },
+    },
     sequelize,
     modelName: 'Transaction',
     indexes: [{ fields: ['filingId', 'filerName'] }]
