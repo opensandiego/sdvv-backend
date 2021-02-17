@@ -60,6 +60,8 @@ module.exports = (sequelize, DataTypes) => {
 
     static async getAmendedFilingIds(amendedFilingId, amendmentSequenceNumber) {
 
+      if (!amendedFilingId) return [];
+
       const result = await Filing.findAll({
         attributes: [ 'id' ],
         where: {
@@ -90,6 +92,14 @@ module.exports = (sequelize, DataTypes) => {
       return amendmentSequenceNumber > maxAmendedNumber;
     }
 
+    static async getMostRecentFilingDate() {
+      return await Filing.max( 'vvFilingDate');
+    }
+
+    static async getLeastRecentFilingDate() {
+      return await Filing.min( 'vvFilingDate');
+    }
+
     static async setToProcessed(filing) {
       filing.vvHasBeenProcessed = true;
       await filing.save();
@@ -114,20 +124,30 @@ module.exports = (sequelize, DataTypes) => {
     agency: DataTypes.INTEGER,
     isEfiled: DataTypes.BOOLEAN,
     hasImage: DataTypes.BOOLEAN,
-    filingDate: DataTypes.STRING,
+    filingDate: {
+      type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue('filingDate', value);
+        this.setDataValue('vvFilingDate', new Date(value));
+      }
+    },
     title: DataTypes.STRING,
     form: DataTypes.INTEGER,
     filerName: DataTypes.STRING,
     filerLocalId: DataTypes.STRING,
     filerStateId: DataTypes.STRING,
-    amendmentSequenceNumber: DataTypes.INTEGER,
+    amendmentSequenceNumber: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     amendedFilingId: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    vvFilingDate: DataTypes.DATE,
     vvHasBeenProcessed: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     }
   }, {
     sequelize,
