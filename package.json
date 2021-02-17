@@ -22,6 +22,7 @@
     "url": "https://github.com/opensandiego/sdvv-backend/issues"
   },
   "dependencies": {
+    "csvjson": "^5.1.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "ioredis": "^4.19.4",
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-datetime": "^1.7.0",
+    "chance": "^1.1.7",
     "faker": "^5.2.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.7",

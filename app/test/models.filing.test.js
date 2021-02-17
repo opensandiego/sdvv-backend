@@ -1,4 +1,6 @@
 var expect = require('chai').expect;
+var chai = require('chai');
+chai.use(require('chai-datetime'));
 var faker = require('faker');
 
 const db = require('../models');
@@ -35,8 +37,8 @@ describe('Filing Database Model', function() {
 
     it('filing.vvHasBeenProcessed should be true when set for new filing', async function() {
       await Filing.create({ 
-        id: '123456', filerName: 
-        faker.name.findName(),
+        id: '123456', 
+        filerName: faker.name.findName(),
         vvHasBeenProcessed: true
       })
       const results = await Filing.findOne({
@@ -47,6 +49,88 @@ describe('Filing Database Model', function() {
       expect(results.vvHasBeenProcessed).to.equal(true);
     });
 
+  });
+
+  describe('Column: vvFilingDate', function() {
+    it('filing.vvFilingDate should be equal to new Date(filing.filingDate)', async function() {
+      const date = "2021-02-04T06:21:35.0000000-08:00";
+
+      await Filing.create({
+        id: '123456', 
+        filingDate: date,
+        filerName: faker.name.findName(),
+      });
+
+      const results = await Filing.findOne({
+        where: {
+          id: '123456'
+        }
+      });
+
+      expect(results.vvFilingDate).to.equalDate(new Date(results.filingDate));
+      expect(results.vvFilingDate).to.equalDate(new Date(date));
+    });
+
+  });
+  describe('Filing.getMostRecentFilingDate', function() {
+
+    it('should return a result = date when .getMostRecentFilingDate is called', async function() {
+      const date = "2021-02-04T06:21:35.0000000-08:00";
+
+      await Filing.create({
+        id: '123456', 
+        filingDate: date,
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '234567', 
+        filingDate: "2020-01-04T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '345678', 
+        filingDate: "2020-11-24T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '456789', 
+        filingDate: "2019-11-24T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+
+      const results = await Filing.getMostRecentFilingDate();
+      
+      expect(results).to.equalDate(new Date(date));
+    });
+
+    it('should return a result = date when .getLeastRecentFilingDate is called', async function() {
+      const date = "2018-02-04T06:21:35.0000000-08:00";
+
+      await Filing.create({
+        id: '123456', 
+        filingDate: date,
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '234567', 
+        filingDate: "2020-01-04T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '345678', 
+        filingDate: "2020-11-24T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+      await Filing.create({
+        id: '456789', 
+        filingDate: "2019-11-24T06:21:35.0000000-08:00",
+        filerName: faker.name.findName(),
+      });
+
+      const results = await Filing.getLeastRecentFilingDate();
+
+      expect(results).to.equalDate(new Date(date));
+    });
   });
 
   describe('Filing.createMultiple', function() {
@@ -201,6 +285,20 @@ describe('Filing Database Model', function() {
         expect(results).to.include(filing.id);
       });
       expect(results).to.include(amendedFilingId);
+    });
+
+    
+    it('should return [] when amendedFilingId is null, is not set', async function() {
+      await Filing.create({
+        id: faker.random.number(), 
+        filerName: faker.name.findName(), 
+        vvHasBeenProcessed: true 
+      });
+      const amendedFilingId = null;
+      const results = await Filing.getAmendedFilingIds(amendedFilingId, 0);
+
+      expect(results).to.be.instanceof(Array);
+      expect(results).to.have.length(0);
     });
 
   });
