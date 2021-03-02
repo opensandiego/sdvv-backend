@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node app/server.js",
     "dev": "nodemon app/server.js",
+    "cli": "node app/scripts/node/cli/index.js",
     "test": "set NODE_ENV=test&& mocha ./app/test --exit"
   },
   "homepage": "https://github.com/opensandiego/sdvv-backend#readme",
@@ -25,6 +26,7 @@
     "csvjson": "^5.1.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "inquirer": "^7.3.3",
     "ioredis": "^4.19.4",
     "node-fetch": "^2.6.1",
     "p-retry": "^4.3.0",
