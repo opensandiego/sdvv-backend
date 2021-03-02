@@ -11,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Candidate.belongsTo(models.Agency, {
+        onDelete: 'NO ACTION',
+        foreignKey: 'agencyShortName'
+      });
     }
   };
   Candidate.init({
-    agencyID: { type: DataTypes.STRING, unique: 'compositeIndex' },
+    agencyShortName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: 'compositeIndex',
+    },
     fullName: {
       type: DataTypes.STRING,
       unique: 'compositeIndex',
@@ -25,7 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         this.setDataValue('vvLastName', names[names.length-1]);
       }
     },
-    fullOfficeName: { type: DataTypes.STRING, unique: 'compositeIndex' },
+    fullOfficeName: {
+      type: DataTypes.STRING,
+      unique: 'compositeIndex'
+    },
     fullElectionTitle: {
       type: DataTypes.STRING,
       unique: 'compositeIndex',
