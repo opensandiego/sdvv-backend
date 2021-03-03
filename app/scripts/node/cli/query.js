@@ -86,6 +86,11 @@ async function getElectionsFromDB(agencyShortName) {
     ]
   });
 
+  results.forEach(result => {
+    result.officesCount = result.count;
+    delete result.count;
+  });
+
   return results;
 }
 

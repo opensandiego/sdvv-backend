@@ -101,7 +101,7 @@ function getElectionsMenu(elections) {
   return elections.map( election => {
 
     const name = election.inDB 
-      ? `(${election.candidatesCount} candidates, ${election.count} offices, `
+      ? `(${election.candidatesCount} candidates, ${election.officesCount} offices, `
         + `last updated from NetFile on ${election.lastUpdated.toLocaleDateString()})`
       : '';
     
