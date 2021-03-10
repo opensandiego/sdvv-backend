@@ -23,11 +23,13 @@
     "url": "https://github.com/opensandiego/sdvv-backend/issues"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "csvjson": "^5.1.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "inquirer": "^7.3.3",
     "ioredis": "^4.19.4",
+    "murmurhash": "^2.0.0",
     "node-fetch": "^2.6.1",
     "p-retry": "^4.3.0",
     "pg": "^8.5.1",
