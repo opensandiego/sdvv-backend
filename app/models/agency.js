@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'agencyShortName',
         onDelete: 'NO ACTION',
       });
+
+      Agency.hasMany(models.Election, {
+        foreignKey: 'agencyShortName',
+        onDelete: 'NO ACTION',
+      });
     }
   };
   Agency.init({

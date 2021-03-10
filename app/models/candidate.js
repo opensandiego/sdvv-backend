@@ -15,17 +15,24 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'NO ACTION',
         foreignKey: 'agencyShortName'
       });
+
+      Candidate.belongsToMany(models.Election, {
+        through: 'CandidateElection',
+      });
     }
   };
   Candidate.init({
+    id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      primaryKey: true,
+    },
     agencyShortName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: 'compositeIndex',
     },
     fullName: {
       type: DataTypes.STRING,
-      unique: 'compositeIndex',
       set(value) {
         this.setDataValue('fullName', value);
 
@@ -35,27 +42,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     fullOfficeName: {
       type: DataTypes.STRING,
-      unique: 'compositeIndex'
-    },
-    fullElectionTitle: {
-      type: DataTypes.STRING,
-      unique: 'compositeIndex',
-      set(value) {
-        this.setDataValue('fullElectionTitle', value);
-
-        const titleParts = value.split(' ');
-        const date = titleParts[0];
-        const dateParts = date.split('/');
-        this.setDataValue('vvElectionDate', new Date(date));
-        this.setDataValue('vvElectionYear', dateParts[dateParts.length-1]);
-
-        this.setDataValue('vvElectionType', titleParts[1]);
-      }
     },
     vvLastName: DataTypes.STRING,
-    vvElectionDate: DataTypes.DATE,
-    vvElectionYear: DataTypes.STRING,
-    vvElectionType: DataTypes.STRING,
+    vvInGeneralElection: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     sequelize,
     modelName: 'Candidate',
