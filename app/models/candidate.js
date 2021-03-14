@@ -47,7 +47,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     fullOfficeName: {
       type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue('fullOfficeName', value);
+
+        const knownOfficeTypesForSD = ['Mayor', 'City Council', 'City Attorney'];
+        const foundType = knownOfficeTypesForSD.find(type => value.toUpperCase().includes(type.toUpperCase()));
+
+        if (foundType) { this.setDataValue('officeType', foundType); }
+      },
     },
+    officeType: DataTypes.STRING,
     vvLastName: DataTypes.STRING,
     vvInGeneralElection: {
       type: DataTypes.BOOLEAN,
