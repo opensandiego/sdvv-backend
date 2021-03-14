@@ -59,7 +59,7 @@ async function getElectionsFromDB(agencyShortName) {
       },
     },
     order: [
-      [{model: ElectionModel}, 'electionYear', 'DESC'],
+      [{model: ElectionModel}, 'electionDate', 'DESC'],
     ],
   });
 
