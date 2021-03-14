@@ -36,8 +36,13 @@ module.exports = (sequelize, DataTypes) => {
       set(value) {
         this.setDataValue('fullName', value);
 
-        const names = value.split(' ');
-        this.setDataValue('vvLastName', names[names.length-1]);
+        const suffixesToIgnore = ['II', 'III', 'IV', 'V', 'JR', 'JR.', 'SR', 'SR.'];
+        const nameParts = value.split(' ');
+        let lastNameIndex = nameParts.length-1; 
+        const ignoreLastPartOfName = suffixesToIgnore.includes(nameParts[lastNameIndex].toUpperCase());
+        if (ignoreLastPartOfName) { --lastNameIndex; }
+        
+        this.setDataValue('vvLastName', nameParts[lastNameIndex]);
       }
     },
     fullOfficeName: {
