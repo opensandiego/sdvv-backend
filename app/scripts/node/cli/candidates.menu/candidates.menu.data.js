@@ -64,8 +64,8 @@ async function updateCandidates(electionTitle, shortName) {
   if (!election) { return false; }
 
   for await(const candidate of transformedResults) {
-    const candidateId = murmurhash.v3(`${shortName}:${election.electionYear}:${candidate.fullName}`); 
-    // should office name be included in ID? What if office name id made into another table?
+    const candidateId = murmurhash
+      .v3(`${shortName}:${election.electionYear}:${candidate.fullOfficeName}:${candidate.fullName}`); 
     const instance = {
       id: candidateId,
       fullName: candidate.fullName,
