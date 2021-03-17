@@ -1,5 +1,6 @@
 'use strict';
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 
 const { menuLoop } = require('../shared.helpers');
 const { getAgencyCount, syncModels, closeDBConnection, testDatabaseConnection } = require('./main.menu.data');
@@ -12,12 +13,16 @@ async function mainMenu() {
   
   const agencyCount = isDatabaseConnected ? await getAgencyCount() : 0;
 
+  const databaseConnectionStatus = isDatabaseConnected ? chalk.green('connected') : chalk.red('NOT connected');
+
   const prompt = [{
     type: "list",
     name: "mainMenu",
-    message: "Voters Voice Database Dashboard Administration",
+    message: "Voters Voice Database Dashboard Administration" 
+      + `\n process.env.NODE_ENV: ${chalk.bold(process.env.NODE_ENV)}`
+      + `\n Database status: ${databaseConnectionStatus}` 
+      + `\n Choose from menu`, 
     choices: [
-      new inquirer.Separator(isDatabaseConnected ? 'Database connected' : 'Database NOT connected'),
       {
         name: "Agencies/Elections/Candidates" 
           + (agencyCount < 1 ? ' (agencies need to be updated)' : ` (${agencyCount} agencies)`),
@@ -40,10 +45,6 @@ async function mainMenu() {
         disabled: !isDatabaseConnected,
       },
       {
-        name: "Show process.env.NODE_ENV",
-        value: "configure",
-      },
-      {
         name: "Exit",
         value: "exit",
       },
@@ -58,9 +59,6 @@ async function mainMenu() {
 
     console.log('Syncing all models...')
     await syncModels();
-  } else if (answers.mainMenu === "configure") {
-
-    console.log('** process.env.NODE_ENV', process.env.NODE_ENV)
 
   } else if (answers.mainMenu === "exit") {
     await closeDBConnection();
