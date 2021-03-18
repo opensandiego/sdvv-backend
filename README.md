@@ -12,6 +12,8 @@ To run, start the containers with `docker-compose up`.
 | Service | Port |
 | :-------| :---:|
 | API     | 5000 |
-| Database| 5432 |
+| Database for development | 5432 |
+| Database for testing | 5430 |
+| pgAdmin | 5050 |
 | Redis   | 6379 |
 

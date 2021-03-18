@@ -5,20 +5,47 @@
   "engines": {
     "node": "14.x"
   },
-  "main": "api/app.js",
+  "author": "Open San Diego",
+  "license": "MIT",
+  "main": "app/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app/server.js",
+    "dev": "nodemon app/server.js",
+    "cli": "node app/scripts/node/cli/index.js",
+    "test": "set NODE_ENV=test&& mocha ./app/test --exit"
   },
+  "homepage": "https://github.com/opensandiego/sdvv-backend#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/opensandiego/sdvv-backend.git"
   },
-  "author": "Open San Diego",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/opensandiego/sdvv-backend/issues"
   },
-  "homepage": "https://github.com/opensandiego/sdvv-backend#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "csvjson": "^5.1.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "inquirer": "^7.3.3",
+    "ioredis": "^4.19.4",
+    "murmurhash": "^2.0.0",
+    "node-fetch": "^2.6.1",
+    "p-retry": "^4.3.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "puppeteer": "^5.5.0",
+    "redis": "^3.0.2",
+    "sequelize": "^6.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-datetime": "^1.7.0",
+    "chance": "^1.1.7",
+    "faker": "^5.2.0",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0",
+    "sinon": "^9.2.4"
+  }
 }

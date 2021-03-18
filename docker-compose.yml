@@ -1,27 +1,69 @@
-# This docker-compose.yml is only used to run containers locally for development.
+# This docker-compose.yml is only used to run containers locally for development and testing.
 version: '3'
 services:
   web:
-    container_name: sdvv_test    
+    container_name: sdvv_web    
     build:
-      context: ./api
+      context: ./
       dockerfile: Dockerfile
     working_dir: /app
-    command: [ "nodemon", "-L", "app.js" ]
+    command: [ "nodemon", "-L", "server.js" ]
     ports:
       - "5000:5000"
     volumes:
-      - ./api:/app
+      - ./app:/app
       - /app/node_modules
+    depends_on:
+      - postgres_db_dev
+      - postgres_db_test
 
-  db:
+  postgres_db_dev:
     image: postgres:latest
-    restart: always
+    container_name: postgres_dev
+    restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
+    networks:
+      - db_network
+
+  postgres_db_test:
+    image: postgres:latest
+    container_name: postgres_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5430:5432"
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+    networks:
+      - db_network
+    depends_on:
+      - postgres_db_dev
+    # When using Create > Server in pgAdmin use the name under depends_on for the "Host name/address" in Connection
+
   redis:
     image: redis:alpine
+    container_name: redis
     ports:
       - "6379:6379"
+
+networks: 
+  db_network:
+    driver: bridge
