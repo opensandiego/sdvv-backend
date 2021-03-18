@@ -6,6 +6,18 @@ const CandidateModel = db.sequelize.models.Candidate;
 
 const murmurhash = require('murmurhash');
 
+async function testDatabaseConnection() {
+
+  try {
+    await db.sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+    return true;
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    return false;
+  }
+
+}
 
 async function doesTableExist(Model) {
   let exists = true;
@@ -56,6 +68,7 @@ module.exports = {
   ElectionModel,
   CandidateModel,
   murmurhash,
+  testDatabaseConnection,
   doesTableExist,
   syncModels,
   closeDBConnection,

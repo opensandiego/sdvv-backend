@@ -36,13 +36,27 @@ module.exports = (sequelize, DataTypes) => {
       set(value) {
         this.setDataValue('fullName', value);
 
-        const names = value.split(' ');
-        this.setDataValue('vvLastName', names[names.length-1]);
+        const suffixesToIgnore = ['II', 'III', 'IV', 'V', 'JR', 'JR.', 'SR', 'SR.'];
+        const nameParts = value.split(' ');
+        let lastNameIndex = nameParts.length-1; 
+        const ignoreLastPartOfName = suffixesToIgnore.includes(nameParts[lastNameIndex].toUpperCase());
+        if (ignoreLastPartOfName) { --lastNameIndex; }
+        
+        this.setDataValue('vvLastName', nameParts[lastNameIndex]);
       }
     },
     fullOfficeName: {
       type: DataTypes.STRING,
+      set(value) {
+        this.setDataValue('fullOfficeName', value);
+
+        const knownOfficeTypesForSD = ['Mayor', 'City Council', 'City Attorney'];
+        const foundType = knownOfficeTypesForSD.find(type => value.toUpperCase().includes(type.toUpperCase()));
+
+        if (foundType) { this.setDataValue('officeType', foundType); }
+      },
     },
+    officeType: DataTypes.STRING,
     vvLastName: DataTypes.STRING,
     vvInGeneralElection: {
       type: DataTypes.BOOLEAN,

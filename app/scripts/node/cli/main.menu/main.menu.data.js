@@ -2,6 +2,7 @@
 
 const { 
   AgencyModel,
+  testDatabaseConnection,
   doesTableExist, 
   syncModels, 
   closeDBConnection,
@@ -20,5 +21,6 @@ async function getAgencyCount() {
 module.exports = {
   getAgencyCount,
   syncModels,
+  testDatabaseConnection,
   closeDBConnection,
 }

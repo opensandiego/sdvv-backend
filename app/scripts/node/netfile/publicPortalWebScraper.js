@@ -111,7 +111,7 @@ async function getElectionCycleUlHandle(page, branchHandle, electionCycleTitle) 
  */
 async function electionCycleTitles(aid) {
   let titles = [];
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
   try {
     const electionCycleRootULSelector = '#ctl00_phBody_browseElections_treeBrowse > ul';
@@ -157,7 +157,7 @@ async function getMultipleElectionCycleCandidates(aid, titles) {
  */
 async function getElectionCycleCandidates(aid, electionCycleTitle = '') {
   let tree = {};
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
   try {
     const page = await getNetFilePage(aid, browser)
