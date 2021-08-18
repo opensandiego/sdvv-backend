@@ -1,5 +1,0 @@
-# This heroku.yml is used to run containers on Heroku. 
-# This will be used instead of a Procfile.
-build:
-  docker:
-    web: Dockerfile.production
