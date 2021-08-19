@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+
+// interface Election {
+//   year: string;
+// }
 
 @Controller('elections')
-export class ElectionsController {}
+export class ElectionsController {
+  @Get()
+  finalAll(): string {
+    return 'All Elections';
+  }
+}
