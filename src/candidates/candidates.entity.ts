@@ -5,7 +5,7 @@ export class Candidate {
   @PrimaryGeneratedColumn()
   id: string;
 
-  // @PrimaryGeneratedColumn()
+  
   @Column()
   coe_id: string;
 
