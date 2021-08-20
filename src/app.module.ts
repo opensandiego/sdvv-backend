@@ -8,9 +8,19 @@ import { CandidatesController } from './candidates/candidates.controller';
 import { ChartDataController } from './chart-data/chart-data.controller';
 
 import { Connection } from 'typeorm';
+import { ElectionsModule } from './elections/elections.module';
+import { CandidatesModule } from './candidates/candidates.module';
+import { FilingsModule } from './filings/filings.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot()],
+  // imports: [TypeOrmModule.forRoot(), ElectionsModule],
+  imports: [
+    ElectionsModule,
+    CandidatesModule,
+    FilingsModule,
+    TransactionsModule,
+  ],
   controllers: [
     AppController,
     ElectionsController,
