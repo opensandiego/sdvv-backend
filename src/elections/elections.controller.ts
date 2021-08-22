@@ -1,35 +1,55 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { ElectionDto } from './interfaces/election.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseArrayPipe,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { ElectionsService } from './elections.service';
+import { CreateElectionDto } from './dto/createElection.dto';
+import { UpdateElectionDto } from './dto/updateElection.dto';
+
 @Controller('elections')
 export class ElectionsController {
-  @Get()
-  finalAll(): string {
-    return 'All Elections';
-  }
+  constructor(private electionsService: ElectionsService) {}
 
   @Get()
-  getElections() {
-    return 'All of the Elections';
-  }
-
-  @Post()
-  create(@Body() electionDto: ElectionDto) {
-    return electionDto;
+  async finalAll() {
+    return await this.electionsService.findAll();
   }
 
   @Get(':id')
-  fineOne(@Param('id') id: string) {
-    return `election with id ${id}`;
+  async fineOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.electionsService.findOne(id);
   }
-  
+
+  @Post()
+  async create(@Body() election: CreateElectionDto) {
+    return await this.electionsService.create(election);
+  }
+
+  @Post('bulk')
+  async createBulk(
+    @Body(new ParseArrayPipe({ items: CreateElectionDto }))
+    createElectionDto: CreateElectionDto[],
+  ) {
+    return await this.electionsService.createBulk(createElectionDto);
+  }
+
   @Put(':id')
-  update(@Param('id') id: string) {
-    return `update election with id ${id}`;
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() election: UpdateElectionDto,
+  ) {
+    return await this.electionsService.update(id, election);
   }
-  
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `delete election with id ${id}`;
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.electionsService.remove(id);
   }
-  
 }

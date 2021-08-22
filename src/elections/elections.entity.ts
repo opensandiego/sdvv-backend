@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class Election {
+@Entity({ name: 'election' })
+export class ElectionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,5 +16,4 @@ export class Election {
 
   @Column()
   internal: boolean;
-
-} 
+}
