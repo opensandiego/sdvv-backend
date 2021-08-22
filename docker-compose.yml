@@ -1,0 +1,34 @@
+# This docker-compose.yml is only used to run containers locally for development and testing.
+version: "3"
+services:
+  postgres_db_dev:
+    image: "postgres:latest"
+    container_name: postgres_dev
+    ports:
+      - "54321:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin # or example
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - postgres_db_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - "5050:5050"
+    networks:
+      - postgres_db_network
+    depends_on:
+      - postgres_db_dev
+# When using Create > Server in pgAdmin use the name under depends_on for the "Host name/address" in Connection
+
+networks:
+  postgres_db_network:
+    driver: bridge
