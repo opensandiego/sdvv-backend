@@ -1,12 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity()
-export class Candidate {
+@Entity({ name: 'candidate' })
+export class CandidateEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
-  
-  @Column()
+  @Column({ unique: true })
   coe_id: string;
 
   @Column()
@@ -21,17 +26,17 @@ export class Candidate {
   @Column()
   first_name: string;
 
-  @Column()
-  middle_name: string | null;
+  @Column({ nullable: true })
+  middle_name: string;
 
   @Column()
   last_name: string;
 
-  @Column()
-  title: string | null;
+  @Column({ nullable: true })
+  title: string;
 
-  @Column()
-  suffix: string | null;
+  @Column({ nullable: true })
+  suffix: string;
 
   @Column()
   office: string;
@@ -42,8 +47,8 @@ export class Candidate {
   @Column()
   jurisdiction_id: string;
 
-  @Column()
-  district: string | null;
+  @Column({ nullable: true })
+  district: string;
 
   @Column()
   agency: string;
@@ -61,6 +66,12 @@ export class Candidate {
   candidate_name: string;
 
   // Fields below are not from eFile
-  @Column()
-  candidate_controlled_committee_name: string | null;
+  @Column({ nullable: true })
+  candidate_controlled_committee_name: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

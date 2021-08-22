@@ -23,6 +23,7 @@ export class ElectionEntity {
   @Column()
   internal: boolean;
 
+  // Fields below are not from eFile
   @CreateDateColumn()
   createdAt: Date;
 
