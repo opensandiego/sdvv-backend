@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FilingEntity } from './filings.entity';
 import { CreateFilingDto } from './dto/createFiling.dto';
-import { UpdateCaFilingDto } from './dto/updateFiling.dto';
+import { UpdateFilingDto } from './dto/updateFiling.dto';
 
 @Injectable()
 export class FilingsService {
@@ -30,11 +30,11 @@ export class FilingsService {
 
   async update(
     id: number,
-    updateCaFilingDto: UpdateCaFilingDto,
+    updateFilingDto: UpdateFilingDto,
   ): Promise<FilingEntity> {
     return await this.filingRepository.save({
       id: id,
-      ...updateCaFilingDto,
+      ...updateFilingDto,
     });
   }
 

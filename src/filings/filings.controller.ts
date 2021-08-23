@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { FilingsService } from './filings.service';
 import { CreateFilingDto } from './dto/createFiling.dto';
-import { UpdateCaFilingDto } from './dto/updateFiling.dto';
+import { UpdateFilingDto } from './dto/updateFiling.dto';
 
 @Controller('filings')
 export class FilingsController {
@@ -46,9 +46,9 @@ export class FilingsController {
   @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateCaFilingDto: UpdateCaFilingDto,
+    @Body() updateFilingDto: UpdateFilingDto,
   ) {
-    return await this.filingsService.update(id, updateCaFilingDto);
+    return await this.filingsService.update(id, updateFilingDto);
   }
 
   @Delete(':id')
