@@ -14,7 +14,7 @@ export class ElectionEntity {
   @Column({ unique: true })
   election_date: string;
 
-  @Column()
+  @Column({ unique: true })
   election_id: string;
 
   @Column()

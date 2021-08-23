@@ -12,6 +12,7 @@ import {
 import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/createCandidate.dto';
 import { UpdateCandidateDto } from './dto/updateCandidate.dto';
+
 @Controller('candidates')
 export class CandidatesController {
   constructor(private candidatesService: CandidatesService) {}
