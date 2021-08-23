@@ -16,8 +16,17 @@ export class TransactionsService {
     return this.transactionRepository.find();
   }
 
-  findOne(id: number): Promise<TransactionEntity> {
-    return this.transactionRepository.findOne(id);
+  findOne(filingID: string, tranID: string): Promise<TransactionEntity> {
+    return this.transactionRepository.findOne({
+      filing_id: filingID,
+      tran_id: tranID,
+    });
+  }
+
+  findTransactionsFromFilling(filingID: string): Promise<TransactionEntity[]> {
+    return this.transactionRepository.find({
+      filing_id: filingID,
+    });
   }
 
   async create(createTransactionDto: CreateTransactionDto) {
@@ -29,16 +38,24 @@ export class TransactionsService {
   }
 
   async update(
-    id: number,
+    filingID: string,
+    tranID: string,
     updateTransactionDto: UpdateTransactionDto,
   ): Promise<TransactionEntity> {
     return await this.transactionRepository.save({
-      id: id,
+      filing_id: filingID,
+      tran_id: tranID,
       ...updateTransactionDto,
+      transaction_date_time: new Date(
+        updateTransactionDto.transaction_date,
+      ).toISOString(),
     });
   }
 
-  async remove(id: number): Promise<void> {
-    await this.transactionRepository.delete(id);
+  async remove(filingID: string, tranID: string): Promise<void> {
+    await this.transactionRepository.delete({
+      filing_id: filingID,
+      tran_id: tranID,
+    });
   }
 }

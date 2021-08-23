@@ -5,9 +5,10 @@ import {
   Get,
   Param,
   ParseArrayPipe,
-  ParseIntPipe,
   Post,
   Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/createTransaction.dto';
@@ -22,15 +23,23 @@ export class TransactionsController {
     return await this.transactionsService.findAll();
   }
 
-  @Get(':id')
-  async fineOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.transactionsService.findOne(id);
+  @Get(':filing_id')
+  async fineTransactionsFromFilling(@Param('filing_id') filingID: string) {
+    return await this.transactionsService.findTransactionsFromFilling(filingID);
+  }
+
+  @Get(':filing_id/:tran_id')
+  async fineOne(
+    @Param('filing_id') filingID: string,
+    @Param('tran_id') tranID: string,
+  ) {
+    return await this.transactionsService.findOne(filingID, tranID);
   }
 
   @Post()
-  // @UsePipes(new ValidationPipe({ transform: true }))
-  async create(@Body() createTransactionDt: CreateTransactionDto) {
-    return await this.transactionsService.create(createTransactionDt);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createTransactionDto: CreateTransactionDto) {
+    return await this.transactionsService.create(createTransactionDto);
   }
 
   @Post('bulk')
@@ -41,16 +50,25 @@ export class TransactionsController {
     return await this.transactionsService.createBulk(createTransactionDto);
   }
 
-  @Put(':id')
+  @Put(':filing_id/:tran_id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('filing_id') filingID: string,
+    @Param('tran_id') tranID: string,
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
-    return await this.transactionsService.update(id, updateTransactionDto);
+    return await this.transactionsService.update(
+      filingID,
+      tranID,
+      updateTransactionDto,
+    );
   }
 
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.transactionsService.remove(id);
+  @Delete(':filing_id/:tran_id')
+  async remove(
+    @Param('filing_id') filingID: string,
+    @Param('tran_id') tranID: string,
+  ) {
+    return await this.transactionsService.remove(filingID, tranID);
   }
 }

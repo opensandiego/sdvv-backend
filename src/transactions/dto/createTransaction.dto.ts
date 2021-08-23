@@ -14,8 +14,10 @@ export class CreateTransactionDto {
 
   e_filing_id: string;
 
+  @IsNotEmpty()
   tran_id: string;
 
+  @IsNotEmpty()
   transaction_date: string;
 
   amount: string;
@@ -24,6 +26,8 @@ export class CreateTransactionDto {
 
   schedule: string;
 
+  @IsUUID()
+  @IsNotEmpty()
   filing_id: string;
 
   filing_type: string;
@@ -45,5 +49,8 @@ export class CreateTransactionDto {
   occupation: string;
 
   // Fields below are not from eFile
-  transaction_date_time: string;
+  @Expose()
+  get transaction_date_time() {
+    return new Date(this.transaction_date).toISOString();
+  }
 }

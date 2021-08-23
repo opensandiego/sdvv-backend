@@ -1,17 +1,20 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('transaction')
 export class TransactionEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   // Fields below are from eFile
+  @PrimaryColumn()
+  filing_id: string;
+
+  @PrimaryColumn()
+  tran_id: string;
+
   @Column()
   filer_name: string;
 
@@ -20,9 +23,6 @@ export class TransactionEntity {
 
   @Column()
   e_filing_id: string;
-
-  @Column()
-  tran_id: string;
 
   @Column()
   transaction_date: string;
@@ -35,9 +35,6 @@ export class TransactionEntity {
 
   @Column()
   schedule: string;
-
-  @Column()
-  filing_id: string;
 
   @Column()
   filing_type: string;
