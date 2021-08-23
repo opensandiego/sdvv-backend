@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('transaction')
 export class TransactionEntity {
@@ -39,34 +45,40 @@ export class TransactionEntity {
   @Column()
   name: string;
 
-  @Column()
-  intr_name: string | null;
+  @Column({ nullable: true })
+  intr_name: string;
 
-  @Column()
-  city: string | null;
+  @Column({ nullable: true })
+  city: string;
 
-  @Column()
-  state: string | null;
+  @Column({ nullable: true })
+  state: string;
 
-  @Column()
-  zip: string | null;
+  @Column({ nullable: true })
+  zip: string;
 
-  @Column()
-  spending_code: string | null;
+  @Column({ nullable: true })
+  spending_code: string;
 
-  @Column()
-  employer: string | null;
+  @Column({ nullable: true })
+  employer: string;
 
-  @Column()
-  occupation: string | null;
+  @Column({ nullable: true })
+  occupation: string;
 
   // Fields below are not from eFile
   @Column()
   transaction_date_time: string;
 
-  @Column()
+  @Column({ default: false })
   has_been_processed: boolean;
 
-  @Column()
+  @Column({ default: false })
   include_in_calculations: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
