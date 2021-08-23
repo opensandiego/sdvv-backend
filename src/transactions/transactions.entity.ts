@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class Transactions {
+@Entity('transaction')
+export class TransactionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -60,7 +60,6 @@ export class Transactions {
   @Column()
   occupation: string | null;
 
-
   // Fields below are not from eFile
   @Column()
   transaction_date_time: string;
@@ -70,5 +69,4 @@ export class Transactions {
 
   @Column()
   include_in_calculations: boolean;
-
 }
