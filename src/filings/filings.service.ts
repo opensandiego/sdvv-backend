@@ -16,7 +16,7 @@ export class FilingsService {
     return this.filingRepository.find();
   }
 
-  findOne(id: number): Promise<FilingEntity> {
+  findOne(id: string): Promise<FilingEntity> {
     return this.filingRepository.findOne(id);
   }
 
@@ -29,16 +29,16 @@ export class FilingsService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateFilingDto: UpdateFilingDto,
   ): Promise<FilingEntity> {
     return await this.filingRepository.save({
-      id: id,
+      filing_id: id,
       ...updateFilingDto,
     });
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.filingRepository.delete(id);
   }
 }

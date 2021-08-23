@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseArrayPipe,
-  ParseIntPipe,
   Post,
   Put,
   UsePipes,
@@ -25,7 +24,7 @@ export class FilingsController {
   }
 
   @Get(':id')
-  async fineOne(@Param('id', ParseIntPipe) id: number) {
+  async fineOne(@Param('id') id: string) {
     return await this.filingsService.findOne(id);
   }
 
@@ -45,14 +44,14 @@ export class FilingsController {
 
   @Put(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() updateFilingDto: UpdateFilingDto,
   ) {
     return await this.filingsService.update(id, updateFilingDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id') id: string) {
     return await this.filingsService.remove(id);
   }
 }
