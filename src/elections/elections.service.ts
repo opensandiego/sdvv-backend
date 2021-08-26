@@ -16,7 +16,7 @@ export class ElectionsService {
     return this.electionsRepository.find();
   }
 
-  findOne(id: number): Promise<ElectionEntity> {
+  findOne(id: string): Promise<ElectionEntity> {
     return this.electionsRepository.findOne(id);
   }
 
@@ -29,16 +29,16 @@ export class ElectionsService {
   }
 
   async update(
-    id: number,
+    id: string,
     election: UpdateElectionDto,
   ): Promise<ElectionEntity> {
     return await this.electionsRepository.save({
-      id: id,
+      election_id: id,
       ...election,
     });
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.electionsRepository.delete(id);
   }
 }

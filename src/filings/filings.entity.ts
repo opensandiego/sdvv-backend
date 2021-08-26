@@ -48,7 +48,7 @@ export class FilingEntity {
   @Column()
   filing_date_time: string;
 
-  @Column({ default: false })
+  @Column({ default: true })
   enabled: boolean;
 
   @CreateDateColumn()
