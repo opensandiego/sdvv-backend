@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseArrayPipe,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -23,33 +22,30 @@ export class CandidatesController {
   }
 
   @Get(':id')
-  async fineOne(@Param('id', ParseIntPipe) id: number) {
+  async fineOne(@Param('id') id: string) {
     return await this.candidatesService.findOne(id);
   }
 
   @Post()
-  async create(@Body() election: CreateCandidateDto) {
-    return await this.candidatesService.create(election);
+  async create(@Body() candidate: CreateCandidateDto) {
+    return await this.candidatesService.create(candidate);
   }
 
   @Post('bulk')
   async createBulk(
     @Body(new ParseArrayPipe({ items: CreateCandidateDto }))
-    createElectionDto: CreateCandidateDto[],
+    createCandidateDto: CreateCandidateDto[],
   ) {
-    return await this.candidatesService.createBulk(createElectionDto);
+    return await this.candidatesService.createBulk(createCandidateDto);
   }
 
   @Put(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() election: UpdateCandidateDto,
-  ) {
-    return await this.candidatesService.update(id, election);
+  async update(@Param('id') id: string, @Body() candidate: UpdateCandidateDto) {
+    return await this.candidatesService.update(id, candidate);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id') id: string) {
     return await this.candidatesService.remove(id);
   }
 }
