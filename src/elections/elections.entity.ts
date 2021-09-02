@@ -4,17 +4,18 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity({ name: 'election' })
 export class ElectionEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  // id: number;
 
   @Column({ unique: true })
   election_date: string;
 
-  @Column({ unique: true })
+  @PrimaryColumn()
   election_id: string;
 
   @Column()

@@ -34,17 +34,25 @@ export class TransactionsService {
   }
 
   async createBulk(createTransactionDto: CreateTransactionDto[]) {
-    return await this.transactionRepository.save(createTransactionDto);
+    try {
+      return await this.transactionRepository.save(createTransactionDto, {
+        chunk: 1000,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async update(
     filingID: string,
     tranID: string,
+    schedule: string,
     updateTransactionDto: UpdateTransactionDto,
   ): Promise<TransactionEntity> {
     return await this.transactionRepository.save({
       filing_id: filingID,
       tran_id: tranID,
+      schedule: schedule,
       ...updateTransactionDto,
       transaction_date_time: new Date(
         updateTransactionDto.transaction_date,
@@ -52,10 +60,15 @@ export class TransactionsService {
     });
   }
 
-  async remove(filingID: string, tranID: string): Promise<void> {
+  async remove(
+    filingID: string,
+    tranID: string,
+    schedule: string,
+  ): Promise<void> {
     await this.transactionRepository.delete({
       filing_id: filingID,
       tran_id: tranID,
+      schedule: schedule,
     });
   }
 }

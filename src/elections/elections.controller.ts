@@ -23,7 +23,7 @@ export class ElectionsController {
   }
 
   @Get(':id')
-  async fineOne(@Param('id', ParseIntPipe) id: number) {
+  async fineOne(@Param('id') id: string) {
     return await this.electionsService.findOne(id);
   }
 
@@ -41,15 +41,12 @@ export class ElectionsController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() election: UpdateElectionDto,
-  ) {
+  async update(@Param('id') id: string, @Body() election: UpdateElectionDto) {
     return await this.electionsService.update(id, election);
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id') id: string) {
     return await this.electionsService.remove(id);
   }
 }

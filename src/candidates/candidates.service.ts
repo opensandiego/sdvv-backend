@@ -16,7 +16,7 @@ export class CandidatesService {
     return this.candidateRepository.find();
   }
 
-  findOne(id: number): Promise<CandidateEntity> {
+  findOne(id: string): Promise<CandidateEntity> {
     return this.candidateRepository.findOne(id);
   }
 
@@ -29,16 +29,16 @@ export class CandidatesService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateCandidateDto: UpdateCandidateDto,
   ): Promise<CandidateEntity> {
     return await this.candidateRepository.save({
-      id: id,
+      coe_id: id,
       ...updateCandidateDto,
     });
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.candidateRepository.delete(id);
   }
 }

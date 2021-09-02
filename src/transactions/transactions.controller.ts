@@ -50,25 +50,28 @@ export class TransactionsController {
     return await this.transactionsService.createBulk(createTransactionDto);
   }
 
-  @Put(':filing_id/:tran_id')
+  @Put(':filing_id/:tran_id/:schedule')
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(
     @Param('filing_id') filingID: string,
     @Param('tran_id') tranID: string,
+    @Param('schedule') schedule: string,
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
     return await this.transactionsService.update(
       filingID,
       tranID,
+      schedule,
       updateTransactionDto,
     );
   }
 
-  @Delete(':filing_id/:tran_id')
+  @Delete(':filing_id/:tran_id/:schedule')
   async remove(
     @Param('filing_id') filingID: string,
     @Param('tran_id') tranID: string,
+    @Param('schedule') schedule: string,
   ) {
-    return await this.transactionsService.remove(filingID, tranID);
+    return await this.transactionsService.remove(filingID, tranID, schedule);
   }
 }
