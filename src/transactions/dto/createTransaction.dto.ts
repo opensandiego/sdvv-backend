@@ -1,11 +1,5 @@
-import {
-  IsBoolean,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsUUID,
-} from 'class-validator';
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { IsNotEmpty } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class CreateTransactionDto {
   filer_name: string;
@@ -42,7 +36,7 @@ export class CreateTransactionDto {
 
   zip: string;
 
-  spending_code: string;
+  spending_code: string | null;
 
   employer: string;
 

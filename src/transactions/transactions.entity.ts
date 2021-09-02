@@ -33,7 +33,7 @@ export class TransactionEntity {
   @Column()
   tx_type: string;
 
-  @Column()
+  @PrimaryColumn()
   schedule: string;
 
   @Column()
