@@ -11,6 +11,7 @@ import { ElectionsModule } from './elections/elections.module';
 import { CandidatesModule } from './candidates/candidates.module';
 import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { CommitteesModule } from './committees/committees.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     CandidatesModule,
     FilingsModule,
     TransactionsModule,
+    CommitteesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
