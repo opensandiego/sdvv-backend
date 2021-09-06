@@ -12,6 +12,7 @@ import { CandidatesModule } from './candidates/candidates.module';
 import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CommitteesModule } from './committees/committees.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CommitteesModule } from './committees/committees.module';
     FilingsModule,
     TransactionsModule,
     CommitteesModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
