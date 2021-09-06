@@ -9,6 +9,15 @@ export class TasksController {
     @InjectQueue('update-tasks') private readonly tasksQueue: Queue,
   ) {}
 
+  @Post('check-tasks')
+  async checkTasks() {
+    return (
+      await this.tasksQueue.add({
+        check: 'task checked',
+      })
+    ).data;
+  }
+
   @Post('update-elections')
   async updateElections() {
     await this.tasksQueue.add({

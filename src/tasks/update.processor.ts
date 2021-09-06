@@ -40,6 +40,8 @@ export default function (job: Job, doneCallback: DoneCallback) {
     updateTransactions(jobData['ranges']).subscribe(() =>
       console.log(`Transactions update: completed`),
     );
+  } else if (jobData['check'] === 'task checked') {
+    console.log(`Connection to task processor working.`);
   } else {
     console.log('No valid update requested');
     console.log(jobData);
