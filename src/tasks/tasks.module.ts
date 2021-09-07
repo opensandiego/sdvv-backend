@@ -4,12 +4,14 @@ import { join } from 'path';
 import { HttpModule } from '@nestjs/axios';
 import { TasksController } from './tasks.controller';
 import { EFileDownloadService } from './efile.download.service';
+import { CandidateCommitteeService } from './candidate.committee.service';
+import { ComputeProcessorService } from './compute.processor.service';
 
 @Module({
   imports: [
     BullModule.registerQueue(
       {
-        name: 'tasks',
+        name: 'compute-tasks',
       },
       {
         name: 'update-tasks',
@@ -18,7 +20,11 @@ import { EFileDownloadService } from './efile.download.service';
     ),
     HttpModule,
   ],
-  providers: [EFileDownloadService],
+  providers: [
+    EFileDownloadService,
+    CandidateCommitteeService,
+    ComputeProcessorService,
+  ],
   controllers: [TasksController],
 })
 export class TasksModule {}

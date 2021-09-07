@@ -7,7 +7,17 @@ import { DateRangeDto } from './dto/dateRange.dto';
 export class TasksController {
   constructor(
     @InjectQueue('update-tasks') private readonly tasksQueue: Queue,
+    @InjectQueue('compute-tasks') private readonly tasksComputeQueue: Queue,
   ) {}
+
+  // @Post('compute-candidate-committees') // compute for all candidate
+
+  @Post('compute-candidate-committee/:coe_id')
+  async computeCommittees(@Param('coe_id') coeID: string) {
+    return await this.tasksComputeQueue.add('candidate-committees', {
+      id: coeID,
+    });
+  }
 
   @Post('check-tasks')
   async checkTasks() {
