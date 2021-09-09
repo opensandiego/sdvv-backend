@@ -40,8 +40,12 @@ export class CandidateCommitteeService {
         },
       )
       .orderBy('LENGTH(committee.entity_name)', 'ASC')
-      .getOneOrFail();
+      .getOne();
 
-    return committeeMatches['entity_name'];
+    const matchingCommitteeName = committeeMatches
+      ? committeeMatches['entity_name']
+      : null;
+
+    return matchingCommitteeName;
   }
 }

@@ -12,21 +12,41 @@ export class ComputeProcessorService {
     private candidateCommitteeService: CandidateCommitteeService,
   ) {}
 
-  @Process('candidate-committee')
-  async setCandidateCommittee(job: Job<unknown>) {
-    console.log('candidate-committees: started');
+  @Process('candidate-committees-election')
+  async processCandidateCommitteeForElection(job: Job<unknown>) {
+    console.log('candidate-committees-election: started');
 
     try {
+      const electionID = job.data.id;
+
       const candidateRepository =
         this.connection.getRepository(CandidateEntity);
-      const electionRepository = this.connection.getRepository(ElectionEntity);
 
-      const candidate: CandidateEntity = await candidateRepository.findOne(
-        job.data.id,
-      );
+      let candidates: CandidateEntity[] = await candidateRepository.find({
+        where: {
+          election_id: electionID,
+        },
+      });
 
-      const election = await electionRepository.findOne(candidate.election_id);
+      candidates = await this.setCandidateCommittee(candidates, electionID);
+      await candidateRepository.save(candidates);
+    } catch (error) {
+      console.log('Error in candidate-committees-election');
+    }
 
+    console.log('candidate-committees-election: completed');
+    return {};
+  }
+
+  async setCandidateCommittee(
+    candidates: CandidateEntity[],
+    electionID: string,
+  ): Promise<CandidateEntity[]> {
+    const electionRepository = this.connection.getRepository(ElectionEntity);
+
+    const election = await electionRepository.findOne(electionID);
+
+    for await (const candidate of candidates) {
       const committeeName =
         await this.candidateCommitteeService.getCandidateCommittee(
           candidate,
@@ -34,7 +54,32 @@ export class ComputeProcessorService {
         );
 
       candidate.candidate_controlled_committee_name = committeeName;
-      await candidateRepository.save(candidate);
+    }
+
+    return candidates;
+  }
+
+  @Process('candidate-committee')
+  async processCandidateCommittee(job: Job<unknown>) {
+    console.log('candidate-committees: started');
+
+    try {
+      const candidateID = job.data.id;
+
+      const candidateRepository =
+        this.connection.getRepository(CandidateEntity);
+
+      let candidates: CandidateEntity[] = await candidateRepository.find({
+        where: {
+          coe_id: candidateID,
+        },
+      });
+
+      candidates = await this.setCandidateCommittee(
+        candidates,
+        candidates[0].election_id,
+      );
+      await candidateRepository.save(candidates);
     } catch (error) {
       console.log('Error in candidate-committees');
     }
