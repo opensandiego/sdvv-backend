@@ -12,9 +12,9 @@ export class TasksController {
 
   // @Post('compute-candidate-committees') // compute for all candidate
 
-  @Post('compute-candidate-committee/:coe_id')
+  @Post('compute/committee/candidate/:coe_id')
   async computeCommittees(@Param('coe_id') coeID: string) {
-    return await this.tasksComputeQueue.add('candidate-committees', {
+    return await this.tasksComputeQueue.add('candidate-committee', {
       id: coeID,
     });
   }

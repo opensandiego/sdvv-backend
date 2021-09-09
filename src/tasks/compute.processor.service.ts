@@ -12,8 +12,8 @@ export class ComputeProcessorService {
     private candidateCommitteeService: CandidateCommitteeService,
   ) {}
 
-  @Process('candidate-committees')
-  async transcode(job: Job<unknown>) {
+  @Process('candidate-committee')
+  async setCandidateCommittee(job: Job<unknown>) {
     console.log('candidate-committees: started');
 
     try {
