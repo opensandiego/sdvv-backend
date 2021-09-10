@@ -13,8 +13,17 @@ const transactionsDownloadService = new TransactionsDownloadService(
 const host = 'http://localhost:3000'; // In production obtain host from the environment
 
 export default function (job: Job, doneCallback: DoneCallback) {
-  const jobData = job.data;
+  try {
+    dispatchJob(job.data);
+  } catch (error) {
+    console.log(`Error in update.processor`, error);
+    doneCallback(null, 'Error running task');
+  }
 
+  doneCallback(null, 'Task complete');
+}
+
+function dispatchJob(jobData) {
   if (jobData['update'] === 'elections') {
     console.log(`Elections update: started`);
     updateElections().subscribe(() =>
@@ -46,8 +55,6 @@ export default function (job: Job, doneCallback: DoneCallback) {
     console.log('No valid update requested');
     console.log(jobData);
   }
-
-  doneCallback(null, 'Task complete');
 }
 
 function updateElections() {
