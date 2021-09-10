@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from 'src/candidates/candidates.entity';
+import { ElectionEntity } from 'src/elections/elections.entity';
 
 @Injectable()
 export class CandidateCommitteeService {
   constructor(private connection: Connection) {}
 
-  async getCandidateCommittee(
+  private async getCandidateCommittee(
     candidate: CandidateEntity,
     electionDate: string,
   ) {
@@ -47,5 +48,46 @@ export class CandidateCommitteeService {
       : null;
 
     return matchingCommitteeName;
+  }
+
+  async setCommitteesForCandidates(
+    candidates: CandidateEntity[],
+  ): Promise<CandidateEntity[]> {
+    const electionRepository = this.connection.getRepository(ElectionEntity);
+
+    for await (const candidate of candidates) {
+      const election = await electionRepository.findOne(candidate.election_id);
+
+      const committeeName = await this.getCandidateCommittee(
+        candidate,
+        election.election_date,
+      );
+
+      candidate.candidate_controlled_committee_name = committeeName;
+    }
+
+    return candidates;
+  }
+
+  private async getCandidates(electionID?: string): Promise<CandidateEntity[]> {
+    let queryOptions = {};
+
+    if (electionID) {
+      queryOptions = {
+        where: {
+          election_id: electionID,
+        },
+      };
+    }
+
+    return await this.connection
+      .getRepository(CandidateEntity)
+      .find(queryOptions);
+  }
+
+  async updateCandidateCommittees(electionID?: string) {
+    let candidates: CandidateEntity[] = await this.getCandidates(electionID);
+    candidates = await this.setCommitteesForCandidates(candidates);
+    await this.connection.getRepository(CandidateEntity).save(candidates);
   }
 }

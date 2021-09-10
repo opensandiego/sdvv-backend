@@ -3,7 +3,6 @@ import { Job } from 'bull';
 import { Connection } from 'typeorm';
 import { CandidateCommitteeService } from './candidate.committee.service';
 import { CandidateEntity } from 'src/candidates/candidates.entity';
-import { ElectionEntity } from 'src/elections/elections.entity';
 
 @Processor('compute-tasks')
 export class ComputeProcessorService {
@@ -12,6 +11,19 @@ export class ComputeProcessorService {
     private candidateCommitteeService: CandidateCommitteeService,
   ) {}
 
+  @Process('candidate-committees-all')
+  async processCandidateCommittees() {
+    console.log('candidate-committees-all: started');
+    try {
+      await this.candidateCommitteeService.updateCandidateCommittees();
+    } catch (error) {
+      console.log('Error in candidate-committees-all');
+    }
+
+    console.log('candidate-committees-all: completed');
+    return {};
+  }
+
   @Process('candidate-committees-election')
   async processCandidateCommitteeForElection(job: Job<unknown>) {
     console.log('candidate-committees-election: started');
@@ -19,44 +31,15 @@ export class ComputeProcessorService {
     try {
       const electionID = job.data.id;
 
-      const candidateRepository =
-        this.connection.getRepository(CandidateEntity);
-
-      let candidates: CandidateEntity[] = await candidateRepository.find({
-        where: {
-          election_id: electionID,
-        },
-      });
-
-      candidates = await this.setCandidateCommittee(candidates, electionID);
-      await candidateRepository.save(candidates);
+      await this.candidateCommitteeService.updateCandidateCommittees(
+        electionID,
+      );
     } catch (error) {
       console.log('Error in candidate-committees-election');
     }
 
     console.log('candidate-committees-election: completed');
     return {};
-  }
-
-  async setCandidateCommittee(
-    candidates: CandidateEntity[],
-    electionID: string,
-  ): Promise<CandidateEntity[]> {
-    const electionRepository = this.connection.getRepository(ElectionEntity);
-
-    const election = await electionRepository.findOne(electionID);
-
-    for await (const candidate of candidates) {
-      const committeeName =
-        await this.candidateCommitteeService.getCandidateCommittee(
-          candidate,
-          election.election_date,
-        );
-
-      candidate.candidate_controlled_committee_name = committeeName;
-    }
-
-    return candidates;
   }
 
   @Process('candidate-committee')
@@ -75,10 +58,11 @@ export class ComputeProcessorService {
         },
       });
 
-      candidates = await this.setCandidateCommittee(
-        candidates,
-        candidates[0].election_id,
-      );
+      candidates =
+        await this.candidateCommitteeService.setCommitteesForCandidates(
+          candidates,
+        );
+
       await candidateRepository.save(candidates);
     } catch (error) {
       console.log('Error in candidate-committees');

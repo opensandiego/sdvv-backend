@@ -10,17 +10,20 @@ export class TasksController {
     @InjectQueue('compute-tasks') private readonly tasksComputeQueue: Queue,
   ) {}
 
-  // @Post('compute/committee/candidate/') // compute for all candidates
+  @Post('candidate/committee/compute')
+  async computeCommitteesForAll() {
+    return await this.tasksComputeQueue.add('candidate-committees-all');
+  }
 
   @Post('compute/committee/election/:election_id')
-  async computeCommitteesForElection(@Param('election_id') electionID: string) {
+  async computeCommitteesByElection(@Param('election_id') electionID: string) {
     return await this.tasksComputeQueue.add('candidate-committees-election', {
       id: electionID,
     });
   }
 
   @Post('compute/committee/candidate/:coe_id')
-  async computeCommittees(@Param('coe_id') coeID: string) {
+  async computeCommitteesForCandidate(@Param('coe_id') coeID: string) {
     return await this.tasksComputeQueue.add('candidate-committee', {
       id: coeID,
     });
