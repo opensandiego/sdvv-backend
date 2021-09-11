@@ -5,7 +5,7 @@ import { ProcessCandidateCommitteeService } from './process.committee.service';
 import { CandidateEntity } from 'src/candidates/candidates.entity';
 
 @Processor('process-committee')
-export class ComputeProcessorService {
+export class ProcessCommitteeService {
   constructor(
     private connection: Connection,
     private candidateCommitteeService: ProcessCandidateCommitteeService,
@@ -69,6 +69,25 @@ export class ComputeProcessorService {
     }
 
     console.log('candidate-committees: completed');
+    return {};
+  }
+
+  @Process('candidate-committees-delete-all')
+  async deleteCandidateCommittees() {
+    console.log('candidate-committees-delete-all: started');
+    try {
+      await this.connection
+        .createQueryBuilder()
+        .update(CandidateEntity)
+        .set({
+          candidate_controlled_committee_name: null,
+        })
+        .execute();
+    } catch (error) {
+      console.log('Error in candidate-committees-delete-all');
+    }
+
+    console.log('candidate-committees-delete-all: completed');
     return {};
   }
 }

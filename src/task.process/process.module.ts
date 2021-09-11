@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
 import { ProcessCandidateCommitteeService } from './process.committee.service';
-import { ComputeProcessorService } from './process.committee.processor.service';
+import { ProcessCommitteeService } from './process.committee.processor.service';
 import { TaskCommitteeController } from './process.committee.controller';
 
 @Module({
@@ -16,7 +16,7 @@ import { TaskCommitteeController } from './process.committee.controller';
   ],
   providers: [
     ProcessCandidateCommitteeService,
-    ComputeProcessorService,
+    ProcessCommitteeService,
   ],
   controllers: [TaskCommitteeController],
 })

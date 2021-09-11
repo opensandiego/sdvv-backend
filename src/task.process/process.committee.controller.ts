@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Param, Post } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 
@@ -10,7 +10,6 @@ export class TaskCommitteeController {
 
   @Post()
   async computeCommitteesForAll() {
-    console.log('computeCommitteesForAll');
     return await this.tasksQueue.add('candidate-committees-all');
   }
 
@@ -26,5 +25,10 @@ export class TaskCommitteeController {
     return await this.tasksQueue.add('candidate-committee', {
       id: coeID,
     });
+  }
+
+  @Delete()
+  async deleteCommitteesForAllCandidate() {
+    return await this.tasksQueue.add('candidate-committees-delete-all');
   }
 }
