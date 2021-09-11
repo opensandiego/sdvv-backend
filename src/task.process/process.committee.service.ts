@@ -4,7 +4,7 @@ import { CandidateEntity } from 'src/candidates/candidates.entity';
 import { ElectionEntity } from 'src/elections/elections.entity';
 
 @Injectable()
-export class CandidateCommitteeService {
+export class ProcessCandidateCommitteeService {
   constructor(private connection: Connection) {}
 
   private async getCandidateCommittee(

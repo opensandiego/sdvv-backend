@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
+import { RouterModule } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,7 +13,9 @@ import { CandidatesModule } from './candidates/candidates.module';
 import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CommitteesModule } from './committees/committees.module';
-import { TasksModule } from './tasks/tasks.module';
+import { routes } from './routes';
+import { UpdateModule } from './task.update/update.module';
+import { ProcessModule } from './task.process/process.module';
 
 @Module({
   imports: [
@@ -31,7 +34,9 @@ import { TasksModule } from './tasks/tasks.module';
     FilingsModule,
     TransactionsModule,
     CommitteesModule,
-    TasksModule,
+    UpdateModule,
+    ProcessModule,
+    RouterModule.register(routes),
   ],
   controllers: [AppController],
   providers: [AppService],

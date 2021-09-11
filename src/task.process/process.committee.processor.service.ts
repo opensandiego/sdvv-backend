@@ -1,14 +1,14 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Connection } from 'typeorm';
-import { CandidateCommitteeService } from './candidate.committee.service';
+import { ProcessCandidateCommitteeService } from './process.committee.service';
 import { CandidateEntity } from 'src/candidates/candidates.entity';
 
-@Processor('compute-tasks')
+@Processor('process-committee')
 export class ComputeProcessorService {
   constructor(
     private connection: Connection,
-    private candidateCommitteeService: CandidateCommitteeService,
+    private candidateCommitteeService: ProcessCandidateCommitteeService,
   ) {}
 
   @Process('candidate-committees-all')
