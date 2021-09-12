@@ -1,9 +1,18 @@
 import { Job, DoneCallback } from 'bull';
 import { HttpService } from '@nestjs/axios';
-import { map, mergeMap } from 'rxjs';
+import {
+  bufferCount,
+  catchError,
+  concatAll,
+  concatMap,
+  map,
+  mergeMap,
+  toArray,
+} from 'rxjs';
 import { EFileDownloadService } from './efile.download.service';
 import { DateRangeDto } from './dto/dateRange.dto';
 import { TransactionsDownloadService } from './transactions.download.service';
+import { Transaction } from './models/transaction.interface';
 
 const httpService = new HttpService();
 const eFileDownloadService = new EFileDownloadService(httpService);
@@ -16,7 +25,7 @@ export default function (job: Job, doneCallback: DoneCallback) {
   try {
     dispatchJob(job.data);
   } catch (error) {
-    console.log(`Error in update.processor`, error);
+    console.log(`Error in update.processor`);
     doneCallback(null, 'Error running task');
   }
 
@@ -97,15 +106,27 @@ function updateFilings(dateRanges: DateRangeDto) {
 }
 
 function updateTransactions(dateRanges: DateRangeDto) {
+  const maxTransactionsPerPost = 5000;
+
   return transactionsDownloadService
     .getTransactionsFromEFile(dateRanges.oldestDate, dateRanges.newestDate)
     .pipe(
-      map((transactions) =>
+      catchError((error) => {
+        console.log('Error getting transactions from eFile');
+        throw error;
+      }),
+      map((transactions): Transaction[] =>
         transactionsDownloadService.removeDuplicateTransactions(transactions),
       ),
-      mergeMap((transactions) =>
+      concatAll(),
+      bufferCount(maxTransactionsPerPost),
+      concatMap((transactions) =>
         httpService.post(`${host}/transactions/bulk`, transactions),
       ),
-      map((response) => response.data),
+      toArray(),
+      catchError((error) => {
+        console.log('Error posting transactions to database');
+        throw error;
+      }),
     );
 }

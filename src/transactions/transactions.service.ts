@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { TransactionEntity } from './transactions.entity';
 import { CreateTransactionDto } from './dto/createTransaction.dto';
 import { UpdateTransactionDto } from './dto/updateTransaction.dto';
@@ -10,6 +10,7 @@ export class TransactionsService {
   constructor(
     @InjectRepository(TransactionEntity)
     private transactionRepository: Repository<TransactionEntity>,
+    private connection: Connection,
   ) {}
 
   findAll(): Promise<TransactionEntity[]> {
@@ -34,12 +35,28 @@ export class TransactionsService {
   }
 
   async createBulk(createTransactionDto: CreateTransactionDto[]) {
+    const queryRunner = this.connection.createQueryRunner();
+    const maxTransactionsPerInsert = 1000;
+
     try {
-      return await this.transactionRepository.save(createTransactionDto, {
-        chunk: 1000,
-      });
+      await queryRunner.connect();
+      const increment = maxTransactionsPerInsert;
+
+      for (let min = 0; min < createTransactionDto.length; min += increment) {
+        queryRunner.manager
+          .getRepository('transaction')
+          .createQueryBuilder()
+          .insert()
+          .into('transaction')
+          .values(createTransactionDto.slice(min, min + increment))
+          .orIgnore()
+          .execute();
+      }
     } catch (err) {
-      console.log(err);
+      console.log('Error creating bulk transactions');
+      throw err;
+    } finally {
+      await queryRunner.release();
     }
   }
 

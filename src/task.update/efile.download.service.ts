@@ -104,7 +104,7 @@ export class EFileDownloadService {
       .get(`${this.eFileTransactionUrl}?query=${queryStr}${parameters}`)
       .pipe(
         catchError((error) => {
-          console.log('Error downloading transactions from eFile', error);
+          console.log('Error downloading transactions from eFile');
           throw new HttpException(error.response.data, error.response.status);
         }),
         map((response) => response.data),
