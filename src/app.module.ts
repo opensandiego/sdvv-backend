@@ -16,6 +16,7 @@ import { CommitteesModule } from './committees/committees.module';
 import { routes } from './routes';
 import { UpdateModule } from './task.update/update.module';
 import { ProcessModule } from './task.process/process.module';
+import { ChartDataModule } from './chart.data/chart.data.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ProcessModule } from './task.process/process.module';
     FilingsModule,
     TransactionsModule,
     CommitteesModule,
+    ChartDataModule,
     UpdateModule,
     ProcessModule,
     RouterModule.register(routes),
