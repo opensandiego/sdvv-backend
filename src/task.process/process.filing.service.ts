@@ -16,10 +16,17 @@ export class ProcessFilingService {
   }
 
   async getFilingIDs(filingID?: string): Promise<string[]> {
-    if (filingID) {
-      return await this.getOrigIDFromFilingId(filingID);
-    } else {
-      return await this.getOrigIDsFromAllFilings();
+    try {
+      if (filingID) {
+        return await this.getOrigIDFromFilingId(filingID);
+      } else {
+        return await this.getOrigIDsFromAllFilings();
+      }
+    } catch (error) {
+      console.log(
+        'Error in getFilingIDs, filing does not exist or is not enabled',
+      );
+      throw error;
     }
   }
 

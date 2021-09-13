@@ -11,6 +11,25 @@ export class FilingProcessor {
     private processFilingService: ProcessFilingService,
   ) {}
 
+  @Process('transactions-set-not-processed')
+  async setAllTransactionsToNotProcessed() {
+    console.log('transactions-set-not-processed: started');
+    try {
+      await this.connection
+        .createQueryBuilder()
+        .update(TransactionEntity)
+        .set({
+          has_been_processed: false,
+        })
+        .execute();
+    } catch (error) {
+      console.log('Error in transactions-set-not-processed');
+    }
+
+    console.log('transactions-set-not-processed: completed');
+    return {};
+  }
+
   @Process('filing-process-one')
   async processOneFiling(job: Job<unknown>) {
     console.log('filing-process-one: started');
@@ -23,6 +42,19 @@ export class FilingProcessor {
     }
 
     console.log('filing-process-one: completed');
+    return {};
+  }
+
+  @Process('transactions-process-all')
+  async processAllFilings(job: Job<unknown>) {
+    console.log('transactions-process-all: started');
+    try {
+      await this.processFilingService.processFilings();
+    } catch (error) {
+      console.log('Error in transactions-process-all');
+    }
+
+    console.log('transactions-process-all: completed');
     return {};
   }
 }

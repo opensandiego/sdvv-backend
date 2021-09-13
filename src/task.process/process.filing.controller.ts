@@ -8,19 +8,20 @@ export class FilingsController {
     @InjectQueue('process-filing') private readonly tasksQueue: Queue,
   ) {}
 
+  @Post()
+  async processTransactions() {
+    return await this.tasksQueue.add('transactions-process-all');
+  }
+
   @Post(':filing_id')
   async processOneTransaction(@Param('filing_id') filingID: string) {
-    console.log('processOneTransaction');
-
     return await this.tasksQueue.add('filing-process-one', {
       filing_id: filingID,
     });
   }
 
-  @Post()
-  async processTransactions() {
-    console.log('processTransactions');
-
-    return await this.tasksQueue.add('transactions-process-all');
+  @Post('reset/transactions')
+  async setAllTransactionsToNotProcessed() {
+    return await this.tasksQueue.add('transactions-set-not-processed');
   }
 }
