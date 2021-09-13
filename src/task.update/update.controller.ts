@@ -2,7 +2,6 @@ import { Body, Controller, Param, Post } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { DateRangeDto } from './dto/dateRange.dto';
-
 @Controller()
 export class UpdateController {
   constructor(

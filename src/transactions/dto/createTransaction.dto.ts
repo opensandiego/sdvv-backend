@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
+import * as currency from 'currency.js';
 
 export class CreateTransactionDto {
   filer_name: string;
@@ -14,13 +15,16 @@ export class CreateTransactionDto {
   @IsNotEmpty()
   transaction_date: string;
 
-  amount: string;
+  // Convert the string from eFile to a number. Example: "$101" -> 101
+  @Transform(({ value }) => currency(value).value, {
+    toClassOnly: true,
+  })
+  amount: number;
 
   tx_type: string;
 
   schedule: string;
 
-  @IsUUID()
   @IsNotEmpty()
   filing_id: string;
 

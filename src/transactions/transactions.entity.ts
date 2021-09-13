@@ -28,7 +28,7 @@ export class TransactionEntity {
   transaction_date: string;
 
   @Column()
-  amount: string;
+  amount: number;
 
   @Column()
   tx_type: string;
