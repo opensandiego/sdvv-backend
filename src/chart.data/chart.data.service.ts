@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CalculateChartDataService } from './calculate.chart.data.service';
 import { RaisedSpentService } from './calculations/raised.spent.service';
 import { SharedCalculateService } from './calculations/shared.calculate.service';
 
@@ -8,7 +7,6 @@ import { SharedCalculateService } from './calculations/shared.calculate.service'
 export class ChartDataService {
   constructor(
     private connection: Connection,
-    private calculateChartDataService: CalculateChartDataService,
     private sharedService: SharedCalculateService,
     private raisedSpentService: RaisedSpentService,
   ) {}
