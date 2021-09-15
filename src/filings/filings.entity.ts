@@ -41,7 +41,7 @@ export class FilingEntity {
   @Column({ nullable: true })
   filing_subtypes: string;
 
-  @Column()
+  @Column() // entity_name === committee name
   entity_name: string;
 
   // Fields below are not from eFile

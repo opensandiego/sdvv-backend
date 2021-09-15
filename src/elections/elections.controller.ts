@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseArrayPipe,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -23,7 +22,7 @@ export class ElectionsController {
   }
 
   @Get(':id')
-  async fineOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return await this.electionsService.findOne(id);
   }
 

@@ -29,6 +29,12 @@ services:
       - postgres_db_dev
 # When using Create > Server in pgAdmin use the name under depends_on for the "Host name/address" in Connection
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+     - 6379:6379
+
 networks:
   postgres_db_network:
     driver: bridge

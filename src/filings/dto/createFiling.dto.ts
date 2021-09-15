@@ -50,10 +50,14 @@ export class CreateFilingDto {
   @IsInt()
   amendment_number: number;
 
-  @Transform(({ value }) => value?.orig_id, { toClassOnly: true })
+  @Transform(({ value }) => (value?.orig_id ? value.orig_id : value), {
+    toClassOnly: true,
+  })
   amends_orig_id: string;
 
-  @Transform(({ value }) => value?.prev_id, { toClassOnly: true })
+  @Transform(({ value }) => (value?.prev_id ? value.prev_id : value), {
+    toClassOnly: true,
+  })
   amends_prev_id: string;
 
   filing_subtypes: string | null;
