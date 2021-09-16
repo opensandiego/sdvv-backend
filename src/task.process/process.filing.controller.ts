@@ -10,18 +10,18 @@ export class FilingsController {
 
   @Post()
   async processTransactions() {
-    return await this.tasksQueue.add('transactions-process-all');
+    await this.tasksQueue.add('filings-process-all');
   }
 
   @Post(':filing_id')
   async processOneTransaction(@Param('filing_id') filingID: string) {
-    return await this.tasksQueue.add('filing-process-one', {
+    await this.tasksQueue.add('filing-process-one', {
       filing_id: filingID,
     });
   }
 
   @Post('reset/transactions')
   async setAllTransactionsToNotProcessed() {
-    return await this.tasksQueue.add('transactions-set-not-processed');
+    await this.tasksQueue.add('transactions-set-not-processed');
   }
 }

@@ -43,7 +43,7 @@ export class TransactionsService {
       const increment = maxTransactionsPerInsert;
 
       for (let min = 0; min < createTransactionDto.length; min += increment) {
-        queryRunner.manager
+        await queryRunner.manager
           .getRepository('transaction')
           .createQueryBuilder()
           .insert()
