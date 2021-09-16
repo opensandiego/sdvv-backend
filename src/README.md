@@ -1,6 +1,6 @@
-## Populating the database with data from eFile using the tasks endpoints
+## Populating the database from eFile
 
-The following data tables can be populated:
+The following tables exist in the database and be populated by making POST requests to the application:
 * Elections
 * Candidates
 * Committees
@@ -74,6 +74,13 @@ The committees task depends on the committees and candidates data. This task loo
 
 The filings task depends on the filings and transactions data. This task looks at each filings and then determines if the related transactions should be used or not used for the chart calculations. This is needed so that the transactions of amended filings are not used in the chart calculations.
 * POST http://localhost:3000/task/process/filing
+
+## Postman Collection
+To perform the updates and processing tasks there is also a collection file that can be imported into Postman with the POST requests already setup. To make each request select it in the list and then use then SEND button in Postmen. All of the update requests (`/task/update/...`) should be done before any of the process  requests (`/task/process/...`) are made. The results of the transaction task may take a minute or two to show up in pgAdmin after the task is completed.
+
+Using the Run collection feature in Postman is not recommended as it will run the tasks at the same time rather then one after another.
+
+Postman collection file: `./sample_data/populate_database.postman_collection.json`
 
 ## Viewing results be using GET requests
 To see the results use pgAdmin or make GET requests using the following URLs  

@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "49b773bf-7036-4bd9-927a-e165903b4a3e",
+		"name": "Populate Database",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "task/update/elections",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/task/update/elections",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"update",
+						"elections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/update/candidates/c0cd8d33-f9d7-0ab4-1dab-d1a37216b7b3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/task/update/candidates/c0cd8d33-f9d7-0ab4-1dab-d1a37216b7b3",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"update",
+						"candidates",
+						"c0cd8d33-f9d7-0ab4-1dab-d1a37216b7b3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/update/committees",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/task/update/committees",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"update",
+						"committees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/update/filings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldestDate\": \"2018-01-01\",\r\n    \"newestDate\": \"2021-09-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/task/update/filings",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"update",
+						"filings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/update/transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldestDate\": \"2018-01-01\",\r\n    \"newestDate\": \"2021-09-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/task/update/transactions",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"update",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/process/committee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/task/process/committee",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"process",
+						"committee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "task/process/filing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/task/process/filing",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"task",
+						"process",
+						"filing"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostname",
+			"value": "http://localhost:3000"
+		}
+	]
+}
