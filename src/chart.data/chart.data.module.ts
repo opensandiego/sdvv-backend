@@ -4,6 +4,7 @@ import { ChartDataService } from './chart.data.service';
 import { SharedCalculateService } from './calculations/shared.calculate.service';
 import { RaisedSpentService } from './calculations/raised.spent.service';
 import { OutsideSpendingService } from './calculations/outside.spending.service';
+import { ContributionsService } from './calculations/contributions.service';
 
 @Module({
   imports: [],
@@ -12,6 +13,7 @@ import { OutsideSpendingService } from './calculations/outside.spending.service'
     SharedCalculateService,
     RaisedSpentService,
     OutsideSpendingService,
+    ContributionsService,
   ],
   controllers: [ChartDataController],
 })
