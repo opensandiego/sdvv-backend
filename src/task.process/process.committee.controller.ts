@@ -10,25 +10,25 @@ export class TaskCommitteeController {
 
   @Post()
   async computeCommitteesForAll() {
-    return await this.tasksQueue.add('candidate-committees-all');
+    await this.tasksQueue.add('candidate-committees-all');
   }
 
   @Post('election/:election_id')
   async computeCommitteesByElection(@Param('election_id') electionID: string) {
-    return await this.tasksQueue.add('candidate-committees-election', {
+    await this.tasksQueue.add('candidate-committees-election', {
       id: electionID,
     });
   }
 
   @Post('candidate/:coe_id')
   async computeCommitteesForCandidate(@Param('coe_id') coeID: string) {
-    return await this.tasksQueue.add('candidate-committee', {
+    await this.tasksQueue.add('candidate-committee', {
       id: coeID,
     });
   }
 
   @Delete()
   async deleteCommitteesForAllCandidate() {
-    return await this.tasksQueue.add('candidate-committees-delete-all');
+    await this.tasksQueue.add('candidate-committees-delete-all');
   }
 }

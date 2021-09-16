@@ -5,8 +5,10 @@ import {
   catchError,
   concatAll,
   concatMap,
+  EMPTY,
   map,
   mergeMap,
+  Observable,
   toArray,
 } from 'rxjs';
 import { EFileDownloadService } from './efile.download.service';
@@ -21,48 +23,56 @@ const transactionsDownloadService = new TransactionsDownloadService(
 );
 const host = 'http://localhost:3000'; // In production obtain host from the environment
 
-export default function (job: Job, doneCallback: DoneCallback) {
-  try {
-    dispatchJob(job.data);
-  } catch (error) {
-    console.log(`Error in update.processor`);
-    doneCallback(null, 'Error running task');
-  }
+export default function processJobs(job: Job, doneCallback: DoneCallback) {
+  const start: Date = new Date();
 
-  doneCallback(null, 'Task complete');
+  dispatchJob(job.data)
+    .pipe(
+      map(() =>
+        console.info(
+          'Execution time: %d',
+          (new Date().valueOf() - start.valueOf()) / 1000,
+          'seconds',
+        ),
+      ),
+      catchError(() => {
+        console.log('Error: preDispatchJob in updating processor');
+        return doneCallback(null, 'Error running task');
+      }),
+    )
+    .subscribe(() => doneCallback(null, 'Task finished'));
 }
 
-function dispatchJob(jobData) {
+function dispatchJob(jobData): Observable<any> {
   if (jobData['update'] === 'elections') {
     console.log(`Elections update: started`);
-    updateElections().subscribe(() =>
-      console.log(`Elections update: completed`),
+    return updateElections().pipe(
+      map(() => console.log(`Elections update: complete`)),
     );
   } else if (jobData['update'] === 'committees') {
     console.log(`Committees update: started`);
-    updateCommittees().subscribe(() =>
-      console.log(`Committees update: completed`),
+    return updateCommittees().pipe(
+      map(() => console.log(`Committees update: complete`)),
     );
   } else if (jobData['update'] === 'candidates') {
     console.log(`Candidates update: started`);
-    updateCandidates(jobData['id']).subscribe(() =>
-      console.log(`Candidates update: completed`),
+    return updateCandidates(jobData['id']).pipe(
+      map(() => console.log(`Candidates update: complete`)),
     );
   } else if (jobData['update'] === 'filings') {
     console.log(`Filings update: started`);
-    updateFilings(jobData['ranges']).subscribe(() =>
-      console.log(`Filings update: completed`),
+    return updateFilings(jobData['ranges']).pipe(
+      map(() => console.log(`Filings update: complete`)),
     );
   } else if (jobData['update'] === 'transactions') {
     console.log(`Transactions update: started`);
-    updateTransactions(jobData['ranges']).subscribe(() =>
-      console.log(`Transactions update: completed`),
+    return updateTransactions(jobData['ranges']).pipe(
+      map(() => console.log(`Transactions update: complete`)),
     );
-  } else if (jobData['check'] === 'task checked') {
-    console.log(`Connection to task processor working.`);
   } else {
     console.log('No valid update requested');
     console.log(jobData);
+    return EMPTY;
   }
 }
 
@@ -72,6 +82,10 @@ function updateElections() {
       return httpService.post(`${host}/elections/bulk`, elections);
     }),
     map((response) => response.data),
+    catchError((error) => {
+      console.log('Error updating elections');
+      throw error;
+    }),
   );
 }
 
@@ -81,6 +95,10 @@ function updateCandidates(electionID: string) {
       return httpService.post(`${host}/candidates/bulk`, candidates);
     }),
     map((response) => response.data),
+    catchError((error) => {
+      console.log('Error updating candidates');
+      throw error;
+    }),
   );
 }
 
@@ -90,6 +108,10 @@ function updateCommittees() {
       return httpService.post(`${host}/committees/bulk`, committees);
     }),
     map((response) => response.data),
+    catchError((error) => {
+      console.log('Error updating committees');
+      throw error;
+    }),
   );
 }
 
@@ -102,6 +124,10 @@ function updateFilings(dateRanges: DateRangeDto) {
     .pipe(
       mergeMap((filings) => httpService.post(`${host}/filings/bulk`, filings)),
       map((response) => response.data),
+      catchError((error) => {
+        console.log('Error updating filings');
+        throw error;
+      }),
     );
 }
 

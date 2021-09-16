@@ -11,18 +11,12 @@ export class OutsideSpendingService {
       .getRepository(TransactionEntity)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .where(
-        'include_in_calculations = true' +
-          'AND tx_type = :txType AND spending_code = :spendingCode' +
-          'AND name = :candidateName',
-        {
-          candidateName: candidateName,
-          // filingType: 'FPPC 496',
-          txType: 'EXPN',
-          spendingCode: 'IND', // is this correct?
-          // what field can be used to determine support/opposed status
-        },
-      )
+      .where('include_in_calculations = true')
+      .andWhere('tx_type = :txType', { txType: 'EXPN' })
+      .andWhere('filing_type= :filingType', { filingType: 'FPPC 496' })
+      .andWhere('name = :candidateName', { candidateName: candidateName })
+      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' }) // is this correct?
+      // what field can be used to determine support/opposed status
       .getRawOne();
 
     return supportSum;

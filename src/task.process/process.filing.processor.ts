@@ -45,16 +45,16 @@ export class FilingProcessor {
     return {};
   }
 
-  @Process('transactions-process-all')
+  @Process('filings-process-all')
   async processAllFilings(job: Job<unknown>) {
-    console.log('transactions-process-all: started');
+    console.log('filings-process-all: started');
     try {
       await this.processFilingService.processFilings();
     } catch (error) {
-      console.log('Error in transactions-process-all');
+      console.log('Error in filings-process-all');
     }
 
-    console.log('transactions-process-all: completed');
+    console.log('filings-process-all: completed');
     return {};
   }
 }

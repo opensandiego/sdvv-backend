@@ -9,4 +9,9 @@ export class ChartDataController {
   async raisedSpentCandidateId(@Param('coe_id') id: string) {
     return await this.chartDataService.getRaisedSpentId(id);
   }
+
+  @Get('candidate-card/id/:coe_id')
+  async candidateCardFromId(@Param('coe_id') id: string) {
+    return await this.chartDataService.candidateCard(id);
+  }
 }
