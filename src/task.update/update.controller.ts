@@ -8,12 +8,6 @@ export class UpdateController {
     @InjectQueue('update-tasks') private readonly tasksQueue: Queue,
   ) {}
 
-  @Post()
-  async general() {
-    console.log('update module post received');
-    return 'update module post response';
-  }
-
   @Post('elections')
   async updateElections() {
     await this.tasksQueue.add({

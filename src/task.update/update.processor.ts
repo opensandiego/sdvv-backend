@@ -69,8 +69,6 @@ function dispatchJob(jobData): Observable<any> {
     return updateTransactions(jobData['ranges']).pipe(
       map(() => console.log(`Transactions update: complete`)),
     );
-  } else if (jobData['check'] === 'task checked') {
-    console.log(`Connection to task processor working.`);
   } else {
     console.log('No valid update requested');
     console.log(jobData);
