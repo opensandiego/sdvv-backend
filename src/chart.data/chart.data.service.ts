@@ -39,10 +39,61 @@ export class ChartDataService {
         filerName,
       );
 
-      return { average, count, filerName, coe_id: id };
+      const limit = 10000;
+
+      const listByOccupation =
+        await this.contributionsService.getContributionByOccupation(
+          filerName,
+          limit,
+        );
+
+      const listByEmployer =
+        await this.contributionsService.getContributionByEmployer(
+          filerName,
+          limit,
+        );
+
+      const listByName = await this.contributionsService.getContributionByName(
+        filerName,
+        5,
+      );
+
+      const listByIntrName =
+        await this.contributionsService.getContributionByIntrName(
+          filerName,
+          limit,
+        );
+
+      console.log('listByOccupation.length', listByOccupation.length);
+      console.log('listByEmployer.length', listByEmployer.length);
+      console.log('listByName.length', listByName.length);
+      console.log('listByIntrName.length', listByIntrName.length);
+
+      return {
+        average,
+        count,
+        filerName,
+        coe_id: id,
+        listByOccupation,
+        listByEmployer,
+        listByName,
+        listByIntrName,
+      };
     } catch (error) {
       console.log('Error getting candidateCard');
       return { error: 'Error getting candidateCard' };
+    }
+  }
+
+  async candidateOffice(electionId: string) {
+    try {
+      const candidates = await this.contributionsService.getCandidateCount(
+        electionId,
+      );
+      return { candidates };
+    } catch (error) {
+      console.log('Error getting candidateOffice');
+      return { error: 'Error getting candidateOffice' };
     }
   }
 }

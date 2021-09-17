@@ -14,4 +14,9 @@ export class ChartDataController {
   async candidateCardFromId(@Param('coe_id') id: string) {
     return await this.chartDataService.candidateCard(id);
   }
+
+  @Get('candidates-office/:election_id')
+  async candidatesForOffice(@Param('election_id') id: string) {
+    return await this.chartDataService.candidateOffice(id);
+  }
 }
