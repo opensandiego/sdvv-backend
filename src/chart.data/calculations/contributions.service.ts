@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { TransactionEntity } from 'src/transactions/transactions.entity';
+import { CandidateEntity } from 'src/candidates/candidates.entity';
 
 @Injectable()
 export class ContributionsService {
