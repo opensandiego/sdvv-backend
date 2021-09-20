@@ -17,6 +17,7 @@ import { routes } from './routes';
 import { UpdateModule } from './task.update/update.module';
 import { ProcessModule } from './task.process/process.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
+import { CalModule } from './cal.format/cal.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ChartDataModule } from './chart.data/chart.data.module';
     UpdateModule,
     ProcessModule,
     RouterModule.register(routes),
+    CalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
