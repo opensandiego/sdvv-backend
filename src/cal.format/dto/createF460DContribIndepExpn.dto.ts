@@ -1,14 +1,8 @@
-import {
-  IsIn,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Length,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-import { Expose, Transform, Type } from 'class-transformer';
-// import * as currency from 'currency.js';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { CommonDto } from './common.dto';
+import { EXPNDto } from './expn.dto';
 
-export class CreateF460AContribIndepExpnDto {}
+export class CreateF460DContribIndepExpnDto extends IntersectionType(
+  CommonDto,
+  EXPNDto,
+) {}
