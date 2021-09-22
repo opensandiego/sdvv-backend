@@ -61,7 +61,7 @@ function dispatchJob(jobData): Observable<any> {
   }
 }
 
-function updateFromXLSXFile(year): Observable<any> {
+export function updateFromXLSXFile(year): Observable<any> {
   return eFileBulkDownloadService.getXLSXFile(year).pipe(
     catchError(() => {
       console.log('Error getting workbook from XLSX file');
@@ -75,7 +75,6 @@ function updateFromXLSXFile(year): Observable<any> {
       console.log('Error processing XLSX workbook');
       return 'error';
     }),
-
   );
 }
 
