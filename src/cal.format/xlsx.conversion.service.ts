@@ -4,20 +4,21 @@ import { validate } from 'class-validator';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require('xlsx');
 
-import { CreateF460AContribsDto } from './dto/createF460AContribs.dto';
+import { CreateF460DContribIndepExpnDto } from './dto/createF460DContribIndepExpn.dto';
 
 export class XLSXTransformService {
   async processWorkbook(workbook) {
     const sheetJSON = this.getObjectRows(workbook, 'F460-D-ContribIndepExpn');
 
     const sheetClasses = await this.getValidatedClasses(
-      sheetJSON.slice(0, 3),
-      CreateF460AContribsDto,
+      sheetJSON,
+      CreateF460DContribIndepExpnDto,
     );
-    console.log('sheetClasses', sheetClasses);
+
+    return sheetClasses;
   }
 
-  getObjectRows(workbook, sheetName: string) {
+  private getObjectRows(workbook, sheetName: string) {
     const worksheet = workbook.Sheets[sheetName];
     const headers = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     const lowerCaseHeaders = headers[0].map((header) => header.toLowerCase());
@@ -25,31 +26,38 @@ export class XLSXTransformService {
     return XLSX.utils.sheet_to_json(worksheet, {
       header: lowerCaseHeaders,
       range: 1,
+      defval: null,
     });
   }
 
   async getValidatedClasses(objects, dto) {
     const classes = plainToClass(dto, objects);
-    const count = await this.validateArray(classes);
+    // console.log('Converted to Class.');
 
-    if (count > 0) {
+    const errors = await this.validateArray(classes);
+    // console.log('Validation complete.');
+
+    if (errors.length > 0) {
       // console.log('validation failed. errors: ', errors);
-      console.log('validation failed. errors: ');
-      console.log('validation error count: ', count);
-      throw 'Error: class validation failed';
+      console.log('validation failed.');
+      console.log('validation error count: ', errors.length);
+      return [];
     } else {
       console.log('validation succeed');
-      return classes;
     }
+
+    // console.log('getValidatedClasses finished.');
+    return classes;
   }
 
-  async validateArray(items) {
-    let errorCount = 0;
+  private async validateArray(items) {
+    const errorArrays = [];
     for await (const item of items) {
-      validate(item).then((errors) => {
-        errorCount += errors.length;
-      });
+      const validationErrors = await validate(item);
+      if (validationErrors.length > 0) {
+        errorArrays.push(validationErrors);
+      }
     }
-    return errorCount;
+    return errorArrays;
   }
 }

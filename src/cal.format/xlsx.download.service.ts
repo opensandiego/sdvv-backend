@@ -10,7 +10,7 @@ export class XLSXDownloadService {
     'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url';
   // 'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url?year=2020&most_recent_only=false';
 
-  getXLSXFile(fileYear: number, mostRecent = false): Observable<any> {
+  public getXLSXFile(fileYear: number, mostRecent = false): Observable<any> {
     return of(fileYear).pipe(
       mergeMap((year) => this.getDownloadURL(year, mostRecent)),
       mergeMap((url) => this.downloadXLSXFile(url)),

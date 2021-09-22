@@ -1,15 +1,11 @@
 import {
-  IsIn,
-  IsNotEmpty,
   IsNumber,
   IsNumberString,
-  IsOptional,
   IsString,
   Length,
   MaxLength,
-  MinLength,
 } from 'class-validator';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class S497Dto {
   @IsString()
@@ -86,7 +82,6 @@ export class S497Dto {
   @IsNumberString()
   ctrib_date: string;
 
-  @IsNotEmpty()
   @Length(8, 8)
   @IsNumberString()
   date_thru: string;

@@ -1,15 +1,11 @@
 import {
-  IsIn,
-  IsNotEmpty,
   IsNumber,
   IsNumberString,
-  IsOptional,
   IsString,
   Length,
   MaxLength,
-  MinLength,
 } from 'class-validator';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class RCPTDto {
   @IsString()
@@ -80,13 +76,11 @@ export class RCPTDto {
   @MaxLength(1)
   tran_type: string;
 
-  // @IsNotEmpty()
   @IsString()
   @Length(8, 8)
   @IsNumberString()
   rcpt_date: string;
 
-  // @IsOptional()
   @IsString()
   @Length(8, 8)
   @IsNumberString()
@@ -104,7 +98,6 @@ export class RCPTDto {
   @MaxLength(90)
   ctrib_dscr: string;
 
-  // @IsOptional()
   @IsString()
   @MaxLength(9)
   cmte_id: string;

@@ -1,15 +1,12 @@
 import {
-  IsIn,
-  IsNotEmpty,
+  IsBoolean,
   IsNumber,
   IsNumberString,
-  IsOptional,
   IsString,
   Length,
   MaxLength,
-  MinLength,
 } from 'class-validator';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class EXPNDto {
   @IsString()
@@ -197,9 +194,8 @@ export class EXPNDto {
   // @MaxLength(1)
   supp_opp_cd: string;
 
-  @IsString()
-  @MaxLength(1)
-  memo_code: string;
+  @IsBoolean()
+  memo_code: boolean;
 
   @IsString()
   @MaxLength(20)
