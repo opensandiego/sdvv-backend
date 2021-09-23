@@ -1,26 +1,9 @@
-import {
-  IsIn,
-  IsNotEmpty,
-  IsNumber,
-  IsNumberString,
-  IsOptional,
-  IsString,
-  Length,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-import { Expose, Transform, Type } from 'class-transformer';
+import { IsNumberString, IsString } from 'class-validator';
 import { CommonDto } from './common.dto';
 import { IntersectionType } from '@nestjs/mapped-types';
 import { S496Dto } from './s496.dto';
 
 export class CreateS496DTO extends IntersectionType(CommonDto, S496Dto) {
-  @IsOptional()
-  from_date: string;
-
-  @IsOptional()
-  thru_date: string;
-
   @IsString()
   rpt_id_num: string;
 

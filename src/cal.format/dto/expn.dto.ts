@@ -194,6 +194,7 @@ export class EXPNDto {
   // @MaxLength(1)
   supp_opp_cd: string;
 
+  @Type(() => Boolean)
   @IsBoolean()
   memo_code: boolean;
 

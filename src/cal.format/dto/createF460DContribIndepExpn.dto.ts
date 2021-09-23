@@ -1,20 +1,33 @@
-import { IntersectionType, PickType } from '@nestjs/mapped-types';
+import { IntersectionType, PartialType, PickType } from '@nestjs/mapped-types';
+import { IsDefined, IsEmpty, IsNotEmpty, IsNumber } from 'class-validator';
 import { CommonDto } from './common.dto';
 import { EXPNDto } from './expn.dto';
 
-class CombinedF460D extends IntersectionType(CommonDto, EXPNDto) {}
+export class CreateF460DContribIndepExpnDto extends IntersectionType(
+  CommonDto,
+  EXPNDto,
+) {
+  @IsDefined()
+  cmtte_type: string;
 
-const requiredFields = [
-  'filer_id',
-  'filer_naml',
-  'report_num',
-  'e_filing_id',
-  'cmtte_type',
-  'rec_type',
-  'amount',
-] as const;
+  @IsDefined()
+  filer_id: string;
 
-export class CreateF460DContribIndepExpnDto extends PickType(
-  CombinedF460D,
-  requiredFields,
-) {}
+  @IsDefined()
+  filer_naml: string;
+
+  @IsDefined()
+  report_num: string;
+
+  @IsDefined()
+  e_filing_id: string;
+
+  @IsDefined()
+  rec_type: string;
+
+  @IsDefined()
+  tran_id: string;
+
+  @IsDefined()
+  amount: number;
+}

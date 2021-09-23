@@ -7,9 +7,7 @@ import {
 } from 'class-validator';
 
 export class CommonDto {
-  @IsString()
-  @MaxLength(7)
-  @IsNumberString()
+  @IsString() // this could be a number '1234567' or the text 'Pending'
   filer_id: string;
 
   @IsString()

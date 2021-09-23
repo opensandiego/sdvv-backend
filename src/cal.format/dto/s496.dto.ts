@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNumber,
   IsNumberString,
   IsString,
@@ -37,8 +38,8 @@ export class S496Dto {
   @MaxLength(90)
   expn_dscr: string;
 
-  @IsString()
-  @MaxLength(1)
+  @Type(() => Boolean)
+  @IsBoolean()
   memo_code: string;
 
   @IsString()
