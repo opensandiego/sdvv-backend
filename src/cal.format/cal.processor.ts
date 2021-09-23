@@ -14,6 +14,8 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { XLSXDownloadService } from './xlsx.download.service';
 import { XLSXTransformService } from './xlsx.conversion.service';
+import { CreateF460DContribIndepExpnDto } from './dto/createF460DContribIndepExpn.dto';
+import { CreateS496DTO } from './dto/createS496.dto';
 
 const httpService = new HttpService();
 const eFileBulkDownloadService = new XLSXDownloadService(httpService);
@@ -68,8 +70,21 @@ export function updateFromXLSXFile(year): Observable<any> {
       return 'error';
     }),
 
+    // map(
+    //   async (workbook) =>
+    //     await xlsxTransformService.processWorksheet(
+    //       'F460-D-ContribIndepExpn',
+    //       workbook,
+    //       CreateF460DContribIndepExpnDto,
+    //     ),
+    // ),
     map(
-      async (workbook) => await xlsxTransformService.processWorkbook(workbook),
+      async (workbook) =>
+        await xlsxTransformService.processWorksheet(
+          'S496',
+          workbook,
+          CreateS496DTO,
+        ),
     ),
     catchError(() => {
       console.log('Error processing XLSX workbook');

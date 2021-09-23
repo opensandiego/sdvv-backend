@@ -7,14 +7,10 @@ const XLSX = require('xlsx');
 import { CreateF460DContribIndepExpnDto } from './dto/createF460DContribIndepExpn.dto';
 
 export class XLSXTransformService {
-  async processWorkbook(workbook) {
-    const sheetJSON = this.getObjectRows(workbook, 'F460-D-ContribIndepExpn');
+  async processWorksheet(worksheetName: string, workbook, dtoClass) {
+    const sheetJSON = this.getObjectRows(workbook, worksheetName);
 
-    const sheetClasses = await this.getValidatedClasses(
-      sheetJSON,
-      CreateF460DContribIndepExpnDto,
-    );
-
+    const sheetClasses = await this.getValidatedClasses(sheetJSON, dtoClass);
     return sheetClasses;
   }
 
@@ -53,7 +49,9 @@ export class XLSXTransformService {
   private async validateArray(items) {
     const errorArrays = [];
     for await (const item of items) {
-      const validationErrors = await validate(item);
+      const validationErrors = await validate(item, {
+        skipMissingProperties: true,
+      });
       if (validationErrors.length > 0) {
         errorArrays.push(validationErrors);
       }
