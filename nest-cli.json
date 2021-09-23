@@ -1,4 +1,30 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/sdvv-backend-nest/src",
+  "monorepo": true,
+  "root": "apps/sdvv-backend-nest",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
+  },
+  "projects": {
+    "sdvv-backend-nest": {
+      "type": "application",
+      "root": "apps/sdvv-backend-nest",
+      "entryFile": "main",
+      "sourceRoot": "apps/sdvv-backend-nest/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
+      }
+    },
+    "efile-standalone": {
+      "type": "application",
+      "root": "apps/efile-standalone",
+      "entryFile": "main",
+      "sourceRoot": "apps/efile-standalone/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/efile-standalone/tsconfig.app.json"
+      }
+    }
+  }
 }
