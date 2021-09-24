@@ -36,7 +36,7 @@ export class F460DEntity {
   @Column()
   thru_date: string;
 
-  @Column()
+  @Column({ nullable: true })
   elect_date: string;
 
   // From expn.dto
@@ -49,130 +49,130 @@ export class F460DEntity {
   @PrimaryColumn()
   tran_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   entity_cd: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_naml: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_namf: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_namt: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_nams: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_adr1: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_adr2: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_city: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_st: string;
 
-  @Column()
+  @Column({ nullable: true })
   payee_zip4: string;
 
   @Column()
   expn_date: string;
 
-  @Column()
+  @Column({ type: 'decimal' })
   amount: number;
 
-  @Column()
+  @Column({ type: 'decimal' })
   cum_ytd: number;
 
-  @Column()
+  @Column({ nullable: true })
   expn_code: string;
 
-  @Column()
+  @Column({ nullable: true })
   expn_dscr: string;
 
-  @Column()
+  @Column({ nullable: true })
   agent_naml: string;
 
-  @Column()
+  @Column({ nullable: true })
   agent_namf: string;
 
-  @Column()
+  @Column({ nullable: true })
   agent_namt: string;
 
-  @Column()
+  @Column({ nullable: true })
   agent_nams: string;
 
-  @Column()
+  @Column({ nullable: true })
   cmte_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_naml: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_namf: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_namt: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_nams: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_adr1: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_adr2: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_city: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_st: string;
 
-  @Column()
+  @Column({ nullable: true })
   tres_zip4: string;
 
-  @Column()
+  @Column({ nullable: true })
   cand_naml: string;
 
-  @Column()
+  @Column({ nullable: true })
   cand_namf: string;
 
-  @Column()
+  @Column({ nullable: true })
   cand_namt: string;
 
-  @Column()
+  @Column({ nullable: true })
   cand_nams: string;
 
-  @Column()
+  @Column({ nullable: true })
   office_cd: string;
 
-  @Column()
+  @Column({ nullable: true })
   office_dscr: string;
 
-  @Column()
+  @Column({ nullable: true })
   juris_cd: string;
 
-  @Column()
+  @Column({ nullable: true })
   juris_dscr: string;
 
-  @Column()
+  @Column({ nullable: true })
   dist_no: string;
 
-  @Column()
+  @Column({ nullable: true })
   off_s_h_cd: string;
 
-  @Column()
+  @Column({ nullable: true })
   bal_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   bal_num: string;
 
-  @Column()
+  @Column({ nullable: true })
   bal_juris: string;
 
   @Column()
@@ -181,19 +181,19 @@ export class F460DEntity {
   @Column()
   memo_code: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   memo_refno: string;
 
-  @Column()
+  @Column({ nullable: true })
   bakref_tid: string;
 
-  @Column()
+  @Column({ nullable: true })
   g_from_e_f: string;
 
-  @Column()
+  @Column({ nullable: true })
   xref_schnm: string;
 
-  @Column()
+  @Column({ nullable: true })
   xref_match: string;
 
   // Added fields that are not in the XLSX file.
