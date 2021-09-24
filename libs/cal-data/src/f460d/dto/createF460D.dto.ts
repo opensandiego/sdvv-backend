@@ -1,7 +1,7 @@
 import { IntersectionType } from '@nestjs/mapped-types';
 import { IsDefined } from 'class-validator';
-import { CommonDto } from '../../shared-dto/common.dto';
-import { EXPNDto } from '../../shared-dto/expn.dto';
+import { CommonDto } from '../../shared/dto/common.dto';
+import { EXPNDto } from '../../shared/dto/expn.dto';
 
 export class CreateF460DDto extends IntersectionType(CommonDto, EXPNDto) {
   @IsDefined()
