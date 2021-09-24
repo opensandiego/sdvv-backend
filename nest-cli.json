@@ -25,6 +25,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/efile-standalone/tsconfig.app.json"
       }
+    },
+    "cal-data": {
+      "type": "library",
+      "root": "libs/cal-data",
+      "entryFile": "index",
+      "sourceRoot": "libs/cal-data/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cal-data/tsconfig.lib.json"
+      }
     }
   }
 }

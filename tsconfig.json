@@ -12,6 +12,13 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "paths": {}
+    "paths": {
+      "@app/cal-data": [
+        "libs/cal-data/src"
+      ],
+      "@app/cal-data/*": [
+        "libs/cal-data/src/*"
+      ]
+    }
   }
 }

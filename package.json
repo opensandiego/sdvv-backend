@@ -80,7 +80,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/cal-data(|/.*)$": "<rootDir>/libs/cal-data/src/$1"
+    }
   }
 }
