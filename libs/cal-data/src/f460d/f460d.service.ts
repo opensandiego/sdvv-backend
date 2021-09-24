@@ -20,7 +20,7 @@ export class F460DService {
     return await this.f460dRepository.find();
   }
 
-  async createBulkF460D(createF460DDto: CreateF460DDto[]) {
+  async createBulkF460D(createF460DDto: CreateF460DDto[]): Promise<void> {
     await this.sharedService.createBulkData(createF460DDto, F460DEntity);
   }
 }

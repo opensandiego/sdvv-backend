@@ -6,7 +6,11 @@ const XLSX = require('xlsx');
 
 @Injectable()
 export class XLSXTransformService {
-  async processWorksheet(worksheetName: string, workbook, dtoClass) {
+  async processWorksheet(
+    worksheetName: string,
+    workbook,
+    dtoClass,
+  ): Promise<typeof dtoClass[]> {
     const sheetJSON = this.getObjectRows(workbook, worksheetName);
 
     const sheetClasses = await this.getValidatedClasses(sheetJSON, dtoClass);
@@ -25,7 +29,7 @@ export class XLSXTransformService {
     });
   }
 
-  async getValidatedClasses(objects, dto) {
+  async getValidatedClasses(objects, dto): Promise<typeof dto[]> {
     const classes = plainToClass(dto, objects);
     // console.log('Converted to Class.');
 
