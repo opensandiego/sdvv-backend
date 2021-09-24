@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from 'apps/sdvv-backend-nest/src/config/database.config';
+import { TypeOrmConfigService } from '../src/config/database.config';
 import { CalDataService } from './cal-data.service';
-import { F460DModule } from './f460d/f460d.module';
 
 @Module({
   imports: [
@@ -11,9 +10,8 @@ import { F460DModule } from './f460d/f460d.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    F460DModule,
   ],
   providers: [CalDataService],
-  exports: [CalDataService, F460DModule],
+  exports: [CalDataService],
 })
 export class CalDataModule {}
