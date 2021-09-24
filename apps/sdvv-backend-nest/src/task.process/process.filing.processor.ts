@@ -1,6 +1,6 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
-import { TransactionEntity } from 'src/transactions/transactions.entity';
+import { TransactionEntity } from '../transactions/transactions.entity';
 import { Connection } from 'typeorm';
 import { ProcessFilingService } from './process.filing.service';
 

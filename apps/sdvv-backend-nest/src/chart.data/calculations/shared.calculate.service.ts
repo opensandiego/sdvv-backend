@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateEntity } from 'src/candidates/candidates.entity';
+import { CandidateEntity } from '../../candidates/candidates.entity';
 import { Connection } from 'typeorm';
 
 @Injectable()

@@ -2,7 +2,7 @@ import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Connection } from 'typeorm';
 import { ProcessCandidateCommitteeService } from './process.committee.service';
-import { CandidateEntity } from 'src/candidates/candidates.entity';
+import { CandidateEntity } from '../candidates/candidates.entity';
 
 @Processor('process-committee')
 export class ProcessCommitteeService {

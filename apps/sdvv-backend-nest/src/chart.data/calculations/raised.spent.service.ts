@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { TransactionEntity } from 'src/transactions/transactions.entity';
+import { TransactionEntity } from '../../transactions/transactions.entity';
 
 @Injectable()
 export class RaisedSpentService {
