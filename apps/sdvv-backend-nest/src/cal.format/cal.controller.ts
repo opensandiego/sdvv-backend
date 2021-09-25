@@ -8,7 +8,7 @@ export class CalController {
 
   @Post('update/:year')
   async updateYear(@Param('year') year: number) {
-    console.log('update/:year');
+    console.log(`update/:year/${year}`);
     await this.tasksQueue.add({
       update: 'xlsx',
       year: year,
