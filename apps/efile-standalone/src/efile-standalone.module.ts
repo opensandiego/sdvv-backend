@@ -5,10 +5,12 @@ import { CalDataModule } from '@app/cal-data';
 import { EFileStandaloneService } from './efile-standalone.service';
 import { XLSXModule } from './xlsx/xlsx.module';
 import { F460DModule } from '@app/cal-data/f460d/f460d.module';
+import { ZipCodeCSVModule } from './zip.code.csv/zip.code.csv.module';
 
 @Module({
   imports: [
     XLSXModule,
+    ZipCodeCSVModule,
     CalDataModule,
     F460DModule,
     BullModule.forRoot({
