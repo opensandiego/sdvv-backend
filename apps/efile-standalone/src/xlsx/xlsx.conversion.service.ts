@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ClassValidationService } from '../utils/class.validation.service';
+import { ClassValidationService } from '../utils/utils.class.validation.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require('xlsx');
 
