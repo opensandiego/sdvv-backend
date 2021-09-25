@@ -175,7 +175,7 @@ export class F460DEntity {
   @Column({ nullable: true })
   bal_juris: string;
 
-  @Column()
+  @Column({ nullable: true })
   supp_opp_cd: string;
 
   @Column()
