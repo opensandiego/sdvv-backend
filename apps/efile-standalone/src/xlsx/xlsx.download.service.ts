@@ -10,7 +10,6 @@ export class XLSXDownloadService {
 
   private eFileBulkExportUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url';
-  // 'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url?year=2020&most_recent_only=false';
 
   public getXLSXFile(fileYear: number, mostRecent = false): Observable<any> {
     return of(fileYear).pipe(
@@ -26,7 +25,8 @@ export class XLSXDownloadService {
     const requestUrl = `${this.eFileBulkExportUrl}?year=${year}&most_recent_only=${mostRecent}`;
 
     return this.httpService.get(requestUrl).pipe(
-      map((response) => response.data),
+      map((axiosResponse) => axiosResponse.data),
+      map((eFileResponse) => eFileResponse.data),
       catchError((error) => {
         console.log('Error getting location of xlsx file from eFile');
         throw error;
@@ -35,9 +35,6 @@ export class XLSXDownloadService {
   }
 
   private downloadXLSXFile(requestUrl: string): Observable<any> {
-    requestUrl =
-      'https://efile-sd-public.s3.amazonaws.com/export/City_of_San_Diego_CAL_2020_all.xlsx';
-
     return of(requestUrl).pipe(
       mergeMap((url) => {
         return this.httpService.get(url, {

@@ -1,13 +1,13 @@
+import { from, mergeMap, of } from 'rxjs';
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
-import { XLSXDownloadService } from './xlsx.download.service';
-import { from, mergeMap, of } from 'rxjs';
-import { XLSXTransformService } from './xlsx.conversion.service';
-import { CreateF460DDto } from '@app/cal-data/f460d/dto/createF460D.dto';
 import { F460DService } from '@app/cal-data/f460d/f460d.service';
+import { CreateF460DDto } from '@app/cal-data/f460d/dto/createF460D.dto';
+import { XLSXDownloadService } from './xlsx.download.service';
+import { XLSXTransformService } from './xlsx.conversion.service';
 
 @Processor('cal-tasks')
-export class EFileProcessor {
+export class XLSXProcessor {
   constructor(
     private xlsxDownloadService: XLSXDownloadService,
     private xlsxTransformService: XLSXTransformService,

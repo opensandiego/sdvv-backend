@@ -3,13 +3,12 @@ import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
 import { CalDataModule } from '@app/cal-data';
 import { EFileStandaloneService } from './efile-standalone.service';
-import { EFileProcessor } from './efile.processor';
-import { XLSXDownloadService } from './xlsx.download.service';
-import { XLSXTransformService } from './xlsx.conversion.service';
+import { XLSXModule } from './xlsx/xlsx.module';
 import { F460DModule } from '@app/cal-data/f460d/f460d.module';
 
 @Module({
   imports: [
+    XLSXModule,
     CalDataModule,
     F460DModule,
     BullModule.forRoot({
@@ -19,16 +18,9 @@ import { F460DModule } from '@app/cal-data/f460d/f460d.module';
         port: 6379,
       },
     }),
-    BullModule.registerQueue({
-      name: 'cal-tasks', // OR 'eFile-tasks
-    }),
     HttpModule,
   ],
-  providers: [
-    EFileStandaloneService,
-    EFileProcessor,
-    XLSXDownloadService,
-    XLSXTransformService,
-  ],
+  providers: [EFileStandaloneService],
+  exports: [],
 })
 export class EFileStandaloneModule {}
