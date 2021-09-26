@@ -27,13 +27,13 @@
         "tsConfigPath": "apps/standalone-worker/tsconfig.app.json"
       }
     },
-    "cal-data": {
+    "sdvv-database": {
       "type": "library",
-      "root": "libs/cal-data",
+      "root": "libs/sdvv-database",
       "entryFile": "index",
-      "sourceRoot": "libs/cal-data/src",
+      "sourceRoot": "libs/sdvv-database/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/cal-data/tsconfig.lib.json"
+        "tsConfigPath": "libs/sdvv-database/tsconfig.lib.json"
       }
     }
   }

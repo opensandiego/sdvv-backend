@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
-import { DatabaseModule } from '@app/cal-data';
+import { DatabaseModule } from '@app/sdvv-database';
 import { StandaloneWorkerService } from './standalone-worker.service';
 import { TransactionsXLSXModule } from './transactions.xlsx/transactions.xlsx.module';
-import { F460DModule } from '@app/cal-data/f460d/f460d.module';
+import { F460DModule } from '@app/sdvv-database/f460d/f460d.module';
 import { ZipCodeCSVModule } from './zip.code.csv/zip.code.csv.module';
 import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
 

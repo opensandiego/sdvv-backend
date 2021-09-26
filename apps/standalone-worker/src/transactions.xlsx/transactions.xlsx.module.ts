@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { DatabaseModule } from '@app/cal-data';
-import { F460DModule } from '@app/cal-data/f460d/f460d.module';
+import { DatabaseModule } from '@app/sdvv-database';
+import { F460DModule } from '@app/sdvv-database/f460d/f460d.module';
 import { UtilsModule } from '../utils/utils.module';
 import { TransactionsXLSXService } from './transactions.xlsx.service';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';

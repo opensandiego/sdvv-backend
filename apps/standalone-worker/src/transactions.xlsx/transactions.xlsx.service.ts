@@ -1,6 +1,6 @@
 import { firstValueFrom } from 'rxjs';
-import { F460DService } from '@app/cal-data/f460d/f460d.service';
-import { CreateF460DDto } from '@app/cal-data/f460d/dto/createF460D.dto';
+import { F460DService } from '@app/sdvv-database/f460d/f460d.service';
+import { CreateF460DDto } from '@app/sdvv-database/f460d/dto/createF460D.dto';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 import { UtilsService } from '../utils/utils.service';
 

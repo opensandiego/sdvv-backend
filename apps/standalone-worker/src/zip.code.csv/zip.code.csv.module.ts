@@ -1,7 +1,7 @@
-import { ZipCodesModule } from '@app/cal-data/zipCodes/zipCodes.module';
 import { Module } from '@nestjs/common';
 import { UtilsModule } from '../utils/utils.module';
 import { ZipCodeCSVService } from './zip.code.csv.service';
+import { ZipCodesModule } from '@app/sdvv-database/zipCodes/zipCodes.module';
 
 @Module({
   imports: [UtilsModule, ZipCodesModule],

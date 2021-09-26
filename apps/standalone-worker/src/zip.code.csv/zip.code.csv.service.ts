@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateZipCodeDto } from '@app/cal-data/zipCodes/dto/createZipCode.dto';
-import { ZipCodesService } from '@app/cal-data/zipCodes/zipCodes.service';
+import { CreateZipCodeDto } from '@app/sdvv-database/zipCodes/dto/createZipCode.dto';
+import { ZipCodesService } from '@app/sdvv-database/zipCodes/zipCodes.service';
 import { UtilsService } from '../utils/utils.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require('xlsx');

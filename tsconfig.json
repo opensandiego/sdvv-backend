@@ -13,11 +13,11 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
-      "@app/cal-data": [
-        "libs/cal-data/src"
+      "@app/sdvv-database": [
+        "libs/sdvv-database/src"
       ],
-      "@app/cal-data/*": [
-        "libs/cal-data/src/*"
+      "@app/sdvv-database/*": [
+        "libs/sdvv-database/src/*"
       ]
     }
   }

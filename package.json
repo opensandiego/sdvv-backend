@@ -85,7 +85,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/cal-data(|/.*)$": "<rootDir>/libs/cal-data/src/$1"
+      "^@app/sdvv-database(|/.*)$": "<rootDir>/libs/sdvv-database/src/$1"
     }
   }
 }
