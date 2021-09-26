@@ -3,15 +3,15 @@ import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { F460DService } from '@app/cal-data/f460d/f460d.service';
 import { CreateF460DDto } from '@app/cal-data/f460d/dto/createF460D.dto';
-import { XLSXDownloadService } from './xlsx.download.service';
-import { XLSXTransformService } from './xlsx.conversion.service';
+import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
+import { UtilsService } from '../utils/utils.service';
 
 @Processor('cal-tasks')
-export class XLSXProcessor {
+export class TransactionsXLSXProcessor {
   constructor(
-    private xlsxDownloadService: XLSXDownloadService,
-    private xlsxTransformService: XLSXTransformService,
+    private transactionsXLSXDownloadService: TransactionsXLSXDownloadService,
     private f460DService: F460DService,
+    private utilsService: UtilsService,
   ) {}
 
   @Process()
@@ -26,10 +26,12 @@ export class XLSXProcessor {
 
   private processJob(jobInput) {
     return of(jobInput).pipe(
-      mergeMap((year) => this.xlsxDownloadService.getXLSXFile(year)),
+      mergeMap((year) =>
+        this.transactionsXLSXDownloadService.getXLSXFile(year),
+      ),
       mergeMap((workbook) =>
         from(
-          this.xlsxTransformService.processWorksheet(
+          this.utilsService.getValidatedClass(
             'F460-D-ContribIndepExpn',
             workbook,
             CreateF460DDto,
@@ -41,7 +43,7 @@ export class XLSXProcessor {
       ),
       // map(
       //   async (workbook) =>
-      //     await this.xlsxTransformService.processWorksheet(
+      //     await this.utilsService.getValidatedClass(
       //       'S496',
       //       workbook,
       //       CreateS496DTO,

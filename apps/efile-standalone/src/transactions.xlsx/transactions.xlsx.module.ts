@@ -3,10 +3,9 @@ import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
 import { CalDataModule } from '@app/cal-data';
 import { F460DModule } from '@app/cal-data/f460d/f460d.module';
-import { XLSXProcessor } from './xlsx.processor';
-import { XLSXDownloadService } from './xlsx.download.service';
-import { XLSXTransformService } from './xlsx.conversion.service';
 import { UtilsModule } from '../utils/utils.module';
+import { TransactionsXLSXProcessor } from './transactions.xlsx.processor';
+import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 
 @Module({
   imports: [
@@ -18,6 +17,6 @@ import { UtilsModule } from '../utils/utils.module';
     }),
     HttpModule,
   ],
-  providers: [XLSXProcessor, XLSXDownloadService, XLSXTransformService],
+  providers: [TransactionsXLSXProcessor, TransactionsXLSXDownloadService],
 })
-export class XLSXModule {}
+export class TransactionsXLSXModule {}

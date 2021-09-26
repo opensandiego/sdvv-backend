@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, Observable, of } from 'rxjs';
 const XLSX = require('xlsx');
 
 @Injectable()
-export class XLSXDownloadService {
+export class TransactionsXLSXDownloadService {
   constructor(private httpService: HttpService) {}
 
   private eFileBulkExportUrl =
