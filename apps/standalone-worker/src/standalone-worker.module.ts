@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
-import { CalDataModule } from '@app/cal-data';
+import { DatabaseModule } from '@app/cal-data';
 import { StandaloneWorkerService } from './standalone-worker.service';
 import { TransactionsXLSXModule } from './transactions.xlsx/transactions.xlsx.module';
 import { F460DModule } from '@app/cal-data/f460d/f460d.module';
@@ -13,7 +13,7 @@ import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
     QueueDispatchModule,
     TransactionsXLSXModule,
     ZipCodeCSVModule,
-    CalDataModule,
+    DatabaseModule,
     F460DModule,
     BullModule.forRoot({
       // configure this for production
