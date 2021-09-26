@@ -18,13 +18,13 @@
         "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
       }
     },
-    "efile-standalone": {
+    "standalone-worker": {
       "type": "application",
-      "root": "apps/efile-standalone",
+      "root": "apps/standalone-worker",
       "entryFile": "main",
-      "sourceRoot": "apps/efile-standalone/src",
+      "sourceRoot": "apps/standalone-worker/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/efile-standalone/tsconfig.app.json"
+        "tsConfigPath": "apps/standalone-worker/tsconfig.app.json"
       }
     },
     "cal-data": {

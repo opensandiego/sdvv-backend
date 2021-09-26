@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { EfileStandaloneModule } from './../src/EfileStandalone.module';
+import { EFileStandaloneModule } from '../src/efile-standalone.module';
 
 describe('EfileStandaloneController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [EfileStandaloneModule],
+      imports: [EFileStandaloneModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
