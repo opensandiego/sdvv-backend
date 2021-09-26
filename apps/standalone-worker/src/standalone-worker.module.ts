@@ -6,9 +6,11 @@ import { StandaloneWorkerService } from './standalone-worker.service';
 import { TransactionsXLSXModule } from './transactions.xlsx/transactions.xlsx.module';
 import { F460DModule } from '@app/cal-data/f460d/f460d.module';
 import { ZipCodeCSVModule } from './zip.code.csv/zip.code.csv.module';
+import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
 
 @Module({
   imports: [
+    QueueDispatchModule,
     TransactionsXLSXModule,
     ZipCodeCSVModule,
     CalDataModule,
