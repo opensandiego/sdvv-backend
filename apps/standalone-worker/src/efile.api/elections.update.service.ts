@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ClassValidationService } from '../utils/utils.class.validation.service';
-import { CreateElectionDto } from '@app/efile-api-data/elections/dto/createElection.dto';
-import { ElectionEntity } from '@app/efile-api-data/elections/elections.entity';
+import { CreateElectionDto } from '@app/efile-api-data/tables/dto/createElection.dto';
+import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.entity';
 import { SharedService } from '@app/sdvv-database/shared/shared.service';
 
 @Injectable()

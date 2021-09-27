@@ -2,13 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from '../config/database.config';
 import { EfileApiDataService } from './efile-api-data.service';
-import { ElectionsModule } from './elections/elections.module';
-import { CandidatesModule } from './candidates/candidates.module';
+import { TablesModule } from './tables/tables.module';
 
 @Module({
   imports: [
-    ElectionsModule,
-    CandidatesModule,
+    TablesModule,
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),

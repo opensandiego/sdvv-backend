@@ -3,8 +3,8 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { SharedService } from '@app/sdvv-database/shared/shared.service';
 import { ClassValidationService } from '../utils/utils.class.validation.service';
-import { CreateCandidateDto } from '@app/efile-api-data/candidates/dto/createCandidate.dto';
-import { CandidateEntity } from '@app/efile-api-data/candidates/candidates.entity';
+import { CreateCandidateDto } from '@app/efile-api-data/tables/dto/createCandidate.dto';
+import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
 
 @Injectable()
 export class CandidatesUpdateService {
