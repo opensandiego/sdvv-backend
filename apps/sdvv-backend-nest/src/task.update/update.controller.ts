@@ -14,6 +14,17 @@ export class UpdateController {
     await this.workerQueue.add('update-elections');
   }
 
+  @Post('transactions/xlsx/:year/:sheet/')
+  async transactionsXLSX(
+    @Param('year') year: number,
+    @Param('sheet') sheet: string,
+  ) {
+    await this.workerQueue.add('transactions-xlsx', {
+      year: year,
+      sheet: sheet,
+    });
+  }
+
   @Post('committees')
   async updateCommittees() {
     await this.tasksQueue.add({
