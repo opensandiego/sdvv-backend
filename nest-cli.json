@@ -35,6 +35,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/sdvv-database/tsconfig.lib.json"
       }
+    },
+    "efile-api-data": {
+      "type": "library",
+      "root": "libs/efile-api-data",
+      "entryFile": "index",
+      "sourceRoot": "libs/efile-api-data/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/efile-api-data/tsconfig.lib.json"
+      }
     }
   }
 }

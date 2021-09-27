@@ -18,6 +18,12 @@
       ],
       "@app/sdvv-database/*": [
         "libs/sdvv-database/src/*"
+      ],
+      "@app/efile-api-data": [
+        "libs/efile-api-data/src"
+      ],
+      "@app/efile-api-data/*": [
+        "libs/efile-api-data/src/*"
       ]
     }
   }
