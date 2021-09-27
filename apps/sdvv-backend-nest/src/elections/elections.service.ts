@@ -20,25 +20,25 @@ export class ElectionsService {
     return this.electionsRepository.findOne(id);
   }
 
-  async create(election: CreateElectionDto) {
-    return await this.electionsRepository.save(election);
-  }
+  // async create(election: CreateElectionDto) {
+  //   return await this.electionsRepository.save(election);
+  // }
 
-  async createBulk(elections: CreateElectionDto[]) {
-    return await this.electionsRepository.save(elections);
-  }
+  // async createBulk(elections: CreateElectionDto[]) {
+  //   return await this.electionsRepository.save(elections);
+  // }
 
-  async update(
-    id: string,
-    election: UpdateElectionDto,
-  ): Promise<ElectionEntity> {
-    return await this.electionsRepository.save({
-      election_id: id,
-      ...election,
-    });
-  }
+  // async update(
+  //   id: string,
+  //   election: UpdateElectionDto,
+  // ): Promise<ElectionEntity> {
+  //   return await this.electionsRepository.save({
+  //     election_id: id,
+  //     ...election,
+  //   });
+  // }
 
-  async remove(id: string): Promise<void> {
-    await this.electionsRepository.delete(id);
-  }
+  // async remove(id: string): Promise<void> {
+  //   await this.electionsRepository.delete(id);
+  // }
 }

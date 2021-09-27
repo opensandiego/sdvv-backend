@@ -8,7 +8,10 @@ import { UpdateController } from './update.controller';
   imports: [
     BullModule.registerQueue({
       name: 'update-tasks',
-      processors: [join(__dirname, 'update.processor.js')],
+      // processors: [join(__dirname, 'update.processor.js')],
+    }),
+    BullModule.registerQueue({
+      name: 'worker',
     }),
     HttpModule,
   ],

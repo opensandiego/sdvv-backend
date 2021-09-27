@@ -45,10 +45,10 @@ export default function processJobs(job: Job, doneCallback: DoneCallback) {
 
 function dispatchJob(jobData): Observable<any> {
   if (jobData['update'] === 'elections') {
-    console.log(`Elections update: started`);
-    return updateElections().pipe(
-      map(() => console.log(`Elections update: complete`)),
-    );
+    // console.log(`Elections update: started`);
+    // return updateElections().pipe(
+    //   map(() => console.log(`Elections update: complete`)),
+    // );
   } else if (jobData['update'] === 'committees') {
     console.log(`Committees update: started`);
     return updateCommittees().pipe(
@@ -76,18 +76,18 @@ function dispatchJob(jobData): Observable<any> {
   }
 }
 
-function updateElections() {
-  return eFileDownloadService.downloadElections().pipe(
-    mergeMap((elections) => {
-      return httpService.post(`${host}/elections/bulk`, elections);
-    }),
-    map((response) => response.data),
-    catchError((error) => {
-      console.log('Error updating elections');
-      throw error;
-    }),
-  );
-}
+// function updateElections() {
+//   return eFileDownloadService.downloadElections().pipe(
+//     mergeMap((elections) => {
+//       return httpService.post(`${host}/elections/bulk`, elections);
+//     }),
+//     map((response) => response.data),
+//     catchError((error) => {
+//       console.log('Error updating elections');
+//       throw error;
+//     }),
+//   );
+// }
 
 function updateCandidates(electionID: string) {
   return eFileDownloadService.downloadCandidates(electionID).pipe(

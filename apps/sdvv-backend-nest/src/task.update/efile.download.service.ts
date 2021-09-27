@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { catchError, map, Observable } from 'rxjs';
-import { EFileElectionResponse, Election } from './models/election.interface';
+// import { EFileElectionResponse, Election } from './models/election.interface';
 import {
   Committee,
   EFileCommitteeResponse,
@@ -18,8 +18,8 @@ import { EFileTransactionResponse } from './models/transaction.interface';
 export class EFileDownloadService {
   constructor(private httpService: HttpService) {}
 
-  private eFileElectionUrl =
-    'https://efile.sandiego.gov/api/v1/public/campaign-search/election/list';
+  // private eFileElectionUrl =
+  //   'https://efile.sandiego.gov/api/v1/public/campaign-search/election/list';
   private eFileCommitteeUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-search/by-name';
   private eFileCandidateUrl =
@@ -29,16 +29,16 @@ export class EFileDownloadService {
   private eFileTransactionUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-search/advanced';
 
-  downloadElections(): Observable<Election[]> {
-    return this.httpService.get(this.eFileElectionUrl).pipe(
-      catchError((error) => {
-        console.log('Error downloading elections from eFile', error);
-        throw new HttpException(error.response.data, error.response.status);
-      }),
-      map((response) => response.data),
-      map((response: EFileElectionResponse) => response.data),
-    );
-  }
+  // downloadElections(): Observable<Election[]> {
+  //   return this.httpService.get(this.eFileElectionUrl).pipe(
+  //     catchError((error) => {
+  //       console.log('Error downloading elections from eFile', error);
+  //       throw new HttpException(error.response.data, error.response.status);
+  //     }),
+  //     map((response) => response.data),
+  //     map((response: EFileElectionResponse) => response.data),
+  //   );
+  // }
 
   downloadCommittees(): Observable<Committee[]> {
     const url = `${this.eFileCommitteeUrl}?candidate_name=`;

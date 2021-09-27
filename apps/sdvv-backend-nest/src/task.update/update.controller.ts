@@ -6,13 +6,12 @@ import { DateRangeDto } from './dto/dateRange.dto';
 export class UpdateController {
   constructor(
     @InjectQueue('update-tasks') private readonly tasksQueue: Queue,
+    @InjectQueue('worker') private readonly workerQueue: Queue,
   ) {}
 
   @Post('elections')
   async updateElections() {
-    await this.tasksQueue.add({
-      update: 'elections',
-    });
+    await this.workerQueue.add('update-elections');
   }
 
   @Post('committees')
