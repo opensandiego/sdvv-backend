@@ -28,30 +28,30 @@ export class FilingsController {
     return await this.filingsService.findOne(id);
   }
 
-  @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async create(@Body() filing: CreateFilingDto) {
-    return await this.filingsService.create(filing);
-  }
+  // @Post()
+  // @UsePipes(new ValidationPipe({ transform: true }))
+  // async create(@Body() filing: CreateFilingDto) {
+  //   return await this.filingsService.create(filing);
+  // }
 
-  @Post('bulk')
-  async createBulk(
-    @Body(new ParseArrayPipe({ items: CreateFilingDto }))
-    createFilingDto: CreateFilingDto[],
-  ) {
-    return await this.filingsService.createBulk(createFilingDto);
-  }
+  // @Post('bulk')
+  // async createBulk(
+  //   @Body(new ParseArrayPipe({ items: CreateFilingDto }))
+  //   createFilingDto: CreateFilingDto[],
+  // ) {
+  //   return await this.filingsService.createBulk(createFilingDto);
+  // }
 
-  @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateFilingDto: UpdateFilingDto,
-  ) {
-    return await this.filingsService.update(id, updateFilingDto);
-  }
+  // @Put(':id')
+  // async update(
+  //   @Param('id') id: string,
+  //   @Body() updateFilingDto: UpdateFilingDto,
+  // ) {
+  //   return await this.filingsService.update(id, updateFilingDto);
+  // }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.filingsService.remove(id);
-  }
+  // @Delete(':id')
+  // async remove(@Param('id') id: string) {
+  //   return await this.filingsService.remove(id);
+  // }
 }

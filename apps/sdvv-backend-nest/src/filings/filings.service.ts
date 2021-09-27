@@ -20,25 +20,25 @@ export class FilingsService {
     return this.filingRepository.findOne(id);
   }
 
-  async create(createFilingDto: CreateFilingDto) {
-    return await this.filingRepository.save(createFilingDto);
-  }
+  // async create(createFilingDto: CreateFilingDto) {
+  //   return await this.filingRepository.save(createFilingDto);
+  // }
 
-  async createBulk(createFilingDto: CreateFilingDto[]) {
-    return await this.filingRepository.save(createFilingDto);
-  }
+  // async createBulk(createFilingDto: CreateFilingDto[]) {
+  //   return await this.filingRepository.save(createFilingDto);
+  // }
 
-  async update(
-    id: string,
-    updateFilingDto: UpdateFilingDto,
-  ): Promise<FilingEntity> {
-    return await this.filingRepository.save({
-      filing_id: id,
-      ...updateFilingDto,
-    });
-  }
+  // async update(
+  //   id: string,
+  //   updateFilingDto: UpdateFilingDto,
+  // ): Promise<FilingEntity> {
+  //   return await this.filingRepository.save({
+  //     filing_id: id,
+  //     ...updateFilingDto,
+  //   });
+  // }
 
-  async remove(id: string): Promise<void> {
-    await this.filingRepository.delete(id);
-  }
+  // async remove(id: string): Promise<void> {
+  //   await this.filingRepository.delete(id);
+  // }
 }
