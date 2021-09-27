@@ -23,10 +23,7 @@ export class UpdateController {
 
   @Post('candidates/:election_id')
   async updateCandidates(@Param('election_id') electionID: string) {
-    await this.tasksQueue.add({
-      update: 'candidates',
-      id: electionID,
-    });
+    await this.workerQueue.add('update-candidates', { id: electionID });
   }
 
   @Post('filings')

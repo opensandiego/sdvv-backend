@@ -9,8 +9,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { CandidatesService } from './candidates.service';
-import { CreateCandidateDto } from './dto/createCandidate.dto';
-import { UpdateCandidateDto } from './dto/updateCandidate.dto';
+// import { CreateCandidateDto } from './dto/createCandidate.dto';
+// import { UpdateCandidateDto } from './dto/updateCandidate.dto';
 
 @Controller('candidates')
 export class CandidatesController {
@@ -26,26 +26,26 @@ export class CandidatesController {
     return await this.candidatesService.findOne(id);
   }
 
-  @Post()
-  async create(@Body() candidate: CreateCandidateDto) {
-    return await this.candidatesService.create(candidate);
-  }
+  // @Post()
+  // async create(@Body() candidate: CreateCandidateDto) {
+  //   return await this.candidatesService.create(candidate);
+  // }
 
-  @Post('bulk')
-  async createBulk(
-    @Body(new ParseArrayPipe({ items: CreateCandidateDto }))
-    createCandidateDto: CreateCandidateDto[],
-  ) {
-    return await this.candidatesService.createBulk(createCandidateDto);
-  }
+  // @Post('bulk')
+  // async createBulk(
+  //   @Body(new ParseArrayPipe({ items: CreateCandidateDto }))
+  //   createCandidateDto: CreateCandidateDto[],
+  // ) {
+  //   return await this.candidatesService.createBulk(createCandidateDto);
+  // }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() candidate: UpdateCandidateDto) {
-    return await this.candidatesService.update(id, candidate);
-  }
+  // @Put(':id')
+  // async update(@Param('id') id: string, @Body() candidate: UpdateCandidateDto) {
+  //   return await this.candidatesService.update(id, candidate);
+  // }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.candidatesService.remove(id);
-  }
+  // @Delete(':id')
+  // async remove(@Param('id') id: string) {
+  //   return await this.candidatesService.remove(id);
+  // }
 }

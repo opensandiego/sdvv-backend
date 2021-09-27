@@ -6,11 +6,11 @@ import {
   Committee,
   EFileCommitteeResponse,
 } from './models/committee.interface';
-import {
-  Candidate,
-  EFileCandidateResponse,
-  Office,
-} from './models/candidate.interface';
+// import {
+//   Candidate,
+//   EFileCandidateResponse,
+//   Office,
+// } from './models/candidate.interface';
 import { EFileFilingResponse, Filing } from './models/filings.interface';
 import { EFileTransactionResponse } from './models/transaction.interface';
 
@@ -22,8 +22,8 @@ export class EFileDownloadService {
   //   'https://efile.sandiego.gov/api/v1/public/campaign-search/election/list';
   private eFileCommitteeUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-search/by-name';
-  private eFileCandidateUrl =
-    'https://efile.sandiego.gov/api/v1/public/campaign-search/candidate/list';
+  // private eFileCandidateUrl =
+  //   'https://efile.sandiego.gov/api/v1/public/campaign-search/candidate/list';
   private eFileFilingUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-search';
   private eFileTransactionUrl =
@@ -54,26 +54,26 @@ export class EFileDownloadService {
     );
   }
 
-  downloadCandidates(electionID: string): Observable<Candidate[]> {
-    const url = `${this.eFileCandidateUrl}/${electionID}`;
-    return this.httpService.get(url).pipe(
-      catchError((error) => {
-        console.log('Error downloading candidates from eFile', error);
-        throw new HttpException(error.response.data, error.response.status);
-      }),
-      map((response) => response.data),
-      map((response: EFileCandidateResponse) => response.data),
-      map((offices: Office) => {
-        const candidates: Candidate[] = [];
-        for (const office in offices) {
-          offices[office].forEach((candidate) => {
-            candidates.push(candidate);
-          });
-        }
-        return candidates;
-      }),
-    );
-  }
+  // downloadCandidates(electionID: string): Observable<Candidate[]> {
+  //   const url = `${this.eFileCandidateUrl}/${electionID}`;
+  //   return this.httpService.get(url).pipe(
+  //     catchError((error) => {
+  //       console.log('Error downloading candidates from eFile', error);
+  //       throw new HttpException(error.response.data, error.response.status);
+  //     }),
+  //     map((response) => response.data),
+  //     map((response: EFileCandidateResponse) => response.data),
+  //     map((offices: Office) => {
+  //       const candidates: Candidate[] = [];
+  //       for (const office in offices) {
+  //         offices[office].forEach((candidate) => {
+  //           candidates.push(candidate);
+  //         });
+  //       }
+  //       return candidates;
+  //     }),
+  //   );
+  // }
 
   downloadFilings(
     oldestDate: string,

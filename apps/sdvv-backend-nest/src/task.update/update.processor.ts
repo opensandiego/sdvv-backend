@@ -54,11 +54,11 @@ function dispatchJob(jobData): Observable<any> {
     return updateCommittees().pipe(
       map(() => console.log(`Committees update: complete`)),
     );
-  } else if (jobData['update'] === 'candidates') {
-    console.log(`Candidates update: started`);
-    return updateCandidates(jobData['id']).pipe(
-      map(() => console.log(`Candidates update: complete`)),
-    );
+    // } else if (jobData['update'] === 'candidates') {
+    //   console.log(`Candidates update: started`);
+    //   return updateCandidates(jobData['id']).pipe(
+    //     map(() => console.log(`Candidates update: complete`)),
+    //   );
   } else if (jobData['update'] === 'filings') {
     console.log(`Filings update: started`);
     return updateFilings(jobData['ranges']).pipe(
@@ -89,18 +89,18 @@ function dispatchJob(jobData): Observable<any> {
 //   );
 // }
 
-function updateCandidates(electionID: string) {
-  return eFileDownloadService.downloadCandidates(electionID).pipe(
-    mergeMap((candidates) => {
-      return httpService.post(`${host}/candidates/bulk`, candidates);
-    }),
-    map((response) => response.data),
-    catchError((error) => {
-      console.log('Error updating candidates');
-      throw error;
-    }),
-  );
-}
+// function updateCandidates(electionID: string) {
+//   return eFileDownloadService.downloadCandidates(electionID).pipe(
+//     mergeMap((candidates) => {
+//       return httpService.post(`${host}/candidates/bulk`, candidates);
+//     }),
+//     map((response) => response.data),
+//     catchError((error) => {
+//       console.log('Error updating candidates');
+//       throw error;
+//     }),
+//   );
+// }
 
 function updateCommittees() {
   return eFileDownloadService.downloadCommittees().pipe(
