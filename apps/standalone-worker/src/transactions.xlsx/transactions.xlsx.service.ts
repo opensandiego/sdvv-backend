@@ -1,9 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { F460DService } from '@app/sdvv-database/f460d/f460d.service';
 import { CreateF460DDto } from '@app/sdvv-database/f460d/dto/createF460D.dto';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 import { UtilsService } from '../utils/utils.service';
-
+@Injectable()
 export class TransactionsXLSXService {
   constructor(
     private transactionsXLSXDownloadService: TransactionsXLSXDownloadService,
@@ -49,6 +50,8 @@ export class TransactionsXLSXService {
       //     dto: CreateS496DTO,
       //   };
       //   break;
+      default:
+        return null;
     }
   }
 

@@ -3,12 +3,14 @@ import { BullModule } from '@nestjs/bull';
 import { QueueDispatchConsumer } from './queue.dispatch.consumer';
 import { ZipCodeCSVModule } from '../zip.code.csv/zip.code.csv.module';
 import { TransactionsXLSXModule } from '../transactions.xlsx/transactions.xlsx.module';
+import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
 import { EFileApiModule } from '../efile.api/efile.api.module';
 
 @Module({
   imports: [
     TransactionsXLSXModule,
     ZipCodeCSVModule,
+    ProcessDataModule,
     EFileApiModule,
     BullModule.forRoot({
       // configure this for production
