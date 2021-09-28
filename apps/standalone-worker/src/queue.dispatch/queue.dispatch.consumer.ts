@@ -78,4 +78,10 @@ export class QueueDispatchConsumer {
       job.data['newestDate'],
     );
   }
+
+  // @Process('add-candidate-committees') //AKA task/process/committee
+  // async addCandidateCommittees() {}
+
+  // @Process('process-filings') //AKA task/process/filings
+  // async processFilings() {}
 }
