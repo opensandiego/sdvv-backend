@@ -37,9 +37,9 @@ export class UpdateController {
 
   @Post('filings')
   async updateFilings(@Body() dateRangeDto: DateRangeDto) {
-    await this.tasksQueue.add({
-      update: 'filings',
-      ranges: dateRangeDto,
+    await this.workerQueue.add('update-filings', {
+      oldestDate: dateRangeDto.oldestDate,
+      newestDate: dateRangeDto.newestDate,
     });
   }
 
