@@ -27,9 +27,7 @@ export class UpdateController {
 
   @Post('committees')
   async updateCommittees() {
-    await this.tasksQueue.add({
-      update: 'committees',
-    });
+    await this.workerQueue.add('update-committees');
   }
 
   @Post('candidates/:election_id')
