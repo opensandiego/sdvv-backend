@@ -45,9 +45,9 @@ export class UpdateController {
 
   @Post('transactions')
   async updateTransactions(@Body() dateRangeDto: DateRangeDto) {
-    await this.tasksQueue.add({
-      update: 'transactions',
-      ranges: dateRangeDto,
+    await this.workerQueue.add('update-transactions', {
+      oldestDate: dateRangeDto.oldestDate,
+      newestDate: dateRangeDto.newestDate,
     });
   }
 }
