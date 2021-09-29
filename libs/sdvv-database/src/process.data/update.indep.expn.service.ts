@@ -10,6 +10,7 @@ export class UpdateIndepExpnService {
   async setTransactionsSupOpp() {
     const transactionsF460D = await this.getF460DTransactionsWithSupOpp();
     await this.updateTransactionsWithSupOpp(transactionsF460D);
+    console.log('setTransactionsSupOpp: completed');
   }
 
   async updateTransactionsWithSupOpp(f460ds) {

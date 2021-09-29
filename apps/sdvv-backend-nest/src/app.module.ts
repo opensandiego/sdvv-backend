@@ -18,6 +18,7 @@ import { UpdateModule } from './task.update/update.module';
 import { ProcessModule } from './task.process/process.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { CalModule } from './cal.format/cal.module';
+import { QueueProducerModule } from './queue.producer/queue.producer.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { CalModule } from './cal.format/cal.module';
     ProcessModule,
     RouterModule.register(routes),
     CalModule,
+    QueueProducerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,10 +7,9 @@ import { UpdateFilingsService } from '../efile.api/update.filings.service';
 import { UpdateTransactionsService } from '../efile.api/update.transactions.service';
 import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
-import { UpdateIndepExpnService } from '@app/sdvv-database/process.data/update.indep.expn.service';
 
-@Processor('worker')
-export class QueueDispatchConsumer {
+@Processor('worker-add-data')
+export class QueueConsumerAdd {
   constructor(
     private electionsUpdateService: ElectionsUpdateService,
     private updateCommitteesService: UpdateCommitteesService,
@@ -19,27 +18,7 @@ export class QueueDispatchConsumer {
     private updateTransactionsService: UpdateTransactionsService,
     private transactionsXLSXService: TransactionsXLSXService,
     private zipCodeCSVService: ZipCodeCSVService,
-    private updateIndepExpnService: UpdateIndepExpnService,
   ) {}
-
-  @Process('zip-codes')
-  async addZipCodesToDatabase() {
-    await this.zipCodeCSVService.populateDatabaseWithZipCodes();
-  }
-
-  @Process('transactions-xlsx')
-  async addXLXSTransactionsToDatabase(job: Job) {
-    this.transactionsXLSXService.populateDatabaseWithXLSXTransactions(
-      job.data['year'],
-      job.data['sheet'],
-    );
-  }
-
-  @Process('set-transactions-sup-opp')
-  async setTransactionsSupOpp() {
-    console.log('Starting Setting Support & Opposed on Transactions Job');
-    await this.updateIndepExpnService.setTransactionsSupOpp();
-  }
 
   @Process('update-elections')
   async updateElections() {
@@ -79,9 +58,16 @@ export class QueueDispatchConsumer {
     );
   }
 
-  // @Process('add-candidate-committees') //AKA task/process/committee
-  // async addCandidateCommittees() {}
+  @Process('zip-codes')
+  async addZipCodesToDatabase() {
+    await this.zipCodeCSVService.populateDatabaseWithZipCodes();
+  }
 
-  // @Process('process-filings') //AKA task/process/filings
-  // async processFilings() {}
+  @Process('transactions-xlsx')
+  async addXLXSTransactionsToDatabase(job: Job) {
+    this.transactionsXLSXService.populateDatabaseWithXLSXTransactions(
+      job.data['year'],
+      job.data['sheet'],
+    );
+  }
 }

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
-import { QueueDispatchConsumer } from './queue.dispatch.consumer';
 import { ZipCodeCSVModule } from '../zip.code.csv/zip.code.csv.module';
 import { TransactionsXLSXModule } from '../transactions.xlsx/transactions.xlsx.module';
 import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
 import { EFileApiModule } from '../efile.api/efile.api.module';
+import { QueueConsumerAdd } from './queue.consumer.add';
+import { QueueConsumerProcess } from './queue.consumer.process';
 
 @Module({
   imports: [
@@ -20,10 +21,12 @@ import { EFileApiModule } from '../efile.api/efile.api.module';
       },
     }),
     BullModule.registerQueue({
-      name: 'worker',
+      name: 'worker-add-data',
+    }),
+    BullModule.registerQueue({
+      name: 'worker-process-data',
     }),
   ],
-  providers: [QueueDispatchConsumer],
-  exports: [QueueDispatchConsumer],
+  providers: [QueueConsumerAdd, QueueConsumerProcess],
 })
 export class QueueDispatchModule {}
