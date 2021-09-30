@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { TransactionEntity } from '../../transactions/transactions.entity';
-// import { CandidateEntity } from '../../candidates/candidates.entity';
+import { TransactionEntity } from '@app/efile-api-data/tables/entity/transactions.entity';
+// import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
 
 @Injectable()
 export class ContributionsDemographicService {

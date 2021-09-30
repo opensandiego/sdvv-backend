@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateEntity } from '../../candidates/candidates.entity';
+import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
 import { Connection } from 'typeorm';
 
 @Injectable()

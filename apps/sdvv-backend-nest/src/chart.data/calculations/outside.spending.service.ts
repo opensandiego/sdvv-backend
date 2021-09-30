@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { TransactionEntity } from '../../transactions/transactions.entity';
+import { TransactionEntity } from '@app/efile-api-data/tables/entity/transactions.entity';
 
 @Injectable()
 export class OutsideSpendingService {
