@@ -19,6 +19,7 @@ import { ProcessModule } from './task.process/process.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { CalModule } from './cal.format/cal.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
+import { EfileApiDataModule } from '@app/efile-api-data';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { QueueProducerModule } from './queue.producer/queue.producer.module';
         port: 6379,
       },
     }),
+    EfileApiDataModule,
     ElectionsModule,
     CandidatesModule,
     FilingsModule,
