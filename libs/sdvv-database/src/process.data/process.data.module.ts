@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TransactionEntity } from 'apps/sdvv-backend-nest/src/transactions/transactions.entity';
+import { TransactionEntity } from '@app/efile-api-data/tables/entity/transactions.entity';
 import { FilingTransactionService } from './filing.transaction.service';
 import { CandidateCommitteeService } from './candidate.committee.service';
 import { UpdateIndepExpnService } from './update.indep.expn.service';

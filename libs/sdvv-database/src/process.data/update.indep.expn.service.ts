@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionEntity } from 'apps/sdvv-backend-nest/src/transactions/transactions.entity';
+import { TransactionEntity } from '@app/efile-api-data/tables/entity/transactions.entity';
 import { Connection } from 'typeorm';
 import { F460DEntity } from '../f460d/f460d.entity';
 

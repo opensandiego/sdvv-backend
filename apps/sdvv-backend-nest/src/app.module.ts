@@ -7,10 +7,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { TypeOrmConfigService } from './config/database.config';
-import { CandidatesModule } from './candidates/candidates.module';
-import { FilingsModule } from './filings/filings.module';
-import { TransactionsModule } from './transactions/transactions.module';
-import { CommitteesModule } from './committees/committees.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
