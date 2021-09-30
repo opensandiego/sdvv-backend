@@ -15,7 +15,7 @@ import { QueueProcessController } from './queue.process.controller';
     HttpModule,
   ],
   providers: [],
-  controllers: [QueueController, QueueProcessController],
+  controllers: [QueueAddController, QueueProcessController],
   exports: [],
 })
 export class QueueProducerModule {}
