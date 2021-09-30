@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
+import { TypeOrmConfigService } from './config/database.config';
 import { DatabaseModule } from '@app/sdvv-database';
 import { StandaloneWorkerService } from './standalone-worker.service';
 import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
@@ -11,11 +12,10 @@ import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
 
 @Module({
   imports: [
-    QueueDispatchModule,
-    TransactionsXLSXModule,
-    ZipCodeCSVModule,
-    DatabaseModule,
-    F460DModule,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
     BullModule.forRoot({
       // configure this for production
       redis: {
