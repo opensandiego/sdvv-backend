@@ -13,7 +13,6 @@ import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CommitteesModule } from './committees/committees.module';
 import { routes } from './routes';
-import { UpdateModule } from './task.update/update.module';
 import { ProcessModule } from './task.process/process.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { CalModule } from './cal.format/cal.module';
