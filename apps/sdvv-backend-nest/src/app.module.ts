@@ -8,7 +8,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { TypeOrmConfigService } from './config/database.config';
-import { ElectionsModule } from './elections/elections.module';
 import { CandidatesModule } from './candidates/candidates.module';
 import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
@@ -34,11 +33,6 @@ import { EfileApiDataModule } from '@app/efile-api-data';
       },
     }),
     EfileApiDataModule,
-    ElectionsModule,
-    CandidatesModule,
-    FilingsModule,
-    TransactionsModule,
-    CommitteesModule,
     ChartDataModule,
     UpdateModule,
     ProcessModule,

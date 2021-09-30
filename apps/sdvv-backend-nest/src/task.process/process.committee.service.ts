@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from '../candidates/candidates.entity';
-import { ElectionEntity } from '../elections/elections.entity';
+import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.entity';
 
 @Injectable()
 export class ProcessCandidateCommitteeService {
