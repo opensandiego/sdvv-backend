@@ -11,7 +11,6 @@ import { CandidatesModule } from './candidates/candidates.module';
 import { FilingsModule } from './filings/filings.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CommitteesModule } from './committees/committees.module';
-import { ProcessModule } from './task.process/process.module';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { CalModule } from './cal.format/cal.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
@@ -31,7 +30,6 @@ import { EfileApiDataModule } from '@app/efile-api-data';
     }),
     EfileApiDataModule,
     ChartDataModule,
-    ProcessModule,
     CalModule,
     QueueProducerModule,
   ],
