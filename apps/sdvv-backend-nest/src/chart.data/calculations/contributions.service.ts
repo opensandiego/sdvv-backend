@@ -33,7 +33,7 @@ export class ContributionsService {
     return parseInt(contributionCount);
   }
 
-  async getCandidateCount(election_id: string) {
+  async getCandidatePerOfficeCount(election_id: string) {
     return await this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { ContributionsService } from './calculations/contributions.service';
-import { RaisedSpentService } from './calculations/raised.spent.service';
 import { SharedCalculateService } from './calculations/shared.calculate.service';
+import { RaisedSpentService } from './calculations/raised.spent.service';
+import { ContributionsService } from './calculations/contributions.service';
+import { ContributionsMethodService } from './calculations/contributions.method.service';
+import { ContributionsDemographicService } from './calculations/contributions.demographic.service';
 
 @Injectable()
 export class ChartDataService {
@@ -11,6 +13,8 @@ export class ChartDataService {
     private sharedService: SharedCalculateService,
     private raisedSpentService: RaisedSpentService,
     private contributionsService: ContributionsService,
+    private contributionsMethodService: ContributionsMethodService,
+    private contributionsDemographicService: ContributionsDemographicService,
   ) {}
 
   async getRaisedSpentId(id: string) {
@@ -42,13 +46,13 @@ export class ChartDataService {
       const limit = 10000;
 
       const listByOccupation =
-        await this.contributionsService.getContributionByOccupation(
+        await this.contributionsDemographicService.getContributionByOccupation(
           filerName,
           limit,
         );
 
       const listByEmployer =
-        await this.contributionsService.getContributionByEmployer(
+        await this.contributionsDemographicService.getContributionByEmployer(
           filerName,
           limit,
         );
@@ -59,7 +63,7 @@ export class ChartDataService {
       );
 
       const listByIntrName =
-        await this.contributionsService.getContributionByIntrName(
+        await this.contributionsDemographicService.getContributionByIntrName(
           filerName,
           limit,
         );
@@ -87,10 +91,13 @@ export class ChartDataService {
 
   async candidateOffice(electionId: string) {
     try {
-      const candidates = await this.contributionsService.getCandidateCount(
-        electionId,
-      );
-      return { candidates };
+      const candidates =
+        await this.contributionsService.getCandidatePerOfficeCount(electionId);
+
+      const candidatesByOffice =
+        await this.contributionsService.getRaisedByOffice(electionId);
+
+      return { candidates, candidatesByOffice };
     } catch (error) {
       console.log('Error getting candidateOffice');
       return { error: 'Error getting candidateOffice' };

@@ -6,6 +6,7 @@ import { CommitteeEntity } from './entity/committees.entity';
 import { FilingEntity } from './entity/filings.entity';
 import { TransactionEntity } from './entity/transactions.entity';
 import { TablesService } from './tables.sevice';
+import { CalculationTransaction } from './entity/calculation.transactions.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TablesService } from './tables.sevice';
     TypeOrmModule.forFeature([CandidateEntity]),
     TypeOrmModule.forFeature([FilingEntity]),
     TypeOrmModule.forFeature([TransactionEntity]),
+    TypeOrmModule.forFeature([CalculationTransaction]),
   ],
   providers: [TablesService],
   exports: [],

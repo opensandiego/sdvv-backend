@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { TransactionEntity } from '@app/efile-api-data/tables/entity/transactions.entity';
+import { CalculationTransaction } from '@app/efile-api-data/tables/entity/calculation.transactions.entity';
 
 @Injectable()
 export class OutsideSpendingService {
@@ -8,21 +8,31 @@ export class OutsideSpendingService {
 
   async support(candidateName: string) {
     const { sum: supportSum } = await this.connection
-      .getRepository(TransactionEntity)
+      .getRepository(CalculationTransaction)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .where('include_in_calculations = true')
+      .where('name = :candidateName', { candidateName: candidateName })
       .andWhere('tx_type = :txType', { txType: 'EXPN' })
-      .andWhere('filing_type= :filingType', { filingType: 'FPPC 496' })
-      .andWhere('name = :candidateName', { candidateName: candidateName })
-      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' }) // is this correct?
-      // what field can be used to determine support/opposed status
+      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' })
+      .andWhere('sup_opp_cd = :supOppCd', { supOppCd: 'SUPPORT' })
       .getRawOne();
 
     return supportSum;
   }
 
-  async opposed() {}
+  async opposed(candidateName: string) {
+    const { sum: opposeSum } = await this.connection
+      .getRepository(CalculationTransaction)
+      .createQueryBuilder()
+      .select('SUM(amount)', 'sum')
+      .where('name = :candidateName', { candidateName: candidateName })
+      .andWhere('tx_type = :txType', { txType: 'EXPN' })
+      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' })
+      .andWhere('sup_opp_cd = :supOppCd', { supOppCd: 'OPPOSE' })
+      .getRawOne();
+
+    return opposeSum;
+  }
 }
 
 // {

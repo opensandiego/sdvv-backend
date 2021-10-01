@@ -11,13 +11,13 @@ import { ContributionsDemographicService } from './calculations/contributions.de
 @Module({
   imports: [],
   providers: [
-    ChartDataService,
     SharedCalculateService,
     RaisedSpentService,
     OutsideSpendingService,
     ContributionsService,
     ContributionsMethodService,
     ContributionsDemographicService,
+    ChartDataService,
   ],
   controllers: [ChartDataController],
 })
