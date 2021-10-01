@@ -57,10 +57,11 @@ export class ChartDataService {
           limit,
         );
 
-      const listByName = await this.contributionsService.getContributionByName(
-        filerName,
-        5,
-      );
+      const listByName =
+        await this.contributionsDemographicService.getContributionByName(
+          filerName,
+          5,
+        );
 
       const listByIntrName =
         await this.contributionsDemographicService.getContributionByIntrName(
