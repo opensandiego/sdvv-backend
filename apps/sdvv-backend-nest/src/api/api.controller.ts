@@ -8,9 +8,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import { APIService } from './api.service';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
 export class APIController {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private apiService: APIService,
+  ) {}
 }

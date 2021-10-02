@@ -1,5 +1,6 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { APIController } from './api.controller';
+import { APIService } from './api.service';
 
 @Module({
   imports: [
@@ -8,7 +9,7 @@ import { APIController } from './api.controller';
       // ttl: 0, // disable expiration
     }),
   ],
-  providers: [],
+  providers: [APIService],
   controllers: [APIController],
 })
 export class APIModule {}
