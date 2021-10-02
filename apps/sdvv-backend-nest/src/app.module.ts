@@ -10,6 +10,7 @@ import { TypeOrmConfigService } from './config/database.config';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
+import { APIModule } from './api/api.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { EfileApiDataModule } from '@app/efile-api-data';
     EfileApiDataModule,
     ChartDataModule,
     QueueProducerModule,
+    APIModule,
   ],
   controllers: [AppController],
   providers: [AppService],
