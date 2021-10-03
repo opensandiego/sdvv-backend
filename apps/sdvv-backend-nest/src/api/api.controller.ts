@@ -22,4 +22,9 @@ export class APIController {
   async getSummary(@Param('election_id') electionId: string) {
     return await this.apiService.getOfficesSummary(electionId);
   }
+
+  @Get('candidate/card/:candidate_id')
+  async getCandidateCard(@Param('candidate_id') candidateId: string) {
+    return await this.apiService.getCandidateCard(candidateId);
+  }
 }

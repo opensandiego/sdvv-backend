@@ -17,4 +17,13 @@ export class SharedQueryService {
 
     return filerName;
   }
+
+  async getCandidateFromCoeId(candidateId: string) {
+    return await this.connection
+      .getRepository(CandidateEntity)
+      .createQueryBuilder()
+      .select('*')
+      .where('coe_id = :candidateId', { candidateId })
+      .getRawOne();
+  }
 }

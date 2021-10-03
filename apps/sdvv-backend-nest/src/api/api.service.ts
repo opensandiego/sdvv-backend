@@ -31,4 +31,31 @@ export class APIService {
       return { error: 'Error getting summary of offices.' };
     }
   }
+
+  async getCandidateCard(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+
+      const raised = await this.candidateSummaryService.getRaisedSum(
+        candidate['candidate_controlled_committee_name'],
+      );
+
+      const donorsCount =
+        await this.candidateSummaryService.getContributionCount(
+          candidate['candidate_controlled_committee_name'],
+        );
+
+      return {
+        name: candidate['candidate_name'],
+        raised: raised,
+        donors: donorsCount,
+        candidateId,
+      };
+    } catch (error) {
+      console.log('Error in: getCandidateCard');
+      return { error: 'Error getting amounts for the candidate card' };
+    }
+  }
 }

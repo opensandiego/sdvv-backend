@@ -7,7 +7,7 @@ import { TransactionEntity } from './transactions.entity';
     connection
       .getRepository(TransactionEntity)
       .createQueryBuilder()
-      .select()
+      .select('*')
       .where('include_in_calculations IS TRUE'),
 })
 export class CalculationTransaction {
