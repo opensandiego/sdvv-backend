@@ -62,4 +62,8 @@ export class APIService {
       return { error: 'Error getting amounts for the candidate card' };
     }
   }
+
+  async getCandidateCardExpanded(candidateId: string) {
+    
+  }
 }
