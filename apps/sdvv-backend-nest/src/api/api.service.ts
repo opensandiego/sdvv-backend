@@ -3,6 +3,8 @@ import { SharedQueryService } from '@app/efile-api-data/queries/shared.query.ser
 import { ElectionOfficeService } from '@app/efile-api-data/queries/election.office.service';
 import { RaisedCommitteeService } from '@app/efile-api-data/queries/raised.committee.service';
 import { CandidateSummaryService } from '@app/efile-api-data/queries/candidate.summary.service';
+import { CandidateIndependentExpendituresService } from '@app/efile-api-data/queries/candidate.independent.expenditures.service';
+import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
 
 @Injectable()
 export class APIService {
@@ -11,6 +13,8 @@ export class APIService {
     private electionOfficeService: ElectionOfficeService,
     private raisedCommitteeService: RaisedCommitteeService,
     private candidateSummaryService: CandidateSummaryService,
+    private candidateIndependentExpendituresService: CandidateIndependentExpendituresService,
+    private candidateListService: CandidateListService,
   ) {}
 
   async getOfficesSummary(electionId: string) {
