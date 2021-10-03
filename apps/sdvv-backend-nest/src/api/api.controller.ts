@@ -17,4 +17,9 @@ export class APIController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private apiService: APIService,
   ) {}
+
+  @Get('summary/:election_id')
+  async getSummary(@Param('election_id') electionId: string) {
+    return await this.apiService.getOfficesSummary(electionId);
+  }
 }
