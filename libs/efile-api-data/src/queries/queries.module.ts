@@ -4,6 +4,7 @@ import { ElectionOfficeService } from './election.office.service';
 import { RaisedCommitteeService } from './raised.committee.service';
 import { CandidateSummaryService } from './candidate.summary.service';
 import { CandidateIndependentExpendituresService } from './candidate.independent.expenditures.service';
+import { CandidateListService } from './candidate.list.service';
 
 @Module({
   imports: [],
@@ -13,6 +14,7 @@ import { CandidateIndependentExpendituresService } from './candidate.independent
     RaisedCommitteeService,
     CandidateSummaryService,
     CandidateIndependentExpendituresService,
+    CandidateListService,
   ],
   exports: [
     SharedQueryService,
@@ -20,6 +22,7 @@ import { CandidateIndependentExpendituresService } from './candidate.independent
     RaisedCommitteeService,
     CandidateSummaryService,
     CandidateIndependentExpendituresService,
+    CandidateListService,
   ],
 })
 export class QueriesModule {}
