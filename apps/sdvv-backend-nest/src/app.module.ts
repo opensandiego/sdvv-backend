@@ -11,6 +11,7 @@ import { ChartDataModule } from './chart.data/chart.data.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
 import { APIModule } from './api/api.module';
+import { DatabaseModule } from '@app/sdvv-database';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { APIModule } from './api/api.module';
       },
     }),
     EfileApiDataModule,
+    DatabaseModule,
     ChartDataModule,
     QueueProducerModule,
     APIModule,

@@ -6,7 +6,14 @@
   "compilerOptions": {
     "webpack": true,
     "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json",
-    "assets": [{ "include": "**/*.csv" }]
+    "assets": [
+      {
+        "include": "**/*.csv"
+      },
+      {
+        "include": "**/*.json"
+      }
+    ]
   },
   "projects": {
     "sdvv-backend-nest": {

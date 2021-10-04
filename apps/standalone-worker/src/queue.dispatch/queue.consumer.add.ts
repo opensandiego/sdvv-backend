@@ -7,6 +7,7 @@ import { UpdateFilingsService } from '../efile.api/update.filings.service';
 import { UpdateTransactionsService } from '../efile.api/update.transactions.service';
 import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
+import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
 
 @Processor('worker-add-data')
 export class QueueConsumerAdd {
@@ -18,6 +19,7 @@ export class QueueConsumerAdd {
     private updateTransactionsService: UpdateTransactionsService,
     private transactionsXLSXService: TransactionsXLSXService,
     private zipCodeCSVService: ZipCodeCSVService,
+    private jurisdictionZipCodeService: JurisdictionZipCodeService,
   ) {}
 
   @Process('update-elections')
@@ -61,6 +63,11 @@ export class QueueConsumerAdd {
   @Process('zip-codes')
   async addZipCodesToDatabase() {
     await this.zipCodeCSVService.populateDatabaseWithZipCodes();
+  }
+
+  @Process('jurisdiction-zip-codes')
+  async addJurisdictionZipCodesToDatabase() {
+    await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
   }
 
   @Process('transactions-xlsx')

@@ -50,4 +50,14 @@ export class QueueAddController {
       sheet: sheet,
     });
   }
+
+  @Post('zip-codes')
+  async addZipCodes() {
+    await this.workerQueueAdd.add('zip-codes');
+  }
+
+  @Post('jurisdiction-zip-codes')
+  async addJurisdictionZipCodes() {
+    await this.workerQueueAdd.add('jurisdiction-zip-codes');
+  }
 }
