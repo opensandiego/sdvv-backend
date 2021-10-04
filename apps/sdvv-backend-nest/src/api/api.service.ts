@@ -5,6 +5,7 @@ import { RaisedCommitteeService } from '@app/efile-api-data/queries/raised.commi
 import { CandidateSummaryService } from '@app/efile-api-data/queries/candidate.summary.service';
 import { CandidateIndependentExpendituresService } from '@app/efile-api-data/queries/candidate.independent.expenditures.service';
 import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
+import { CandidateLocationContributionsService } from '@app/efile-api-data/queries/candidate.location.contributions.service';
 
 @Injectable()
 export class APIService {
@@ -15,6 +16,7 @@ export class APIService {
     private candidateSummaryService: CandidateSummaryService,
     private candidateIndependentExpendituresService: CandidateIndependentExpendituresService,
     private candidateListService: CandidateListService,
+    private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
   async getOfficesSummary(electionId: string) {
