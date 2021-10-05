@@ -271,15 +271,76 @@ export class APIService {
         candidateId,
       );
 
-      return [
-        {
-          name: 'In District',
-          amount: '18000',
-        },
-        {
-          amount: '25000',
-        },
-      ];
+      let districtContributionSum = null;
+      if (candidate['district']) {
+        const districtZipCodes =
+          await this.candidateLocationContributionsService.getDistrictZipCodes(
+            candidate['district'],
+          );
+        districtContributionSum =
+          await this.candidateLocationContributionsService.getContributionInZipCodes(
+            candidate['candidate_controlled_committee_name'],
+            districtZipCodes,
+          );
+      }
+
+      const cityZipCodes =
+        await this.candidateLocationContributionsService.getCityZipCodes();
+      const cityContributionSum =
+        await this.candidateLocationContributionsService.getContributionInZipCodes(
+          candidate['candidate_controlled_committee_name'],
+          cityZipCodes,
+        );
+
+      const countyZipCodes =
+        await this.candidateLocationContributionsService.getCountyZipCodes();
+      const countyContributionSum =
+        await this.candidateLocationContributionsService.getContributionInZipCodes(
+          candidate['candidate_controlled_committee_name'],
+          countyZipCodes,
+        );
+
+      const stateZipCodes =
+        await this.candidateLocationContributionsService.getStateZipCodes();
+      const stateContributionSum =
+        await this.candidateLocationContributionsService.getContributionInZipCodes(
+          candidate['candidate_controlled_committee_name'],
+          stateZipCodes,
+        );
+
+      const nonStateContributionSum =
+        await this.candidateLocationContributionsService.getContributionOutZipCodes(
+          candidate['candidate_controlled_committee_name'],
+          stateZipCodes,
+        );
+
+      return {
+        candidateId,
+        name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
+        contributionByLocation: [
+          {
+            name: 'In District',
+            amount: districtContributionSum,
+          },
+          {
+            name: 'In City',
+            amount: cityContributionSum,
+          },
+          {
+            name: 'In County',
+            amount: countyContributionSum,
+          },
+          {
+            name: 'In State',
+            amount: stateContributionSum,
+          },
+          {
+            name: 'Out of State',
+            amount: nonStateContributionSum,
+          },
+        ],
+      };
     } catch (error) {
       console.log('Error in: getCandidateDetailsRaisedByLocation');
       return {
