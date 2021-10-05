@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
+import { CandidateSummaryService } from './candidate.summary.service';
 
 @Injectable()
 export class CandidateListService {
-  constructor(private connection: Connection) {}
+  constructor(
+    private connection: Connection,
+    private candidateSummaryService: CandidateSummaryService,
+  ) {}
 
   async getContributionByOccupation(filerName: string, limit = 20) {
     const groups = await this.connection
@@ -72,6 +76,29 @@ export class CandidateListService {
       .andWhere('filer_name = :filerName', { filerName: filerName })
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .groupBy('intr_name')
+      .orderBy('sum', 'DESC')
+      .limit(limit)
+      .getRawMany();
+
+    return groups;
+  }
+
+  // CandidateSpendingListService
+  async getExpenseBySpendingCode(filerName: string, limit = 20) {
+    // const spent = await this.candidateSummaryService.getSpentSum(filerName);
+
+    const groups = await this.connection
+      .getRepository(CalculationTransaction)
+      .createQueryBuilder()
+      .select('spending_code')
+      // .addSelect('COUNT(name)', 'nameCount')
+      .addSelect('SUM(amount)', 'sum')
+      // .addSelect('SUM(amount) / :total', 'average')
+      // .setParameter('total', spent)
+      .andWhere('filer_name = :filerName', { filerName: filerName })
+      // .andWhere('tx_type = :txType', { txType: 'EXPN' })
+      .andWhere('schedule IN (:...schedules)', { schedules: ['D', 'G', 'E'] })
+      .groupBy('spending_code')
       .orderBy('sum', 'DESC')
       .limit(limit)
       .getRawMany();

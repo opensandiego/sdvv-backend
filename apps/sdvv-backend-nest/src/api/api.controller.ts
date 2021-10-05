@@ -37,4 +37,36 @@ export class APIController {
   async getCandidateDetailsHeader(@Param('candidate_id') candidateId: string) {
     return await this.apiService.getCandidateDetailsHeader(candidateId);
   }
+
+  @Get('candidate/details/raised-spent/:candidate_id')
+  async getCandidateDetailsRaisedSpent(
+    @Param('candidate_id') candidateId: string,
+  ) {
+    return await this.apiService.getCandidateDetailsRaisedSpent(candidateId);
+  }
+
+  @Get('candidate/details/raised-by-industry/:candidate_id')
+  async getCandidateDetailsRaisedByIndustry(
+    @Param('candidate_id') candidateId: string,
+  ) {
+    return await this.apiService.getCandidateDetailsRaisedByIndustry(
+      candidateId,
+    );
+  }
+
+  @Get('candidate/details/raised-by-location/:candidate_id')
+  async getCandidateDetailsRaisedByLocation(
+    @Param('candidate_id') candidateId: string,
+  ) {
+    return await this.apiService.getCandidateDetailsRaisedByLocation(
+      candidateId,
+    );
+  }
+
+  @Get('candidate/details/raised-outside-money/:candidate_id')
+  async getCandidateDetailsOutsideMoney(
+    @Param('candidate_id') candidateId: string,
+  ) {
+    return await this.apiService.getCandidateDetailsOutsideMoney(candidateId);
+  }
 }

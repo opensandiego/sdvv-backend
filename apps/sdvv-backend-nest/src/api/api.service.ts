@@ -173,4 +173,138 @@ export class APIService {
       };
     }
   }
+
+  async getCandidateDetailsRaisedSpent(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+
+      const raised = await this.candidateSummaryService.getRaisedSum(
+        candidate['candidate_controlled_committee_name'],
+      );
+
+      const spent = await this.candidateSummaryService.getSpentSum(
+        candidate['candidate_controlled_committee_name'],
+      );
+
+      return {
+        name: candidate['candidate_name'],
+        candidateId,
+        summary: {
+          total_raised: raised,
+          total_spent: spent,
+          balance: +raised - +spent,
+        },
+        raised_groups: [
+          {
+            name: 'In Kind',
+            amount: await this.candidateSummaryService.getRaisedInKindSum(
+              candidate['candidate_controlled_committee_name'],
+            ),
+          },
+          {
+            name: 'Individual',
+            amount: await this.candidateSummaryService.getRaisedIndividualSum(
+              candidate['candidate_controlled_committee_name'],
+            ),
+          },
+          {
+            name: 'Other',
+            amount: await this.candidateSummaryService.getRaisedOtherSum(
+              candidate['candidate_controlled_committee_name'],
+            ),
+          },
+        ],
+
+        spent_groups: await this.candidateListService.getExpenseBySpendingCode(
+          candidate['candidate_controlled_committee_name'],
+        ),
+        cash_on_hand: '-1',
+        loans_and_debts: '-1',
+      };
+    } catch (error) {
+      console.log('Error in: getCandidateDetailsRaisedSpent');
+      return {
+        error:
+          'Error getting amounts for the candidate details raised vs. spent',
+      };
+    }
+  }
+
+  async getCandidateDetailsRaisedByIndustry(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+      return await this.candidateListService.getContributionByOccupation(
+        candidate['candidate_controlled_committee_name'],
+      );
+    } catch (error) {
+      console.log('Error in: getCandidateDetailsRaisedByIndustry');
+      return {
+        error:
+          'Error getting amounts for the candidate details raised by industry',
+      };
+    }
+  }
+
+  async getCandidateDetailsRaisedByLocation(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+
+      return [
+        {
+          name: 'In District',
+          amount: '18000',
+        },
+        {
+          amount: '25000',
+        },
+      ];
+    } catch (error) {
+      console.log('Error in: getCandidateDetailsRaisedByLocation');
+      return {
+        error:
+          'Error getting amounts for the candidate details raised by location',
+      };
+    }
+  }
+
+  async getCandidateDetailsOutsideMoney(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+
+      return {
+        support_groups: [
+          {
+            name: 'Committee A',
+            amount: '26000',
+            percent: '20.8',
+          },
+          {
+            name: 'Committee B',
+            amount: '24000',
+            percent: '19.1',
+          },
+        ],
+        opposed_groups: [
+          {
+            name: 'Committee 1',
+            amount: '22000',
+            percent: '14.2',
+          },
+        ],
+      };
+    } catch (error) {
+      console.log('Error in: getCandidateDetailsOutsideMoney');
+      return {
+        error: 'Error getting amounts for the candidate details outside money',
+      };
+    }
+  }
 }

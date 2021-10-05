@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { Brackets, Connection } from 'typeorm';
 import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
 
 @Injectable()
@@ -60,5 +60,57 @@ export class CandidateSummaryService {
 
   async getAverageDonation(filerName: string) {
     return await this.getContributionAvg(filerName);
+  }
+
+  async getRaisedIndividualSum(filerName: string) {
+    const { sum } = await this.connection
+      .getRepository(CalculationTransaction)
+      .createQueryBuilder()
+      .select('SUM(amount)', 'sum')
+      .where('filer_name = :filerName', { filerName: filerName })
+      .andWhere('tx_type = :txType', { txType: 'RCPT' })
+      .andWhere('NOT (employer = :na AND occupation = :na)', { na: 'N/A' })
+      .andWhere('NOT (employer IS NULL AND occupation IS NULL)')
+      // Individual also includes the In-Kind
+      // .andWhere('NOT (spending_code iLike :spendingCode)', {
+      //   spendingCode: '%In-Kind%',
+      // })
+      .getRawOne();
+
+    return sum ? sum : 0;
+  }
+
+  async getRaisedInKindSum(filerName: string) {
+    const { sum } = await this.connection
+      .getRepository(CalculationTransaction)
+      .createQueryBuilder()
+      .select('SUM(amount)', 'sum')
+      .where('filer_name = :filerName', { filerName: filerName })
+      .andWhere('tx_type = :txType', { txType: 'RCPT' })
+      .andWhere('spending_code iLike :spendingCode', {
+        spendingCode: '%In-Kind%',
+      })
+      .getRawOne();
+
+    return sum ? sum : 0;
+  }
+
+  async getRaisedOtherSum(filerName: string) {
+    const { sum } = await this.connection
+      .getRepository(CalculationTransaction)
+      .createQueryBuilder()
+      .select('SUM(amount)', 'sum')
+      .where('filer_name = :filerName', { filerName: filerName })
+      .andWhere('tx_type = :txType', { txType: 'RCPT' })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('(employer = :na AND occupation = :na)', {
+            na: 'N/A',
+          }).orWhere('(employer IS NULL AND occupation IS NULL)');
+        }),
+      )
+      .getRawOne();
+
+    return sum ? sum : 0;
   }
 }
