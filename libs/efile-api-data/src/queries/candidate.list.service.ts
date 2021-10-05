@@ -86,16 +86,17 @@ export class CandidateListService {
 
   // CandidateSpendingListService
   async getExpenseBySpendingCode(filerName: string, limit = 20) {
-    // const spent = await this.candidateSummaryService.getSpentSum(filerName);
+    const totalSpent = await this.candidateSummaryService.getSpentSum(
+      filerName,
+    );
 
     const groups = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
       .select('spending_code')
-      // .addSelect('COUNT(name)', 'nameCount')
       .addSelect('SUM(amount)', 'sum')
-      // .addSelect('SUM(amount) / :total', 'average')
-      // .setParameter('total', spent)
+      .addSelect(`round(SUM(amount)::decimal * 100 / :total, 1)`, 'average')
+      .setParameter('total', totalSpent)
       .andWhere('filer_name = :filerName', { filerName: filerName })
       // .andWhere('tx_type = :txType', { txType: 'EXPN' })
       .andWhere('schedule IN (:...schedules)', { schedules: ['D', 'G', 'E'] })

@@ -225,6 +225,7 @@ export class APIService {
 
         spent_groups: await this.candidateListService.getExpenseBySpendingCode(
           candidate['candidate_controlled_committee_name'],
+          5,
         ),
       };
     } catch (error) {
@@ -357,6 +358,9 @@ export class APIService {
       );
 
       return {
+        candidateId,
+        name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
         support_groups: [
           {
             name: 'Committee A',
