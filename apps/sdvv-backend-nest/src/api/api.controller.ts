@@ -28,7 +28,7 @@ export class APIController {
     return await this.apiService.getCandidateCard(candidateId);
   }
 
-  @Get('candidate/card/expanded/:candidate_id')
+  @Get('candidate/quick-view/:candidate_id')
   async getCandidateCardExpanded(@Param('candidate_id') candidateId: string) {
     return await this.apiService.getCandidateCardExpanded(candidateId);
   }

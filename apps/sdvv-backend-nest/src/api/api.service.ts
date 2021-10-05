@@ -54,10 +54,11 @@ export class APIService {
         );
 
       return {
+        candidateId,
         name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
         raised: raised,
         donors: donorsCount,
-        candidateId,
       };
     } catch (error) {
       console.log('Error in: getCandidateCard');
@@ -134,6 +135,7 @@ export class APIService {
         candidateId,
         name: candidate['candidate_name'],
         last_name: candidate['last_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
         raised: raised,
         spent: spent,
         average_donation: averageDonation.toString(),
@@ -156,6 +158,7 @@ export class APIService {
       return {
         candidateId,
         name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
         raised: await this.candidateSummaryService.getRaisedSum(
           candidate['candidate_controlled_committee_name'],
         ),
@@ -189,13 +192,16 @@ export class APIService {
       );
 
       return {
-        name: candidate['candidate_name'],
         candidateId,
+        name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
         summary: {
           total_raised: raised,
           total_spent: spent,
           balance: +raised - +spent,
         },
+        cash_on_hand: '-1', // How should this amount be determined?
+        loans_and_debts: '-1', // How should this amount be determined?
         raised_groups: [
           {
             name: 'In Kind',
@@ -220,8 +226,6 @@ export class APIService {
         spent_groups: await this.candidateListService.getExpenseBySpendingCode(
           candidate['candidate_controlled_committee_name'],
         ),
-        cash_on_hand: '-1',
-        loans_and_debts: '-1',
       };
     } catch (error) {
       console.log('Error in: getCandidateDetailsRaisedSpent');
@@ -237,9 +241,21 @@ export class APIService {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
       );
-      return await this.candidateListService.getContributionByOccupation(
-        candidate['candidate_controlled_committee_name'],
-      );
+      return {
+        candidateId,
+        name: candidate['candidate_name'],
+        committee_name: candidate['candidate_controlled_committee_name'],
+        by_occupation:
+          await this.candidateListService.getContributionByOccupation(
+            candidate['candidate_controlled_committee_name'],
+          ),
+        by_employer: await this.candidateListService.getContributionByEmployer(
+          candidate['candidate_controlled_committee_name'],
+        ),
+        // by_name: await this.candidateListService.getContributionByName(
+        //   candidate['candidate_controlled_committee_name'],
+        // ),
+      };
     } catch (error) {
       console.log('Error in: getCandidateDetailsRaisedByIndustry');
       return {
