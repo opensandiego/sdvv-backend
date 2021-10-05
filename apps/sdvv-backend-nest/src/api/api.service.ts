@@ -146,4 +146,31 @@ export class APIService {
       return { error: 'Error getting amounts for the candidate expanded card' };
     }
   }
+
+  async getCandidateDetailsHeader(candidateId: string) {
+    try {
+      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+        candidateId,
+      );
+
+      return {
+        candidateId,
+        name: candidate['candidate_name'],
+        raised: await this.candidateSummaryService.getRaisedSum(
+          candidate['candidate_controlled_committee_name'],
+        ),
+        donors: await this.candidateSummaryService.getContributionCount(
+          candidate['candidate_controlled_committee_name'],
+        ),
+        average_donation: await this.candidateSummaryService.getContributionAvg(
+          candidate['candidate_controlled_committee_name'],
+        ),
+      };
+    } catch (error) {
+      console.log('Error in: getCandidateDetailsHeader');
+      return {
+        error: 'Error getting amounts for the candidate details header',
+      };
+    }
+  }
 }
