@@ -19,17 +19,17 @@ import { DatabaseModule } from '@app/sdvv-database';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
-    EfileApiDataModule,
-    DatabaseModule,
-    ChartDataModule,
-    QueueProducerModule,
-    APIModule,
+    // BullModule.forRoot({
+    //   redis: {
+    //     host: 'localhost',
+    //     port: 6379,
+    //   },
+    // }),
+    // EfileApiDataModule,
+    // DatabaseModule,
+    // ChartDataModule,
+    // QueueProducerModule,
+    // APIModule,
   ],
   controllers: [AppController],
   providers: [AppService],
