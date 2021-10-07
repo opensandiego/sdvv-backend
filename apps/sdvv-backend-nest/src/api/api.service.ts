@@ -361,25 +361,18 @@ export class APIService {
         candidateId,
         name: candidate['candidate_name'],
         committee_name: candidate['candidate_controlled_committee_name'],
-        support_groups: [
-          {
-            name: 'Committee A',
-            amount: '26000',
-            percent: '20.8',
-          },
-          {
-            name: 'Committee B',
-            amount: '24000',
-            percent: '19.1',
-          },
-        ],
-        opposed_groups: [
-          {
-            name: 'Committee 1',
-            amount: '22000',
-            percent: '14.2',
-          },
-        ],
+        support_groups:
+          await this.candidateIndependentExpendituresService.supportList(
+            candidate['last_name'],
+            candidate['election_date'],
+            5,
+          ),
+        opposed_groups:
+          await this.candidateIndependentExpendituresService.opposeList(
+            candidate['last_name'],
+            candidate['election_date'],
+            5,
+          ),
       };
     } catch (error) {
       console.log('Error in: getCandidateDetailsOutsideMoney');
