@@ -20,10 +20,11 @@ import { DatabaseModule } from '@app/sdvv-database';
       useClass: TypeOrmConfigService,
     }),
     BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+      redis: process.env.REDIS_URL,
+      // redis: {
+      //   host: 'localhost',
+      //   port: 6379,
+      // },
     }),
     EfileApiDataModule,
     DatabaseModule,
