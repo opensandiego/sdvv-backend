@@ -6,7 +6,7 @@ import { BullModule } from '@nestjs/bull';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { TypeOrmConfigService } from './config/database.config';
+import { getConnectionOptions } from 'typeorm';
 import { ChartDataModule } from './chart.data/chart.data.module';
 import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
@@ -17,7 +17,10 @@ import { DatabaseModule } from '@app/sdvv-database';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
+      useFactory: async () =>
+        Object.assign(await getConnectionOptions(), {
+          autoLoadEntities: true,
+        }),
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
