@@ -13,6 +13,15 @@ function getTlsOptions() {
 module.exports = {
   type: `postgres`,
   url: `${process.env.DATABASE_URL}`,
-  synchronize: !isProduction(),
+  synchronize: false,
+  logging: false,
+  entities: [
+    'libs/efile-api-data/src/tables/entity/**/*.entity{.ts,.js}',
+    'libs/sdvv-database/src/jurisdictions/*.entity{.ts,.js}',
+    'libs/sdvv-database/src/zipCodes/*.entity{.ts,.js}',
+  ],
+  migrationsTableName: 'migrations_typeorm',
+  migrations: ['apps/migration/**/*{.ts,.js}'],
+  cli: { migrationsDir: 'apps/migration' },
   ssl: getTlsOptions(),
 };

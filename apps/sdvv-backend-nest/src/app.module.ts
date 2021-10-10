@@ -20,6 +20,8 @@ import { DatabaseModule } from '@app/sdvv-database';
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
           autoLoadEntities: true,
+          entities: null,
+          migrations: null,
         }),
     }),
     BullModule.forRoot({
