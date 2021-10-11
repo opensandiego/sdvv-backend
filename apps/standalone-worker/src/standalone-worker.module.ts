@@ -21,11 +21,7 @@ import { EfileApiDataModule } from '@app/efile-api-data';
       useClass: TypeOrmConfigService,
     }),
     BullModule.forRoot({
-      // configure this for production
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+      redis: process.env.REDIS_URL,
     }),
     HttpModule,
     F460DModule,
