@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class InitializeDatabase1633891355312 implements MigrationInterface {
-    name = 'InitializeDatabase1633891355312'
+export class InitializeDatabase1633970349277 implements MigrationInterface {
+    name = 'InitializeDatabase1633970349277'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -105,6 +105,75 @@ export class InitializeDatabase1633891355312 implements MigrationInterface {
             )
         `);
         await queryRunner.query(`
+            CREATE TABLE "f460d" (
+                "filer_id" character varying NOT NULL,
+                "filer_naml" character varying NOT NULL,
+                "report_num" character varying NOT NULL,
+                "e_filing_id" character varying NOT NULL,
+                "orig_e_filing_id" character varying NOT NULL,
+                "cmtte_type" character varying NOT NULL,
+                "rpt_date" character varying NOT NULL,
+                "from_date" character varying NOT NULL,
+                "thru_date" character varying NOT NULL,
+                "elect_date" character varying,
+                "rec_type" character varying NOT NULL,
+                "form_type" character varying NOT NULL,
+                "tran_id" character varying NOT NULL,
+                "entity_cd" character varying,
+                "payee_naml" character varying,
+                "payee_namf" character varying,
+                "payee_namt" character varying,
+                "payee_nams" character varying,
+                "payee_adr1" character varying,
+                "payee_adr2" character varying,
+                "payee_city" character varying,
+                "payee_st" character varying,
+                "payee_zip4" character varying,
+                "expn_date" character varying NOT NULL,
+                "amount" numeric NOT NULL,
+                "cum_ytd" numeric NOT NULL,
+                "expn_code" character varying,
+                "expn_dscr" character varying,
+                "agent_naml" character varying,
+                "agent_namf" character varying,
+                "agent_namt" character varying,
+                "agent_nams" character varying,
+                "cmte_id" character varying,
+                "tres_naml" character varying,
+                "tres_namf" character varying,
+                "tres_namt" character varying,
+                "tres_nams" character varying,
+                "tres_adr1" character varying,
+                "tres_adr2" character varying,
+                "tres_city" character varying,
+                "tres_st" character varying,
+                "tres_zip4" character varying,
+                "cand_naml" character varying,
+                "cand_namf" character varying,
+                "cand_namt" character varying,
+                "cand_nams" character varying,
+                "office_cd" character varying,
+                "office_dscr" character varying,
+                "juris_cd" character varying,
+                "juris_dscr" character varying,
+                "dist_no" character varying,
+                "off_s_h_cd" character varying,
+                "bal_name" character varying,
+                "bal_num" character varying,
+                "bal_juris" character varying,
+                "supp_opp_cd" character varying,
+                "memo_code" boolean NOT NULL,
+                "memo_refno" character varying,
+                "bakref_tid" character varying,
+                "g_from_e_f" character varying,
+                "xref_schnm" character varying,
+                "xref_match" character varying,
+                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+                CONSTRAINT "PK_829cb8db29093742683a93a5871" PRIMARY KEY ("e_filing_id", "form_type", "tran_id")
+            )
+        `);
+        await queryRunner.query(`
             CREATE TABLE "jurisdiction" (
                 "city" character varying NOT NULL,
                 "type" character varying NOT NULL,
@@ -164,6 +233,9 @@ export class InitializeDatabase1633891355312 implements MigrationInterface {
         `);
         await queryRunner.query(`
             DROP TABLE "jurisdiction"
+        `);
+        await queryRunner.query(`
+            DROP TABLE "f460d"
         `);
         await queryRunner.query(`
             DROP TABLE "filing"
