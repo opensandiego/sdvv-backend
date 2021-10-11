@@ -54,22 +54,4 @@ export class TransactionsXLSXService {
         return null;
     }
   }
-
-  // private processJobWithTimer(jobInput) {
-  //   const start: Date = new Date();
-
-  //   return this.processJob(jobInput).pipe(
-  //     map(() =>
-  //       console.info(
-  //         'Execution time: %d',
-  //         (new Date().valueOf() - start.valueOf()) / 1000,
-  //         'seconds',
-  //       ),
-  //     ),
-  //     catchError(() => {
-  //       console.log('Error: in updated from eFile bulk download');
-  //       return 'Error running task';
-  //     }),
-  //   );
-  // }
 }
