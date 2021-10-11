@@ -23,7 +23,7 @@ export class TransactionsXLSXService {
 
   private async downloadValidateWorksheet(year, options) {
     const workbook = await firstValueFrom(
-      this.transactionsXLSXDownloadService.getXLSXFile(year),
+      this.transactionsXLSXDownloadService.getXLSXFile(year, options.sheetName),
     );
 
     const classes = await this.utilsService.getValidatedClass(

@@ -11,11 +11,15 @@ export class TransactionsXLSXDownloadService {
   private eFileBulkExportUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url';
 
-  public getXLSXFile(fileYear: number, mostRecent = false): Observable<any> {
+  public getXLSXFile(
+    fileYear: number,
+    sheetName?: string,
+    mostRecent = false,
+  ): Observable<any> {
     return of(fileYear).pipe(
       mergeMap((year) => this.getDownloadURL(year, mostRecent)),
       mergeMap((url) => this.downloadXLSXFile(url)),
-      mergeMap((data) => this.getXLSXWorkbook(data)),
+      mergeMap((data) => this.getXLSXWorkbook(data, sheetName)),
     );
   }
 
@@ -52,10 +56,15 @@ export class TransactionsXLSXDownloadService {
     );
   }
 
-  private getXLSXWorkbook(data: ArrayBuffer) {
+  private getXLSXWorkbook(data: ArrayBuffer, worksheetName?: string) {
     return of(data).pipe(
       map((data) => new Uint8Array(data)),
-      map((data) => XLSX.read(data, { type: 'array' })),
+      map((data) => {
+        return XLSX.read(data, {
+          type: 'array',
+          sheets: worksheetName,
+        });
+      }),
       catchError((error) => {
         console.log('Error converting downloaded file to xlsx format');
         throw error;
