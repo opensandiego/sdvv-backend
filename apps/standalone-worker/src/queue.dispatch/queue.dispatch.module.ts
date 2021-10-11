@@ -13,13 +13,6 @@ import { QueueConsumerProcess } from './queue.consumer.process';
     ZipCodeCSVModule,
     ProcessDataModule,
     EFileApiModule,
-    BullModule.forRoot({
-      // configure this for production
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
     BullModule.registerQueue({
       name: 'worker-add-data',
     }),
@@ -28,5 +21,6 @@ import { QueueConsumerProcess } from './queue.consumer.process';
     }),
   ],
   providers: [QueueConsumerAdd, QueueConsumerProcess],
+  exports: [QueueConsumerAdd, QueueConsumerProcess],
 })
 export class QueueDispatchModule {}
