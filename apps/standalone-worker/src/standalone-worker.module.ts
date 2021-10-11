@@ -10,7 +10,9 @@ import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
 import { TransactionsXLSXModule } from './transactions.xlsx/transactions.xlsx.module';
 import { F460DModule } from '@app/sdvv-database/f460d/f460d.module';
 import { ZipCodeCSVModule } from './zip.code.csv/zip.code.csv.module';
-import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
+import { EFileApiModule } from './efile.api/efile.api.module';
+import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
+import { EfileApiDataModule } from '@app/efile-api-data';
 
 @Module({
   imports: [
@@ -26,6 +28,14 @@ import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
       },
     }),
     HttpModule,
+    F460DModule,
+    QueueDispatchModule,
+    TransactionsXLSXModule,
+    ZipCodeCSVModule,
+    DatabaseModule,
+    EfileApiDataModule,
+    EFileApiModule,
+    ProcessDataModule,
   ],
   providers: [StandaloneWorkerService],
   exports: [],
