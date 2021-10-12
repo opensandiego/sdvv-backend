@@ -1,4 +1,56 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/sdvv-backend-nest/src",
+  "monorepo": true,
+  "root": "apps/sdvv-backend-nest",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json",
+    "assets": [
+      {
+        "include": "**/*.csv"
+      },
+      {
+        "include": "**/*.json"
+      }
+    ]
+  },
+  "projects": {
+    "sdvv-backend-nest": {
+      "type": "application",
+      "root": "apps/sdvv-backend-nest",
+      "entryFile": "main",
+      "sourceRoot": "apps/sdvv-backend-nest/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
+      }
+    },
+    "standalone-worker": {
+      "type": "application",
+      "root": "apps/standalone-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/standalone-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/standalone-worker/tsconfig.app.json"
+      }
+    },
+    "sdvv-database": {
+      "type": "library",
+      "root": "libs/sdvv-database",
+      "entryFile": "index",
+      "sourceRoot": "libs/sdvv-database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/sdvv-database/tsconfig.lib.json"
+      }
+    },
+    "efile-api-data": {
+      "type": "library",
+      "root": "libs/efile-api-data",
+      "entryFile": "index",
+      "sourceRoot": "libs/efile-api-data/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/efile-api-data/tsconfig.lib.json"
+      }
+    }
+  }
 }
