@@ -20,6 +20,10 @@ export class APIController {
     private apiService: APIService,
   ) {}
 
+  // @Get('elections')
+
+  // @Get('candidates/:election_id')
+
   @Get('summary/:election_id')
   async getSummary(
     @Param('election_id') electionId: string,
