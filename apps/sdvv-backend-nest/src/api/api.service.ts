@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SharedQueryService } from '@app/efile-api-data/queries/shared.query.service';
 import { ElectionOfficeService } from '@app/efile-api-data/queries/election.office.service';
 import { RaisedCommitteeService } from '@app/efile-api-data/queries/raised.committee.service';
@@ -6,6 +6,8 @@ import { CandidateSummaryService } from '@app/efile-api-data/queries/candidate.s
 import { CandidateIndependentExpendituresService } from '@app/efile-api-data/queries/candidate.independent.expenditures.service';
 import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
 import { CandidateLocationContributionsService } from '@app/efile-api-data/queries/candidate.location.contributions.service';
+import { OfficeSummary } from './interfaces/office.summary';
+import { CandidateCard } from './interfaces/candidate.card';
 
 @Injectable()
 export class APIService {
@@ -19,7 +21,7 @@ export class APIService {
     private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
-  async getOfficesSummary(electionId: string) {
+  async getOfficesSummary(electionId: string): Promise<OfficeSummary[]> {
     try {
       const offices = await this.electionOfficeService.getOffices(electionId);
 
@@ -34,11 +36,11 @@ export class APIService {
       return offices;
     } catch (error) {
       console.log('Error in getOfficesSummary');
-      return { error: 'Error getting summary of offices.' };
+      throw new NotFoundException();
     }
   }
 
-  async getCandidateCard(candidateId: string) {
+  async getCandidateCard(candidateId: string): Promise<CandidateCard> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
@@ -54,15 +56,18 @@ export class APIService {
         );
 
       return {
-        candidateId,
+        id: candidateId,
         name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
+        description: '',
+        // committee_name: candidate['candidate_controlled_committee_name'],
         raised: raised,
         donors: donorsCount,
+        candidateImgURL: '',
+        website: '',
       };
     } catch (error) {
       console.log('Error in: getCandidateCard');
-      return { error: 'Error getting amounts for the candidate card' };
+      throw new NotFoundException();
     }
   }
 

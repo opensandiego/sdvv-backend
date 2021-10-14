@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { APIService } from './api.service';
+import { OfficeSummary } from './interfaces/office.summary';
+import { CandidateCard } from './interfaces/candidate.card';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -19,12 +21,16 @@ export class APIController {
   ) {}
 
   @Get('summary/:election_id')
-  async getSummary(@Param('election_id') electionId: string) {
+  async getSummary(
+    @Param('election_id') electionId: string,
+  ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummary(electionId);
   }
 
   @Get('candidate/card/:candidate_id')
-  async getCandidateCard(@Param('candidate_id') candidateId: string) {
+  async getCandidateCard(
+    @Param('candidate_id') candidateId: string,
+  ): Promise<CandidateCard> {
     return await this.apiService.getCandidateCard(candidateId);
   }
 
