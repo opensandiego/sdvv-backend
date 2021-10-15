@@ -4,6 +4,7 @@ import { ZipCodeCSVModule } from '../zip.code.csv/zip.code.csv.module';
 import { TransactionsXLSXModule } from '../transactions.xlsx/transactions.xlsx.module';
 import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
 import { EFileApiModule } from '../efile.api/efile.api.module';
+import { QueueService } from './queue.service';
 import { QueueConsumerAdd } from './queue.consumer.add';
 import { QueueConsumerProcess } from './queue.consumer.process';
 
@@ -20,7 +21,7 @@ import { QueueConsumerProcess } from './queue.consumer.process';
       name: 'worker-process-data',
     }),
   ],
-  providers: [QueueConsumerAdd, QueueConsumerProcess],
+  providers: [QueueService, QueueConsumerAdd, QueueConsumerProcess],
   exports: [QueueConsumerAdd, QueueConsumerProcess],
 })
 export class QueueDispatchModule {}
