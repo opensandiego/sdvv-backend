@@ -2,8 +2,8 @@ export interface CandidateCard {
   id: string;
   name: string;
   description: string;
-  raised: number;
-  donors: number;
+  raised: string;
+  donors: string;
   candidateImgURL: string;
   website: string;
 }

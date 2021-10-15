@@ -1,14 +1,14 @@
 export interface RaisedVsSpent {
   id: string;
-  raised: number;
-  spent: number;
-  averageDonation: number;
+  raised: string;
+  spent: string;
+  averageDonation: string;
 }
 
 export interface RaisedInOut {
   id: string;
-  inside: number;
-  outside: number;
+  inside: string;
+  outside: string;
   areaName: string; // Example: 'City of San Diego'
   jurisdiction: string; // Example: 'City' || 'District'
   jurisdictionSuffix?: string; // Examples: '1', '5'
@@ -16,15 +16,15 @@ export interface RaisedInOut {
 
 export interface OutsideMoney {
   id: string;
-  support: number;
-  oppose: number;
-  scale?: number;
+  support: string;
+  oppose: string;
+  scale?: string;
 }
 
 interface Group {
   name: string;
-  amount: number;
-  percent: number;
+  amount: string;
+  percent: string;
 }
 
 export interface DonationsByGroup {
