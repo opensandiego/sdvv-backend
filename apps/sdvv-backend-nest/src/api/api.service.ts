@@ -7,7 +7,6 @@ import { CandidateIndependentExpendituresService } from '@app/efile-api-data/que
 import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
 import { CandidateLocationContributionsService } from '@app/efile-api-data/queries/candidate.location.contributions.service';
 import { OfficeSummary } from './interfaces/office.summary';
-import { CandidateCard } from './interfaces/candidate.card';
 
 @Injectable()
 export class APIService {
@@ -36,37 +35,6 @@ export class APIService {
       return offices;
     } catch (error) {
       console.log('Error in getOfficesSummary');
-      throw new NotFoundException();
-    }
-  }
-
-  async getCandidateCard(candidateId: string): Promise<CandidateCard> {
-    try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
-        candidateId,
-      );
-
-      const raised = await this.candidateSummaryService.getRaisedSum(
-        candidate['candidate_controlled_committee_name'],
-      );
-
-      const donorsCount =
-        await this.candidateSummaryService.getContributionCount(
-          candidate['candidate_controlled_committee_name'],
-        );
-
-      return {
-        id: candidateId,
-        name: candidate['candidate_name'],
-        description: '',
-        // committee_name: candidate['candidate_controlled_committee_name'],
-        raised: raised,
-        donors: donorsCount,
-        candidateImgURL: '',
-        website: '',
-      };
-    } catch (error) {
-      console.log('Error in: getCandidateCard');
       throw new NotFoundException();
     }
   }

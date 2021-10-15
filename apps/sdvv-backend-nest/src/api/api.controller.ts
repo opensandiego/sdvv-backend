@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { APIService } from './api.service';
+import { APICandidateCardService } from './api.candidate.card.service';
 import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateCard } from './interfaces/candidate.card';
 
@@ -18,6 +19,7 @@ export class APIController {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private apiService: APIService,
+    private apiCandidateCardService: APICandidateCardService,
   ) {}
 
   // @Get('elections')
@@ -35,7 +37,7 @@ export class APIController {
   async getCandidateCard(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateCard> {
-    return await this.apiService.getCandidateCard(candidateId);
+    return await this.apiCandidateCardService.getCandidateCard(candidateId);
   }
 
   @Get('candidate/quick-view/:candidate_id')
