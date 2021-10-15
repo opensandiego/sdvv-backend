@@ -10,9 +10,10 @@ import {
 import { Cache } from 'cache-manager';
 import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
+import { APICandidateQuickViewService } from './api.candidate.quickview.service';
+import { APICandidateDetailsService } from './api.candidate.details.service';
 import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateCard } from './interfaces/candidate.card';
-import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -22,6 +23,7 @@ export class APIController {
     private apiService: APIService,
     private apiCandidateCardService: APICandidateCardService,
     private apiCandidateQuickViewService: APICandidateQuickViewService,
+    private apiCandidateDetailsService: APICandidateDetailsService,
   ) {}
 
   // @Get('elections')
@@ -51,21 +53,25 @@ export class APIController {
 
   @Get('candidate/details/header/:candidate_id')
   async getCandidateDetailsHeader(@Param('candidate_id') candidateId: string) {
-    return await this.apiService.getCandidateDetailsHeader(candidateId);
+    return await this.apiCandidateDetailsService.getCandidateDetailsHeader(
+      candidateId,
+    );
   }
 
   @Get('candidate/details/raised-spent/:candidate_id')
   async getCandidateDetailsRaisedSpent(
     @Param('candidate_id') candidateId: string,
   ) {
-    return await this.apiService.getCandidateDetailsRaisedSpent(candidateId);
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedSpent(
+      candidateId,
+    );
   }
 
   @Get('candidate/details/raised-by-industry/:candidate_id')
   async getCandidateDetailsRaisedByIndustry(
     @Param('candidate_id') candidateId: string,
   ) {
-    return await this.apiService.getCandidateDetailsRaisedByIndustry(
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedByIndustry(
       candidateId,
     );
   }
@@ -74,7 +80,7 @@ export class APIController {
   async getCandidateDetailsRaisedByLocation(
     @Param('candidate_id') candidateId: string,
   ) {
-    return await this.apiService.getCandidateDetailsRaisedByLocation(
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedByLocation(
       candidateId,
     );
   }
@@ -83,6 +89,8 @@ export class APIController {
   async getCandidateDetailsOutsideMoney(
     @Param('candidate_id') candidateId: string,
   ) {
-    return await this.apiService.getCandidateDetailsOutsideMoney(candidateId);
+    return await this.apiCandidateDetailsService.getCandidateDetailsOutsideMoney(
+      candidateId,
+    );
   }
 }

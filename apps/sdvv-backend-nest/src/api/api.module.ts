@@ -4,6 +4,7 @@ import { APIController } from './api.controller';
 import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
 import { APICandidateQuickViewService } from './api.candidate.quickview.service';
+import { APICandidateDetailsService } from './api.candidate.details.service';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { APICandidateQuickViewService } from './api.candidate.quickview.service'
     APIService,
     APICandidateCardService,
     APICandidateQuickViewService,
+    APICandidateDetailsService,
   ],
   controllers: [APIController],
 })
