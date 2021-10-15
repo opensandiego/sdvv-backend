@@ -14,6 +14,7 @@ import { APICandidateQuickViewService } from './api.candidate.quickview.service'
 import { APICandidateDetailsService } from './api.candidate.details.service';
 import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateCard } from './interfaces/candidate.card';
+import { CandidateQuickView } from './interfaces/candidate.quickview';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -45,7 +46,9 @@ export class APIController {
   }
 
   @Get('candidate/quick-view/:candidate_id')
-  async getCandidateCardExpanded(@Param('candidate_id') candidateId: string) {
+  async getCandidateCardExpanded(
+    @Param('candidate_id') candidateId: string,
+  ): Promise<CandidateQuickView> {
     return await this.apiCandidateQuickViewService.getCandidateCardExpanded(
       candidateId,
     );
