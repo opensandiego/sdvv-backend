@@ -14,10 +14,10 @@ export class CandidateListService {
     const groups = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('occupation')
+      .select('occupation', 'name')
       .where('filer_name = :filerName', { filerName: filerName })
       .addSelect('SUM(amount)', 'sum')
-      .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
+      // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .andWhere('occupation NOT IN (:...excludedOccupations)', {
         excludedOccupations: ['N/A'],
@@ -34,9 +34,9 @@ export class CandidateListService {
     const groups = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('employer')
+      .select('employer', 'name')
       .addSelect('SUM(amount)', 'sum')
-      .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
+      // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
       .where('filer_name = :filerName', { filerName: filerName })
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .andWhere('(employer IS NOT NULL)')

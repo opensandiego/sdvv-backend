@@ -12,7 +12,7 @@ export class CandidateSummaryService {
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
       .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
+      .andWhere('tx_type = :txType', { txType: 'RCPT' })
       .getRawOne();
 
     return raisedSum;
@@ -24,7 +24,7 @@ export class CandidateSummaryService {
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
       .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['D', 'G', 'E'] })
+      .andWhere('tx_type = :txType', { txType: 'EXPN' })
       .getRawOne();
 
     return spentSum;
@@ -39,7 +39,7 @@ export class CandidateSummaryService {
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .getRawOne();
 
-    return parseInt(contributionCount);
+    return contributionCount;
   }
 
   async getDonorsCount(filerName: string) {
@@ -55,7 +55,7 @@ export class CandidateSummaryService {
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .getRawOne();
 
-    return parseInt(contributionAvg);
+    return parseInt(contributionAvg).toString();
   }
 
   async getAverageDonation(filerName: string) {
@@ -92,7 +92,7 @@ export class CandidateSummaryService {
       })
       .getRawOne();
 
-    return sum ? sum : 0;
+    return sum ? sum : '0';
   }
 
   async getRaisedOtherSum(filerName: string) {

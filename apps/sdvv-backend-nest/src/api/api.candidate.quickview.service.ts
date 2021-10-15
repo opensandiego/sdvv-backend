@@ -4,6 +4,7 @@ import { CandidateSummaryService } from '@app/efile-api-data/queries/candidate.s
 import { CandidateIndependentExpendituresService } from '@app/efile-api-data/queries/candidate.independent.expenditures.service';
 import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
 import { CandidateLocationContributionsService } from '@app/efile-api-data/queries/candidate.location.contributions.service';
+import { CandidateQuickView } from './interfaces/candidate.quickview';
 
 @Injectable()
 export class APICandidateQuickViewService {
@@ -15,7 +16,9 @@ export class APICandidateQuickViewService {
     private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
-  async getCandidateCardExpanded(candidateId: string) {
+  async getCandidateCardExpanded(
+    candidateId: string,
+  ): Promise<CandidateQuickView> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
@@ -81,16 +84,33 @@ export class APICandidateQuickViewService {
       });
 
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        last_name: candidate['last_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
-        raised: raised,
-        spent: spent,
-        average_donation: averageDonation.toString(),
-        raised_in_out,
-        outside_money,
-        donations_by_group,
+        id: candidateId,
+        raisedVsSpent: {
+          id: candidateId,
+          raised: raised,
+          spent: spent,
+          averageDonation: averageDonation,
+        },
+        donationsByGroupData: {
+          id: candidateId,
+          groups: donations_by_group,
+        },
+        raisedInOut: {
+          id: candidateId,
+          inside: raised_in_out.in,
+          outside: raised_in_out.out,
+          areaName: candidate.agency,
+          jurisdiction: candidate.district
+            ? 'District'
+            : candidate.jurisdiction_type,
+          jurisdictionSuffix: candidate.district,
+        },
+        outsideMoney: {
+          id: candidateId,
+          support: outside_money.sup,
+          oppose: outside_money.opp,
+          // scale: 1,
+        },
       };
     } catch (error) {
       console.log('Error in: getCandidateCardExpanded');

@@ -87,7 +87,7 @@ export class CandidateIndependentExpendituresService {
     const groups = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('filer_name')
+      .select('filer_name', 'committee')
       .addSelect('SUM(amount)', 'sum')
       .addSelect(`round(SUM(amount)::decimal * 100 / :total, 1)`, 'average')
       .setParameter('total', expSum)

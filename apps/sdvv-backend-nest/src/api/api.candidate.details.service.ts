@@ -4,6 +4,11 @@ import { CandidateSummaryService } from '@app/efile-api-data/queries/candidate.s
 import { CandidateIndependentExpendituresService } from '@app/efile-api-data/queries/candidate.independent.expenditures.service';
 import { CandidateListService } from '@app/efile-api-data/queries/candidate.list.service';
 import { CandidateLocationContributionsService } from '@app/efile-api-data/queries/candidate.location.contributions.service';
+import { CandidateDetailsRaisedSpent } from './interfaces/candidate.details.raised.spent';
+import { CandidateDetailsHeader } from './interfaces/candidate.details.header';
+import { CandidateDetailsRaisedByGroup } from './interfaces/candidate.details.raised.group';
+import { CandidateDetailsRaisedByLocation } from './interfaces/candidate.details.raised.location';
+import { CandidateDetailsOutsideMoney } from './interfaces/candidate.details.outside.money';
 
 @Injectable()
 export class APICandidateDetailsService {
@@ -15,25 +20,29 @@ export class APICandidateDetailsService {
     private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
-  async getCandidateDetailsHeader(candidateId: string) {
+  async getCandidateDetailsHeader(
+    candidateId: string,
+  ): Promise<CandidateDetailsHeader> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
       );
 
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
+        id: candidateId,
+        candidateName: candidate['candidate_name'],
         raised: await this.candidateSummaryService.getRaisedSum(
           candidate['candidate_controlled_committee_name'],
         ),
         donors: await this.candidateSummaryService.getContributionCount(
           candidate['candidate_controlled_committee_name'],
         ),
-        average_donation: await this.candidateSummaryService.getContributionAvg(
+        averageDonation: await this.candidateSummaryService.getContributionAvg(
           candidate['candidate_controlled_committee_name'],
         ),
+        imageUrl: '',
+        website: '',
+        description: '',
       };
     } catch (error) {
       console.log('Error in: getCandidateDetailsHeader');
@@ -41,7 +50,9 @@ export class APICandidateDetailsService {
     }
   }
 
-  async getCandidateDetailsRaisedSpent(candidateId: string) {
+  async getCandidateDetailsRaisedSpent(
+    candidateId: string,
+  ): Promise<CandidateDetailsRaisedSpent> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
@@ -56,17 +67,17 @@ export class APICandidateDetailsService {
       );
 
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
+        id: candidateId,
+        // name: candidate['candidate_name'],
+        // committee_name: candidate['candidate_controlled_committee_name'],
         summary: {
-          total_raised: raised,
-          total_spent: spent,
-          balance: +raised - +spent,
+          totalRaised: raised,
+          totalSpent: spent,
+          balance: (+raised - +spent).toString(),
         },
-        cash_on_hand: '-1', // How should this amount be determined?
-        loans_and_debts: '-1', // How should this amount be determined?
-        raised_groups: [
+        cashOnHand: '-1', // How should this amount be determined?
+        loansAndDebts: '-1', // How should this amount be determined?
+        raisedGroups: [
           {
             name: 'In Kind',
             amount: await this.candidateSummaryService.getRaisedInKindSum(
@@ -87,7 +98,7 @@ export class APICandidateDetailsService {
           },
         ],
 
-        spent_groups: await this.candidateListService.getExpenseBySpendingCode(
+        spentGroup: await this.candidateListService.getExpenseBySpendingCode(
           candidate['candidate_controlled_committee_name'],
           5,
         ),
@@ -98,20 +109,22 @@ export class APICandidateDetailsService {
     }
   }
 
-  async getCandidateDetailsRaisedByIndustry(candidateId: string) {
+  async getCandidateDetailsRaisedByIndustry(
+    candidateId: string,
+  ): Promise<CandidateDetailsRaisedByGroup> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
       );
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
-        by_occupation:
+        id: candidateId,
+        // name: candidate['candidate_name'],
+        // committee_name: candidate['candidate_controlled_committee_name'],
+        occupations:
           await this.candidateListService.getContributionByOccupation(
             candidate['candidate_controlled_committee_name'],
           ),
-        by_employer: await this.candidateListService.getContributionByEmployer(
+        employers: await this.candidateListService.getContributionByEmployer(
           candidate['candidate_controlled_committee_name'],
         ),
         // by_name: await this.candidateListService.getContributionByName(
@@ -124,7 +137,9 @@ export class APICandidateDetailsService {
     }
   }
 
-  async getCandidateDetailsRaisedByLocation(candidateId: string) {
+  async getCandidateDetailsRaisedByLocation(
+    candidateId: string,
+  ): Promise<CandidateDetailsRaisedByLocation> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
@@ -174,10 +189,10 @@ export class APICandidateDetailsService {
         );
 
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
-        contributionByLocation: [
+        id: candidateId,
+        // name: candidate['candidate_name'],
+        // committee_name: candidate['candidate_controlled_committee_name'],
+        locations: [
           {
             name: 'In District',
             amount: districtContributionSum,
@@ -206,23 +221,25 @@ export class APICandidateDetailsService {
     }
   }
 
-  async getCandidateDetailsOutsideMoney(candidateId: string) {
+  async getCandidateDetailsOutsideMoney(
+    candidateId: string,
+  ): Promise<CandidateDetailsOutsideMoney> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromCoeId(
         candidateId,
       );
 
       return {
-        candidateId,
-        name: candidate['candidate_name'],
-        committee_name: candidate['candidate_controlled_committee_name'],
-        support_groups:
+        id: candidateId,
+        // name: candidate['candidate_name'],
+        // committee_name: candidate['candidate_controlled_committee_name'],
+        supportGroups:
           await this.candidateIndependentExpendituresService.supportList(
             candidate['last_name'],
             candidate['election_date'],
             5,
           ),
-        opposed_groups:
+        oppositionGroups:
           await this.candidateIndependentExpendituresService.opposeList(
             candidate['last_name'],
             candidate['election_date'],
