@@ -3,6 +3,7 @@ import { QueriesModule } from '@app/efile-api-data/queries/queries.module';
 import { APIController } from './api.controller';
 import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
+import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 
 @Module({
   imports: [
@@ -12,7 +13,11 @@ import { APICandidateCardService } from './api.candidate.card.service';
     }),
     QueriesModule,
   ],
-  providers: [APIService, APICandidateCardService],
+  providers: [
+    APIService,
+    APICandidateCardService,
+    APICandidateQuickViewService,
+  ],
   controllers: [APIController],
 })
 export class APIModule {}

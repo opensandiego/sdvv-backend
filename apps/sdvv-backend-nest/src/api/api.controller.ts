@@ -12,6 +12,7 @@ import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
 import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateCard } from './interfaces/candidate.card';
+import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -20,6 +21,7 @@ export class APIController {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private apiService: APIService,
     private apiCandidateCardService: APICandidateCardService,
+    private apiCandidateQuickViewService: APICandidateQuickViewService,
   ) {}
 
   // @Get('elections')
@@ -42,7 +44,9 @@ export class APIController {
 
   @Get('candidate/quick-view/:candidate_id')
   async getCandidateCardExpanded(@Param('candidate_id') candidateId: string) {
-    return await this.apiService.getCandidateCardExpanded(candidateId);
+    return await this.apiCandidateQuickViewService.getCandidateCardExpanded(
+      candidateId,
+    );
   }
 
   @Get('candidate/details/header/:candidate_id')
