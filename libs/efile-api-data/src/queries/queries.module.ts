@@ -6,6 +6,7 @@ import { CandidateSummaryService } from './candidate.summary.service';
 import { CandidateIndependentExpendituresService } from './candidate.independent.expenditures.service';
 import { CandidateListService } from './candidate.list.service';
 import { CandidateLocationContributionsService } from './candidate.location.contributions.service';
+import { CandidateNavigationService } from './candidate.navigation.service';
 
 @Module({
   imports: [],
@@ -17,6 +18,7 @@ import { CandidateLocationContributionsService } from './candidate.location.cont
     CandidateIndependentExpendituresService,
     CandidateListService,
     CandidateLocationContributionsService,
+    CandidateNavigationService,
   ],
   exports: [
     SharedQueryService,
@@ -26,6 +28,7 @@ import { CandidateLocationContributionsService } from './candidate.location.cont
     CandidateIndependentExpendituresService,
     CandidateListService,
     CandidateLocationContributionsService,
+    CandidateNavigationService,
   ],
 })
 export class QueriesModule {}

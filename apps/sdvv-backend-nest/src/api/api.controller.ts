@@ -20,6 +20,7 @@ import { CandidateDetailsRaisedSpent } from './interfaces/candidate.details.rais
 import { CandidateDetailsRaisedByGroup } from './interfaces/candidate.details.raised.group';
 import { CandidateDetailsRaisedByLocation } from './interfaces/candidate.details.raised.location';
 import { CandidateDetailsOutsideMoney } from './interfaces/candidate.details.outside.money';
+import { CandidateNavigation } from './interfaces/candidate.navigation';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -34,7 +35,12 @@ export class APIController {
 
   // @Get('elections')
 
-  // @Get('candidates/:election_id')
+  @Get('candidates/navigation/:election_id')
+  async getCandidateNavigation(
+    @Param('election_id') electionId: string,
+  ): Promise<CandidateNavigation[]> {
+    return await this.apiService.getCandidateNavigation(electionId);
+  }
 
   @Get('summary/:election_id')
   async getSummary(
