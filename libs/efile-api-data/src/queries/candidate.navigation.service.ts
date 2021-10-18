@@ -6,16 +6,17 @@ import { CandidateEntity } from '../tables/entity/candidates.entity';
 export class CandidateNavigationService {
   constructor(private connection: Connection) {}
 
-  async getCandidateNavigation(electionId: string) {
+  async getCandidateNavigationByYear(year: string) {
     const candidateNavigation = await this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
-      .select('coe_id', 'id')
+      .select('candidate_id', 'id')
       .addSelect('candidate_name', 'fullName')
       .addSelect('office', 'officeType')
       .addSelect('jurisdiction_name')
       .addSelect('district', 'seatName')
-      .where('election_id = :electionId', { electionId: electionId })
+      .addSelect('in_general_election', 'inGeneralElection')
+      .where('election_year = :year', { year })
       .getRawMany();
 
     candidateNavigation.forEach((candidate) => {
@@ -23,10 +24,6 @@ export class CandidateNavigationService {
         ? `${candidate.officeType} ${candidate.jurisdiction_name} - Dist ${candidate.seatName}`
         : `${candidate.officeType} ${candidate.jurisdiction_name}`;
       candidate.seatType = candidate.seatName ? 'district' : null;
-      // candidate.seat = candidate.seatName // seat is temporary
-      //   ? { name: candidate.seatName, type: 'district' }
-      //   : null;
-      candidate.inGeneralElection = true;
 
       return candidate;
     });

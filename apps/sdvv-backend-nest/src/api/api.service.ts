@@ -32,13 +32,13 @@ export class APIService {
     }
   }
 
-  async getCandidateNavigation(
-    electionId: string,
+  async getCandidateNavigationByYear(
+    year: string,
   ): Promise<CandidateNavigation[]> {
     try {
       const candidates =
-        await this.candidateNavigationService.getCandidateNavigation(
-          electionId,
+        await this.candidateNavigationService.getCandidateNavigationByYear(
+          year,
         );
 
       return candidates;

@@ -35,11 +35,11 @@ export class APIController {
 
   // @Get('elections')
 
-  @Get('candidates/navigation/:election_id')
-  async getCandidateNavigation(
-    @Param('election_id') electionId: string,
+  @Get('candidates/navigation/year/:election_year')
+  async getCandidateNavigationByYear(
+    @Param('election_year') year: number,
   ): Promise<CandidateNavigation[]> {
-    return await this.apiService.getCandidateNavigation(electionId);
+    return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
   @Get('summary/:election_id')
