@@ -13,9 +13,9 @@ export class APIService {
     private candidateNavigationService: CandidateNavigationService,
   ) {}
 
-  async getOfficesSummary(electionId: string): Promise<OfficeSummary[]> {
+  async getOfficesSummaryByYear(year: string): Promise<OfficeSummary[]> {
     try {
-      const offices = await this.electionOfficeService.getOffices(electionId);
+      const offices = await this.electionOfficeService.getOfficesByYear(year);
 
       for await (const office of offices) {
         const total = await this.raisedCommitteeService.getRaisedByCommittees(
@@ -27,7 +27,7 @@ export class APIService {
 
       return offices;
     } catch (error) {
-      console.log('Error in getOfficesSummary');
+      console.log('Error in getOfficesSummaryByYear');
       throw new NotFoundException();
     }
   }

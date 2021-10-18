@@ -6,7 +6,7 @@ import { CandidateEntity } from '../tables/entity/candidates.entity';
 export class ElectionOfficeService {
   constructor(private connection: Connection) {}
 
-  async getOffices(electionId?: string) {
+  async getOfficesByYear(year: string) {
     return await this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
@@ -16,7 +16,7 @@ export class ElectionOfficeService {
         'array_remove(array_agg("candidate_controlled_committee_name"), NULL)',
         'committee_names',
       )
-      .where('election_id = :electionId', { electionId: electionId })
+      .where('election_year = :year', { year })
       .groupBy('office')
       .getRawMany();
   }

@@ -42,11 +42,11 @@ export class APIController {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
-  @Get('summary/:election_id')
-  async getSummary(
-    @Param('election_id') electionId: string,
+  @Get('summary/year/:election_year')
+  async getSummaryByYear(
+    @Param('election_year') year: number,
   ): Promise<OfficeSummary[]> {
-    return await this.apiService.getOfficesSummary(electionId);
+    return await this.apiService.getOfficesSummaryByYear(year.toString());
   }
 
   @Get('candidate/card/:candidate_id')
