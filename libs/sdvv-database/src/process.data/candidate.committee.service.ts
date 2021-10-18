@@ -76,22 +76,6 @@ export class CandidateCommitteeService {
       .getMany();
   }
 
-  private async getCandidates(electionID?: string): Promise<CandidateEntity[]> {
-    let queryOptions = {};
-
-    if (electionID) {
-      queryOptions = {
-        where: {
-          election_id: electionID,
-        },
-      };
-    }
-
-    return await this.connection
-      .getRepository(CandidateEntity)
-      .find(queryOptions);
-  }
-
   private async updateCandidateCommittees() {
     let candidates: CandidateEntity[] = await this.getAllCandidates();
     candidates = await this.setCommitteesForCandidates(candidates);

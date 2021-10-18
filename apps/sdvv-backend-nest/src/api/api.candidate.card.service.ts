@@ -12,7 +12,7 @@ export class APICandidateCardService {
 
   async getCandidateCard(candidateId: string): Promise<CandidateCard> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
@@ -26,14 +26,14 @@ export class APICandidateCardService {
         );
 
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         name: candidate['candidate_name'],
-        description: '',
+        description: candidate['description'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         raised: raised,
         donors: donorsCount,
-        candidateImgURL: '',
-        website: '',
+        candidateImgURL: candidate['imageURL'],
+        website: candidate['website'],
       };
     } catch (error) {
       console.log('Error in: getCandidateCard');

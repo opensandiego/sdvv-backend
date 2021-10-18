@@ -9,16 +9,10 @@ import {
 @Entity({ name: 'candidate' })
 export class CandidateEntity {
   @Column()
-  coe_id: string;
-
-  @Column()
   filer_id: string;
 
   @Column()
   office_id: string;
-
-  @Column()
-  election_id: string;
 
   @Column()
   first_name: string;

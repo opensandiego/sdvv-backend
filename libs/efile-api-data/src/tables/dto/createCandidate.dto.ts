@@ -3,9 +3,6 @@ import { IsUUID } from 'class-validator';
 
 export class CreateCandidateDto {
   @IsUUID()
-  coe_id: string;
-
-  @IsUUID()
   filer_id: string;
 
   @IsUUID()

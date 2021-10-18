@@ -24,12 +24,12 @@ export class APICandidateDetailsService {
     candidateId: string,
   ): Promise<CandidateDetailsHeader> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         candidateName: candidate['candidate_name'],
         raised: await this.candidateSummaryService.getRaisedSum(
           candidate['candidate_controlled_committee_name'],
@@ -40,9 +40,9 @@ export class APICandidateDetailsService {
         averageDonation: await this.candidateSummaryService.getContributionAvg(
           candidate['candidate_controlled_committee_name'],
         ),
-        imageUrl: '',
-        website: '',
-        description: '',
+        imageUrl: candidate['imageURL'],
+        website: candidate['website'],
+        description: candidate['description'],
       };
     } catch (error) {
       console.log('Error in: getCandidateDetailsHeader');
@@ -54,7 +54,7 @@ export class APICandidateDetailsService {
     candidateId: string,
   ): Promise<CandidateDetailsRaisedSpent> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
@@ -67,7 +67,7 @@ export class APICandidateDetailsService {
       );
 
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         // name: candidate['candidate_name'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         summary: {
@@ -113,11 +113,11 @@ export class APICandidateDetailsService {
     candidateId: string,
   ): Promise<CandidateDetailsRaisedByGroup> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         // name: candidate['candidate_name'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         occupations:
@@ -141,7 +141,7 @@ export class APICandidateDetailsService {
     candidateId: string,
   ): Promise<CandidateDetailsRaisedByLocation> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
@@ -189,7 +189,7 @@ export class APICandidateDetailsService {
         );
 
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         // name: candidate['candidate_name'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         locations: [
@@ -225,24 +225,24 @@ export class APICandidateDetailsService {
     candidateId: string,
   ): Promise<CandidateDetailsOutsideMoney> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
       return {
-        id: candidateId,
+        id: candidate['candidate_id'],
         // name: candidate['candidate_name'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         supportGroups:
           await this.candidateIndependentExpendituresService.supportList(
             candidate['last_name'],
-            candidate['election_date'],
+            `12/31/${candidate['election_year']}`,
             5,
           ),
         oppositionGroups:
           await this.candidateIndependentExpendituresService.opposeList(
             candidate['last_name'],
-            candidate['election_date'],
+            `12/31/${candidate['election_year']}`,
             5,
           ),
       };

@@ -20,7 +20,7 @@ export class APICandidateQuickViewService {
     candidateId: string,
   ): Promise<CandidateQuickView> {
     try {
-      const candidate = await this.sharedQueryService.getCandidateFromCoeId(
+      const candidate = await this.sharedQueryService.getCandidateFromId(
         candidateId,
       );
 
@@ -39,14 +39,12 @@ export class APICandidateQuickViewService {
 
       const outside_money = {
         sup: await this.candidateIndependentExpendituresService.support(
-          //candidate['candidate_name'],
           candidate['last_name'],
-          candidate['election_date'],
+          `12/31/${candidate['election_year']}`,
         ),
         opp: await this.candidateIndependentExpendituresService.opposed(
-          //candidate['candidate_name'],
           candidate['last_name'],
-          candidate['election_date'],
+          `12/31/${candidate['election_year']}`,
         ),
       };
       outside_money['total'] = +outside_money.sup + +outside_money.opp;
