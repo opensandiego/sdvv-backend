@@ -14,9 +14,11 @@ export class QueueAddController {
     await this.workerQueueAdd.add('update-elections');
   }
 
-  @Post('candidates/:election_id')
-  async updateCandidates(@Param('election_id') electionID: string) {
-    await this.workerQueueAdd.add('update-candidates', { id: electionID });
+  @Post('candidates/year/:election_year')
+  async updateCandidatesByYear(@Param('election_year') electionYear: string) {
+    await this.workerQueueAdd.add('update-candidates-year', {
+      year: electionYear,
+    });
   }
 
   @Post('committees')

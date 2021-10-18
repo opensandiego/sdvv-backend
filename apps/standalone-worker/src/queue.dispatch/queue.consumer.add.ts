@@ -34,10 +34,10 @@ export class QueueConsumerAdd {
     await this.updateCommitteesService.updateCommittees();
   }
 
-  @Process('update-candidates')
-  async updateCandidates(job: Job) {
-    console.log('Starting Candidates Job');
-    await this.candidatesUpdateService.updateCandidate(job.data['id']);
+  @Process('update-candidates-year')
+  async updateCandidatesYear(job: Job) {
+    console.log('Starting Candidates by Year Job');
+    await this.candidatesUpdateService.updateCandidatesYear(job.data['year']);
   }
 
   @Process('update-filings')

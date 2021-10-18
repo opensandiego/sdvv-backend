@@ -4,6 +4,7 @@ import { TransactionEntity } from '@app/efile-api-data/tables/entity/transaction
 import { FilingTransactionService } from './filing.transaction.service';
 import { CandidateCommitteeService } from './candidate.committee.service';
 import { UpdateIndepExpnService } from './update.indep.expn.service';
+import { CandidateYearService } from './candidates.year.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TransactionEntity])],
@@ -11,11 +12,13 @@ import { UpdateIndepExpnService } from './update.indep.expn.service';
     UpdateIndepExpnService,
     CandidateCommitteeService,
     FilingTransactionService,
+    CandidateYearService,
   ],
   exports: [
     UpdateIndepExpnService,
     CandidateCommitteeService,
     FilingTransactionService,
+    CandidateYearService,
   ],
 })
 export class ProcessDataModule {}

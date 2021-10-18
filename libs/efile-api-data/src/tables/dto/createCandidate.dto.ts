@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { IsUUID } from 'class-validator';
 
 export class CreateCandidateDto {
@@ -9,9 +10,6 @@ export class CreateCandidateDto {
 
   @IsUUID()
   office_id: string;
-
-  @IsUUID()
-  election_id: string;
 
   first_name: string;
 
@@ -41,4 +39,11 @@ export class CreateCandidateDto {
   jurisdiction_code: string;
 
   candidate_name: string;
+
+  election_year: string;
+
+  @Expose()
+  get candidate_id() {
+    return `${this.filer_id}|${this.election_year}`;
+  }
 }

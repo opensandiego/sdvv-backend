@@ -8,7 +8,7 @@ import {
 
 @Entity({ name: 'candidate' })
 export class CandidateEntity {
-  @PrimaryColumn()
+  @Column()
   coe_id: string;
 
   @Column()
@@ -65,6 +65,24 @@ export class CandidateEntity {
   // Fields below are not from eFile
   @Column({ nullable: true })
   candidate_controlled_committee_name: string;
+
+  @Column()
+  election_year: string;
+
+  @PrimaryColumn()
+  candidate_id: string;
+
+  @Column({ default: false })
+  in_general_election: boolean;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
+  imageURL: string;
+
+  @Column({ nullable: true })
+  website: string;
 
   @CreateDateColumn()
   createdAt: Date;
