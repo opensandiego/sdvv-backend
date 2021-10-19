@@ -17,6 +17,9 @@ export class CandidateNavigationService {
       .addSelect('district', 'seatName')
       .addSelect('in_general_election', 'inGeneralElection')
       .where('election_year = :year', { year })
+      .andWhere('office IN (:...cityOffices)', {
+        cityOffices: ['Mayor', 'City Council', 'City Attorney'],
+      })
       .orderBy('last_name', 'ASC')
       .getRawMany();
 
