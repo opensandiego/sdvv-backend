@@ -17,6 +17,7 @@ export class CandidateNavigationService {
       .addSelect('district', 'seatName')
       .addSelect('in_general_election', 'inGeneralElection')
       .where('election_year = :year', { year })
+      .orderBy('last_name', 'ASC')
       .getRawMany();
 
     candidateNavigation.forEach((candidate) => {
