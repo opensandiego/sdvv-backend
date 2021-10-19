@@ -43,4 +43,11 @@ export class CreateCandidateDto {
   get candidate_id() {
     return `${this.filer_id}|${this.election_year}`;
   }
+
+  @Expose()
+  get full_office_name() {
+    return this.district
+      ? `${this.office} ${this.jurisdiction_name} - Dist ${this.district}`
+      : `${this.office} ${this.jurisdiction_name}`;
+  }
 }

@@ -16,7 +16,7 @@ export class CandidateNavigationService {
       .select('candidate_id', 'id')
       .addSelect('candidate_name', 'fullName')
       .addSelect('office', 'officeType')
-      .addSelect('jurisdiction_name')
+      .addSelect('full_office_name', 'fullOfficeName')
       .addSelect('district', 'seatName')
       .addSelect('in_general_election', 'inGeneralElection')
       .where('election_year = :year', { year })
@@ -27,14 +27,7 @@ export class CandidateNavigationService {
       .getRawMany();
 
     candidateNavigation.forEach((candidate) => {
-      candidate.fullOfficeName = candidate.seatName
-        ? `${candidate.officeType} ${candidate.jurisdiction_name} - Dist ${candidate.seatName}`
-        : `${candidate.officeType} ${candidate.jurisdiction_name}`;
-
       candidate.seatType = candidate.seatName ? 'district' : null;
-
-      delete candidate.jurisdiction_name;
-
       return candidate;
     });
 

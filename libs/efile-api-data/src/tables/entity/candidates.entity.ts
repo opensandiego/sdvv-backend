@@ -61,6 +61,9 @@ export class CandidateEntity {
   candidate_controlled_committee_name: string;
 
   @Column()
+  full_office_name: string;
+
+  @Column()
   election_year: string;
 
   @PrimaryColumn()
