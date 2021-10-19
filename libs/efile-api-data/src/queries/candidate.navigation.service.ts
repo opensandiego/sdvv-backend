@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from '../tables/entity/candidates.entity';
+import { CandidateNavigation } from 'apps/sdvv-backend-nest/src/api/interfaces/candidate.navigation';
 
 @Injectable()
 export class CandidateNavigationService {
   constructor(private connection: Connection) {}
 
-  async getCandidateNavigationByYear(year: string) {
+  async getCandidateNavigationByYear(
+    year: string,
+  ): Promise<CandidateNavigation[]> {
     const candidateNavigation = await this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
@@ -27,7 +30,10 @@ export class CandidateNavigationService {
       candidate.fullOfficeName = candidate.seatName
         ? `${candidate.officeType} ${candidate.jurisdiction_name} - Dist ${candidate.seatName}`
         : `${candidate.officeType} ${candidate.jurisdiction_name}`;
+
       candidate.seatType = candidate.seatName ? 'district' : null;
+
+      delete candidate.jurisdiction_name;
 
       return candidate;
     });
