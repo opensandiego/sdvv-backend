@@ -16,14 +16,14 @@ export class CandidateListService {
       .createQueryBuilder()
       .select('occupation', 'name')
       .where('filer_name = :filerName', { filerName: filerName })
-      .addSelect('SUM(amount)', 'sum')
+      .addSelect('SUM(amount)', 'amount')
       // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
       .andWhere('occupation NOT IN (:...excludedOccupations)', {
         excludedOccupations: ['N/A'],
       })
       .groupBy('occupation')
-      .orderBy('sum', 'DESC')
+      .orderBy('amount', 'DESC')
       .limit(limit)
       .getRawMany();
 

@@ -47,7 +47,9 @@ export class APICandidateQuickViewService {
           `12/31/${candidate['election_year']}`,
         ),
       };
-      outside_money['total'] = +outside_money.sup + +outside_money.opp;
+      // outside_money['total'] = (
+      //   +outside_money.sup + +outside_money.opp
+      // ).toString();
 
       let zipCodes = null;
       if (candidate['district']) {
@@ -78,7 +80,7 @@ export class APICandidateQuickViewService {
         );
 
       donations_by_group.forEach((group) => {
-        group['average'] = Math.round((group.sum * 100) / raised).toString();
+        group['percent'] = Math.round((group.amount * 100) / raised).toString();
       });
 
       return {
@@ -105,8 +107,8 @@ export class APICandidateQuickViewService {
         },
         outsideMoney: {
           id: candidateId,
-          support: outside_money.sup,
-          oppose: outside_money.opp,
+          support: outside_money.sup.toString(),
+          oppose: outside_money.opp.toString(),
           // scale: 1,
         },
       };
