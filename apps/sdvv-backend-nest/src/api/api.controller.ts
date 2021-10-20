@@ -37,14 +37,14 @@ export class APIController {
 
   @Get('candidate-navigation')
   async getCandidateNavigation(
-    @Query('election-year', ParseIntPipe) year: number,
+    @Query('year', ParseIntPipe) year: number,
   ): Promise<CandidateNavigation[]> {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
   @Get('summary')
   async getSummary(
-    @Query('election-year', ParseIntPipe) year: number,
+    @Query('year', ParseIntPipe) year: number,
   ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
   }
