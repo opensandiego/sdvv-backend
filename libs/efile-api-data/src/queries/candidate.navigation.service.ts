@@ -14,7 +14,7 @@ export class CandidateNavigationService {
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('candidate_id', 'id')
-      .addSelect('candidate_name', 'fullName')
+      .addSelect(`CONCAT( first_name, ' ',  last_name )`, 'fullName')
       .addSelect('office', 'officeType')
       .addSelect('full_office_name', 'fullOfficeName')
       .addSelect('district', 'seatName')
