@@ -44,7 +44,7 @@ export class APIController {
 
   @Get('office-summary')
   async getOfficeSummary(
-    @Query('year', ParseIntPipe) year: number,
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
   ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
   }

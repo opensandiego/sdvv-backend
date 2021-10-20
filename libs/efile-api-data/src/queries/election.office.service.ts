@@ -8,7 +8,7 @@ export class ElectionOfficeService {
   constructor(private connection: Connection) {}
 
   async getOfficesByYear(year: string): Promise<OfficeSummary[]> {
-    return await this.connection
+    const query = await this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('office')
@@ -18,11 +18,18 @@ export class ElectionOfficeService {
         'committee_names',
       )
       .addSelect('MAX( election_year )', 'year')
-      .where('election_year = :year', { year })
-      .andWhere('office IN (:...cityOffices)', {
+      .where('office IN (:...cityOffices)', {
         cityOffices: ['Mayor', 'City Council', 'City Attorney'],
       })
       .groupBy('office')
-      .getRawMany();
+      .addGroupBy('election_year')
+      .orderBy('election_year', 'DESC')
+      .addOrderBy('office', 'DESC');
+
+    if (year !== '0') {
+      query.andWhere('election_year = :year', { year });
+    }
+
+    return await query.getRawMany();
   }
 }
