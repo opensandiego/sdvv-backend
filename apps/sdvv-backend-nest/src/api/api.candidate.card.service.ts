@@ -10,6 +10,22 @@ export class APICandidateCardService {
     private candidateSummaryService: CandidateSummaryService,
   ) {}
 
+  async getCandidateCards(options: {
+    office: string;
+    year: string;
+  }): Promise<CandidateCard[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const cards = [];
+    for await (const id of ids) {
+      cards.push(await this.getCandidateCard(id));
+    }
+    return cards;
+  }
+
   async getCandidateCard(candidateId: string): Promise<CandidateCard> {
     try {
       const candidate = await this.sharedQueryService.getCandidateFromId(

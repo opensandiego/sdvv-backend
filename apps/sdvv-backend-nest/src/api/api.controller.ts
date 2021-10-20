@@ -56,6 +56,17 @@ export class APIController {
     return await this.apiCandidateCardService.getCandidateCard(candidateId);
   }
 
+  @Get('candidate-cards')
+  async getCandidateCards(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office') office: string,
+  ) {
+    return await this.apiCandidateCardService.getCandidateCards({
+      office,
+      year: year.toString(),
+    });
+  }
+
   @Get('candidate-quick-view/:candidate_id')
   async getCandidateCardExpanded(
     @Param('candidate_id') candidateId: string,

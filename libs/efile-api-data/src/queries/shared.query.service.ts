@@ -23,4 +23,21 @@ export class SharedQueryService {
       .where('candidate_id = :candidateId', { candidateId })
       .getRawOne();
   }
+
+  async getCandidatesIds({ year = '0', office = '' } = {}) {
+    const query = this.connection
+      .getRepository(CandidateEntity)
+      .createQueryBuilder()
+      .select('candidate_id');
+
+    if (year !== '0') {
+      query.andWhere('election_year = :year', { year });
+    }
+
+    if (office !== '') {
+      query.andWhere('office = :office', { office });
+    }
+
+    return await query.getRawMany();
+  }
 }
