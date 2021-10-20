@@ -49,14 +49,14 @@ export class APIController {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
   }
 
-  @Get('candidate/card/:candidate_id')
+  @Get('candidate-card/:candidate_id')
   async getCandidateCard(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateCard> {
     return await this.apiCandidateCardService.getCandidateCard(candidateId);
   }
 
-  @Get('candidate/quick-view/:candidate_id')
+  @Get('candidate-quick-view/:candidate_id')
   async getCandidateCardExpanded(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateQuickView> {
@@ -65,7 +65,7 @@ export class APIController {
     );
   }
 
-  @Get('candidate/details/header/:candidate_id')
+  @Get('candidate-details-header/:candidate_id')
   async getCandidateDetailsHeader(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsHeader> {
@@ -74,7 +74,7 @@ export class APIController {
     );
   }
 
-  @Get('candidate/details/raised-spent/:candidate_id')
+  @Get('candidate-details-raised-spent/:candidate_id')
   async getCandidateDetailsRaisedSpent(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsRaisedSpent> {
@@ -83,7 +83,7 @@ export class APIController {
     );
   }
 
-  @Get('candidate/details/raised-by-industry/:candidate_id')
+  @Get('candidate-details-raised-by-industry/:candidate_id')
   async getCandidateDetailsRaisedByIndustry(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsRaisedByGroup> {
@@ -92,7 +92,7 @@ export class APIController {
     );
   }
 
-  @Get('candidate/details/raised-by-location/:candidate_id')
+  @Get('candidate-details-raised-by-location/:candidate_id')
   async getCandidateDetailsRaisedByLocation(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsRaisedByLocation> {
@@ -101,7 +101,7 @@ export class APIController {
     );
   }
 
-  @Get('candidate/details/raised-outside-money/:candidate_id')
+  @Get('candidate-details-raised-outside-money/:candidate_id')
   async getCandidateDetailsOutsideMoney(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsOutsideMoney> {
