@@ -10,7 +10,7 @@ export class CandidateNavigationService {
   async getCandidateNavigationByYear(
     year: string,
   ): Promise<CandidateNavigation[]> {
-    const candidateNavigation = await this.connection
+    const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('candidate_id', 'id')
@@ -20,12 +20,16 @@ export class CandidateNavigationService {
       .addSelect('district', 'seatName')
       .addSelect('election_year', 'year')
       .addSelect('in_general_election', 'inGeneralElection')
-      .where('election_year = :year', { year })
-      .andWhere('office IN (:...cityOffices)', {
+      .where('office IN (:...cityOffices)', {
         cityOffices: ['Mayor', 'City Council', 'City Attorney'],
       })
-      .orderBy('last_name', 'ASC')
-      .getRawMany();
+      .orderBy('last_name', 'ASC');
+
+    if (year !== '0') {
+      query.andWhere('election_year = :year', { year });
+    }
+
+    const candidateNavigation = await query.getRawMany();
 
     candidateNavigation.forEach((candidate) => {
       candidate.seatType = candidate.seatName ? 'district' : null;

@@ -37,7 +37,7 @@ export class APIController {
 
   @Get('candidate-navigation')
   async getCandidateNavigation(
-    @Query('year', ParseIntPipe) year: number,
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
   ): Promise<CandidateNavigation[]> {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
