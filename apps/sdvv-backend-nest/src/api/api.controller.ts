@@ -42,8 +42,8 @@ export class APIController {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
-  @Get('summary')
-  async getSummary(
+  @Get('office-summary')
+  async getOfficeSummary(
     @Query('year', ParseIntPipe) year: number,
   ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
