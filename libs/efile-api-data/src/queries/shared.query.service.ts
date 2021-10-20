@@ -28,7 +28,10 @@ export class SharedQueryService {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
-      .select('candidate_id');
+      .select('candidate_id')
+      .andWhere('office IN (:...cityOffices)', {
+        cityOffices: ['Mayor', 'City Council', 'City Attorney'],
+      });
 
     if (year !== '0') {
       query.andWhere('election_year = :year', { year });
