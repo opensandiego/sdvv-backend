@@ -35,16 +35,16 @@ export class APIController {
 
   // @Get('elections')
 
-  @Get('candidates/navigation/year/:election_year')
-  async getCandidateNavigationByYear(
-    @Param('election_year') year: number,
+  @Get('candidate-navigation')
+  async getCandidateNavigation(
+    @Query('election-year', ParseIntPipe) year: number,
   ): Promise<CandidateNavigation[]> {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
-  @Get('summary/year/:election_year')
-  async getSummaryByYear(
-    @Param('election_year') year: number,
+  @Get('summary')
+  async getSummary(
+    @Query('election-year', ParseIntPipe) year: number,
   ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
   }

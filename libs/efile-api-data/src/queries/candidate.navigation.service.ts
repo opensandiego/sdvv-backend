@@ -18,6 +18,7 @@ export class CandidateNavigationService {
       .addSelect('office', 'officeType')
       .addSelect('full_office_name', 'fullOfficeName')
       .addSelect('district', 'seatName')
+      .addSelect('election_year', 'year')
       .addSelect('in_general_election', 'inGeneralElection')
       .where('election_year = :year', { year })
       .andWhere('office IN (:...cityOffices)', {

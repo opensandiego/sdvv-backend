@@ -22,7 +22,7 @@ export class APIService {
           office['committee_names'],
         );
         office.totalRaised = total;
-        delete office.committee_names;
+        delete office['committee_names'];
       }
 
       return offices;
