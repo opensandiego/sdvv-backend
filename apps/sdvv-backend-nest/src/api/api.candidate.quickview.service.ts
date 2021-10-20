@@ -16,7 +16,23 @@ export class APICandidateQuickViewService {
     private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
-  async getCandidateCardExpanded(
+  async getCandidateQuickViews(options: {
+    office: string;
+    year: string;
+  }): Promise<CandidateQuickView[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const quickViews = [];
+    for await (const id of ids) {
+      quickViews.push(await this.getCandidateQuickView(id));
+    }
+    return quickViews;
+  }
+
+  async getCandidateQuickView(
     candidateId: string,
   ): Promise<CandidateQuickView> {
     try {

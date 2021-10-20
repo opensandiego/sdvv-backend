@@ -67,11 +67,22 @@ export class APIController {
     });
   }
 
+  @Get('candidate-quick-views')
+  async getCandidateQuickViews(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office') office: string,
+  ) {
+    return await this.apiCandidateQuickViewService.getCandidateQuickViews({
+      office,
+      year: year.toString(),
+    });
+  }
+
   @Get('candidate-quick-view/:candidate_id')
-  async getCandidateCardExpanded(
+  async getCandidateQuickView(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateQuickView> {
-    return await this.apiCandidateQuickViewService.getCandidateCardExpanded(
+    return await this.apiCandidateQuickViewService.getCandidateQuickView(
       candidateId,
     );
   }
