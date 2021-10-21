@@ -10,7 +10,7 @@ export class CandidateSummaryService {
     const { sum: raisedSum } = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('SUM(amount)', 'sum')
+      .select('COALESCE(SUM(amount), 0)', 'sum')
       .andWhere('filer_name = :filerName', { filerName: filerName })
       .andWhere('tx_type = :txType', { txType: 'RCPT' })
       .getRawOne();
@@ -19,15 +19,15 @@ export class CandidateSummaryService {
   }
 
   async getSpentSum(filerName: string) {
-    const { sum: spentSum } = await this.connection
+    const { sum } = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('SUM(amount)', 'sum')
+      .select('COALESCE(SUM(amount), 0)', 'sum')
       .andWhere('filer_name = :filerName', { filerName: filerName })
       .andWhere('tx_type = :txType', { txType: 'EXPN' })
       .getRawOne();
 
-    return spentSum;
+    return sum;
   }
 
   async getContributionCount(filerName: string) {
@@ -66,7 +66,7 @@ export class CandidateSummaryService {
     const { sum } = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('SUM(amount)', 'sum')
+      .select('COALESCE(SUM(amount), 0)', 'sum')
       .where('filer_name = :filerName', { filerName: filerName })
       .andWhere('tx_type = :txType', { txType: 'RCPT' })
       .andWhere('NOT (employer = :na AND occupation = :na)', { na: 'N/A' })
@@ -77,14 +77,14 @@ export class CandidateSummaryService {
       // })
       .getRawOne();
 
-    return sum ? sum : 0;
+    return sum;
   }
 
   async getRaisedInKindSum(filerName: string) {
     const { sum } = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('SUM(amount)', 'sum')
+      .select('COALESCE(SUM(amount), 0)', 'sum')
       .where('filer_name = :filerName', { filerName: filerName })
       .andWhere('tx_type = :txType', { txType: 'RCPT' })
       .andWhere('spending_code iLike :spendingCode', {
@@ -92,14 +92,14 @@ export class CandidateSummaryService {
       })
       .getRawOne();
 
-    return sum ? sum : '0';
+    return sum;
   }
 
   async getRaisedOtherSum(filerName: string) {
     const { sum } = await this.connection
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
-      .select('SUM(amount)', 'sum')
+      .select('COALESCE(SUM(amount), 0)', 'sum')
       .where('filer_name = :filerName', { filerName: filerName })
       .andWhere('tx_type = :txType', { txType: 'RCPT' })
       .andWhere(
@@ -111,6 +111,6 @@ export class CandidateSummaryService {
       )
       .getRawOne();
 
-    return sum ? sum : 0;
+    return sum;
   }
 }
