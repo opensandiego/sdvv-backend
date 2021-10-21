@@ -76,22 +76,26 @@ export class APIController {
   @Get('candidate-cards')
   async getCandidateCards(
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
-    @Query('office') office: string,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
   ) {
     return await this.apiCandidateCardService.getCandidateCards({
-      office,
       year: year.toString(),
+      office,
+      district,
     });
   }
 
   @Get('candidate-quick-views')
   async getCandidateQuickViews(
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
-    @Query('office') office: string,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
   ) {
     return await this.apiCandidateQuickViewService.getCandidateQuickViews({
-      office,
       year: year.toString(),
+      office,
+      district,
     });
   }
 

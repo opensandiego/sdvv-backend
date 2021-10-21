@@ -24,7 +24,7 @@ export class SharedQueryService {
       .getRawOne();
   }
 
-  async getCandidatesIds({ year = '0', office = '' } = {}) {
+  async getCandidatesIds({ year = '0', office = '', district = '' } = {}) {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
@@ -38,7 +38,11 @@ export class SharedQueryService {
     }
 
     if (office !== '') {
-      query.andWhere('office = :office', { office });
+      query.andWhere('LOWER(office) = LOWER(:office)', { office });
+    }
+
+    if (district !== '') {
+      query.andWhere('district = :district', { district });
     }
 
     return await query.getRawMany();

@@ -11,8 +11,9 @@ export class APICandidateCardService {
   ) {}
 
   async getCandidateCards(options: {
-    office: string;
     year: string;
+    office: string;
+    district: string;
   }): Promise<CandidateCard[]> {
     const candidateIds = await this.sharedQueryService.getCandidatesIds(
       options,
@@ -46,9 +47,12 @@ export class APICandidateCardService {
         name: candidate['candidate_name'],
         description: candidate['description'],
         // committee_name: candidate['candidate_controlled_committee_name'],
+        year: candidate['election_year'],
+        office: candidate['office'],
+        district: candidate['district'],
         raised: raised,
         donors: donorsCount,
-        candidateImgURL: candidate['imageURL'],
+        candidateImgURL: candidate['image_url'],
         website: candidate['website'],
       };
     } catch (error) {

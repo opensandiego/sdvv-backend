@@ -19,6 +19,7 @@ export class APICandidateQuickViewService {
   async getCandidateQuickViews(options: {
     office: string;
     year: string;
+    district: string;
   }): Promise<CandidateQuickView[]> {
     const candidateIds = await this.sharedQueryService.getCandidatesIds(
       options,
