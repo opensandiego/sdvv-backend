@@ -36,7 +36,7 @@ export class CandidateService {
     }
 
     if (office) {
-      query.andWhere('office = :office', { office });
+      query.andWhere('LOWER(office) = LOWER(:office)', { office });
     }
 
     if (district) {
