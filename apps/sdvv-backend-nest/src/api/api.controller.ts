@@ -2,9 +2,12 @@ import {
   CacheInterceptor,
   CACHE_MANAGER,
   Controller,
+  DefaultValuePipe,
   Get,
   Inject,
   Param,
+  ParseIntPipe,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
@@ -21,6 +24,7 @@ import { CandidateDetailsRaisedByGroup } from './interfaces/candidate.details.ra
 import { CandidateDetailsRaisedByLocation } from './interfaces/candidate.details.raised.location';
 import { CandidateDetailsOutsideMoney } from './interfaces/candidate.details.outside.money';
 import { CandidateNavigation } from './interfaces/candidate.navigation';
+import { Candidate } from './interfaces/candidate';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -47,6 +51,19 @@ export class APIController {
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
   ): Promise<OfficeSummary[]> {
     return await this.apiService.getOfficesSummaryByYear(year.toString());
+  }
+
+  @Get('candidates')
+  async getCandidates(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<Candidate[]> {
+    return await this.apiService.getCandidates({
+      year: year.toString(),
+      office,
+      district,
+    });
   }
 
   @Get('candidate-card/:candidate_id')

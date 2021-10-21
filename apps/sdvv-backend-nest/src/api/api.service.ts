@@ -4,6 +4,8 @@ import { RaisedCommitteeService } from '@app/efile-api-data/queries/raised.commi
 import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateNavigation } from './interfaces/candidate.navigation';
 import { CandidateNavigationService } from '@app/efile-api-data/queries/candidate.navigation.service';
+import { CandidateService } from '@app/efile-api-data/queries/candidate.service';
+import { Candidate } from './interfaces/candidate';
 
 @Injectable()
 export class APIService {
@@ -11,6 +13,7 @@ export class APIService {
     private electionOfficeService: ElectionOfficeService,
     private raisedCommitteeService: RaisedCommitteeService,
     private candidateNavigationService: CandidateNavigationService,
+    private candidateService: CandidateService,
   ) {}
 
   async getOfficesSummaryByYear(year: string): Promise<OfficeSummary[]> {
@@ -44,6 +47,21 @@ export class APIService {
       return candidates;
     } catch (error) {
       console.log('Error in getCandidateNavigation');
+      throw new NotFoundException();
+    }
+  }
+
+  async getCandidates(options: {
+    year: string;
+    office: string;
+    district: string;
+  }): Promise<Candidate[]> {
+    try {
+      const candidates = await this.candidateService.getCandidates(options);
+
+      return candidates;
+    } catch (error) {
+      console.log('Error in getCandidates');
       throw new NotFoundException();
     }
   }

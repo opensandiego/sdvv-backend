@@ -38,6 +38,7 @@ export class CandidateEntity {
   @Column()
   jurisdiction_id: string;
 
+  // If district has a non-null value then the candidate is running for City Council and district is the district number
   @Column({ nullable: true })
   district: string;
 
@@ -76,7 +77,7 @@ export class CandidateEntity {
   description: string;
 
   @Column({ nullable: true })
-  imageURL: string;
+  image_url: string;
 
   @Column({ nullable: true })
   website: string;

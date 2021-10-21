@@ -33,7 +33,6 @@ export class CandidateNavigationService {
 
     candidateNavigation.forEach((candidate) => {
       candidate.seatType = candidate.seatName ? 'district' : null;
-      return candidate;
     });
 
     return candidateNavigation;
