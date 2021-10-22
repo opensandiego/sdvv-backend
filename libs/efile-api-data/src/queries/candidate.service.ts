@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { Candidate } from 'apps/sdvv-backend-nest/src/api/interfaces/candidate';
 import { CandidateEntity } from '../tables/entity/candidates.entity';
+import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
 
 @Injectable()
 export class CandidateService {
@@ -26,6 +27,20 @@ export class CandidateService {
       .addSelect('election_year', 'year')
       .addSelect('in_general_election')
       .addSelect('full_office_name')
+      .addSelect((subQuery1) => {
+        return subQuery1
+          .select('COALESCE(SUM(amount), 0)', 'sum')
+          .from(CalculationTransaction, 'transaction')
+          .where('filer_name = candidate_controlled_committee_name')
+          .andWhere('tx_type = :txType', { txType: 'RCPT' });
+      }, 'total_contributions')
+      .addSelect((subQuery2) => {
+        return subQuery2
+          .select('COUNT( DISTINCT name)', 'counts')
+          .from(CalculationTransaction, 'transaction')
+          .where('filer_name = candidate_controlled_committee_name')
+          .andWhere('tx_type = :txType', { txType: 'RCPT' });
+      }, 'contributor_count')
 
       .where('office IN (:...cityOffices)', {
         cityOffices: this.validOffices,
@@ -49,6 +64,10 @@ export class CandidateService {
       candidate.jurisdiction = candidate.district ? 'District' : 'City';
     });
 
-    return candidates;
+    const candidatesWithContributions = candidates.filter(
+      (candidate) => parseInt(candidate.total_contributions) > 0,
+    );
+
+    return candidatesWithContributions;
   }
 }
