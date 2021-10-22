@@ -58,6 +58,10 @@ export class CandidateService {
       query.andWhere('district = :district', { district });
     }
 
+    query.addOrderBy('office', 'DESC');
+    query.addOrderBy('district', 'ASC');
+    query.addOrderBy('last_name', 'ASC');
+
     const candidates = await query.getRawMany();
 
     candidates.forEach((candidate) => {
