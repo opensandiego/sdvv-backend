@@ -6,6 +6,7 @@ import {
   Get,
   Inject,
   Param,
+  ParseBoolPipe,
   ParseIntPipe,
   Query,
   UseInterceptors,
@@ -15,7 +16,6 @@ import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
 import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 import { APICandidateDetailsService } from './api.candidate.details.service';
-import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateCard } from './interfaces/candidate.card';
 import { CandidateQuickView } from './interfaces/candidate.quickview';
 import { CandidateDetailsHeader } from './interfaces/candidate.details.header';
@@ -24,6 +24,7 @@ import { CandidateDetailsRaisedByGroup } from './interfaces/candidate.details.ra
 import { CandidateDetailsRaisedByLocation } from './interfaces/candidate.details.raised.location';
 import { CandidateDetailsOutsideMoney } from './interfaces/candidate.details.outside.money';
 import { CandidateNavigation } from './interfaces/candidate.navigation';
+import { Office } from './interfaces/office';
 import { Candidate } from './interfaces/candidate';
 
 @Controller('api')
@@ -46,11 +47,16 @@ export class APIController {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
   }
 
-  @Get('office-summary')
-  async getOfficeSummary(
+  @Get('offices')
+  async getOffices(
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
-  ): Promise<OfficeSummary[]> {
-    return await this.apiService.getOfficesSummaryByYear(year.toString());
+    @Query('summary', new DefaultValuePipe(false), ParseBoolPipe)
+    summary: boolean,
+  ): Promise<Office[]> {
+    return await this.apiService.getOffices({
+      year: year.toString(),
+      getSummary: summary,
+    });
   }
 
   @Get('candidates')

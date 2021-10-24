@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class InitializeDatabase1634524704067 implements MigrationInterface {
-    name = 'InitializeDatabase1634524704067'
+export class InitializeDatabase1635109414610 implements MigrationInterface {
+    name = 'InitializeDatabase1635109414610'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -53,11 +53,12 @@ export class InitializeDatabase1634524704067 implements MigrationInterface {
                 "jurisdiction_code" character varying NOT NULL,
                 "candidate_name" character varying NOT NULL,
                 "candidate_controlled_committee_name" character varying,
+                "full_office_name" character varying NOT NULL,
                 "election_year" character varying NOT NULL,
                 "candidate_id" character varying NOT NULL,
                 "in_general_election" boolean NOT NULL DEFAULT false,
                 "description" character varying,
-                "imageURL" character varying,
+                "image_url" character varying,
                 "website" character varying,
                 "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
                 "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),

@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ElectionOfficeService } from '@app/efile-api-data/queries/election.office.service';
 import { RaisedCommitteeService } from '@app/efile-api-data/queries/raised.committee.service';
-import { OfficeSummary } from './interfaces/office.summary';
 import { CandidateNavigation } from './interfaces/candidate.navigation';
 import { CandidateNavigationService } from '@app/efile-api-data/queries/candidate.navigation.service';
 import { CandidateService } from '@app/efile-api-data/queries/candidate.service';
+import { Office } from './interfaces/office';
 import { Candidate } from './interfaces/candidate';
 
 @Injectable()
@@ -16,15 +16,17 @@ export class APIService {
     private candidateService: CandidateService,
   ) {}
 
-  async getOfficesSummaryByYear(year: string): Promise<OfficeSummary[]> {
+  async getOffices({ year = '0', getSummary = false } = {}): Promise<Office[]> {
     try {
       const offices = await this.electionOfficeService.getOfficesByYear(year);
 
       for await (const office of offices) {
-        const total = await this.raisedCommitteeService.getRaisedByCommittees(
-          office['committee_names'],
-        );
-        office.totalRaised = total;
+        if (getSummary) {
+          office['total_raised'] =
+            await this.raisedCommitteeService.getRaisedByCommittees(
+              office['committee_names'],
+            );
+        }
         delete office['committee_names'];
       }
 
