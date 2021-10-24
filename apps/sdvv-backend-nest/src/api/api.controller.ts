@@ -50,7 +50,7 @@ export class APIController {
   @Get('offices')
   async getOffices(
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
-    @Query('summary', new DefaultValuePipe(false), ParseBoolPipe)
+    @Query('summary', new DefaultValuePipe(true), ParseBoolPipe)
     summary: boolean,
   ): Promise<Office[]> {
     return await this.apiService.getOffices({

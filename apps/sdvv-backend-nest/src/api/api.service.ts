@@ -16,7 +16,7 @@ export class APIService {
     private candidateService: CandidateService,
   ) {}
 
-  async getOffices({ year = '0', getSummary = false } = {}): Promise<Office[]> {
+  async getOffices({ year = '0', getSummary = true } = {}): Promise<Office[]> {
     try {
       const offices = await this.electionOfficeService.getOfficesByYear(year);
 
