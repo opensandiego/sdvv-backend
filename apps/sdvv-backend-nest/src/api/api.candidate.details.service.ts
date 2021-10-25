@@ -20,6 +20,23 @@ export class APICandidateDetailsService {
     private candidateLocationContributionsService: CandidateLocationContributionsService,
   ) {}
 
+  async getCandidateDetailsHeaders(options: {
+    office: string;
+    year: string;
+    district: string;
+  }): Promise<CandidateDetailsHeader[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const results = [];
+    for await (const id of ids) {
+      results.push(await this.getCandidateDetailsHeader(id));
+    }
+    return results;
+  }
+
   async getCandidateDetailsHeader(
     candidateId: string,
   ): Promise<CandidateDetailsHeader> {
@@ -48,6 +65,23 @@ export class APICandidateDetailsService {
       console.log('Error in: getCandidateDetailsHeader');
       throw new NotFoundException();
     }
+  }
+
+  async getCandidateDetailsRaisedSpentMultiple(options: {
+    office: string;
+    year: string;
+    district: string;
+  }): Promise<CandidateDetailsRaisedSpent[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const results = [];
+    for await (const id of ids) {
+      results.push(await this.getCandidateDetailsRaisedSpent(id));
+    }
+    return results;
   }
 
   async getCandidateDetailsRaisedSpent(
@@ -109,6 +143,23 @@ export class APICandidateDetailsService {
     }
   }
 
+  async getCandidateDetailsRaisedByIndustryMultiple(options: {
+    office: string;
+    year: string;
+    district: string;
+  }): Promise<CandidateDetailsRaisedByGroup[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const results = [];
+    for await (const id of ids) {
+      results.push(await this.getCandidateDetailsRaisedByIndustry(id));
+    }
+    return results;
+  }
+
   async getCandidateDetailsRaisedByIndustry(
     candidateId: string,
   ): Promise<CandidateDetailsRaisedByGroup> {
@@ -135,6 +186,23 @@ export class APICandidateDetailsService {
       console.log('Error in: getCandidateDetailsRaisedByIndustry');
       throw new NotFoundException();
     }
+  }
+
+  async getCandidateDetailsRaisedByLocationMultiple(options: {
+    office: string;
+    year: string;
+    district: string;
+  }): Promise<CandidateDetailsRaisedByLocation[]> {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const results = [];
+    for await (const id of ids) {
+      results.push(await this.getCandidateDetailsRaisedByLocation(id));
+    }
+    return results;
   }
 
   async getCandidateDetailsRaisedByLocation(
@@ -219,6 +287,23 @@ export class APICandidateDetailsService {
       console.log('Error in: getCandidateDetailsRaisedByLocation');
       throw new NotFoundException();
     }
+  }
+
+  async getCandidateDetailsOutsideMoneyMultiple(options: {
+    office: string;
+    year: string;
+    district: string;
+  }) {
+    const candidateIds = await this.sharedQueryService.getCandidatesIds(
+      options,
+    );
+    const ids = candidateIds.map((id) => id.candidate_id);
+
+    const results = [];
+    for await (const id of ids) {
+      results.push(await this.getCandidateDetailsOutsideMoney(id));
+    }
+    return results;
   }
 
   async getCandidateDetailsOutsideMoney(

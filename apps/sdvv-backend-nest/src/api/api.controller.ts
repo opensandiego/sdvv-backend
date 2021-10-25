@@ -114,12 +114,40 @@ export class APIController {
     );
   }
 
+  @Get('candidate-details-header-multiple')
+  async getCandidateDetailsHeaders(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<CandidateDetailsHeader[]> {
+    return await this.apiCandidateDetailsService.getCandidateDetailsHeaders({
+      year: year.toString(),
+      office,
+      district,
+    });
+  }
+
   @Get('candidate-details-header/:candidate_id')
   async getCandidateDetailsHeader(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsHeader> {
     return await this.apiCandidateDetailsService.getCandidateDetailsHeader(
       candidateId,
+    );
+  }
+
+  @Get('candidate-details-raised-spent-multiple')
+  async getCandidateDetailsRaisedSpentMultiple(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<CandidateDetailsRaisedSpent[]> {
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedSpentMultiple(
+      {
+        year: year.toString(),
+        office,
+        district,
+      },
     );
   }
 
@@ -132,6 +160,21 @@ export class APIController {
     );
   }
 
+  @Get('candidate-details-raised-by-industry-multiple')
+  async getCandidateDetailsRaisedByIndustryMultiple(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<CandidateDetailsRaisedByGroup[]> {
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedByIndustryMultiple(
+      {
+        year: year.toString(),
+        office,
+        district,
+      },
+    );
+  }
+
   @Get('candidate-details-raised-by-industry/:candidate_id')
   async getCandidateDetailsRaisedByIndustry(
     @Param('candidate_id') candidateId: string,
@@ -141,12 +184,42 @@ export class APIController {
     );
   }
 
+  @Get('candidate-details-raised-by-location-multiple')
+  async getCandidateDetailsRaisedByLocationMultiple(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<CandidateDetailsRaisedByLocation[]> {
+    return await this.apiCandidateDetailsService.getCandidateDetailsRaisedByLocationMultiple(
+      {
+        year: year.toString(),
+        office,
+        district,
+      },
+    );
+  }
+
   @Get('candidate-details-raised-by-location/:candidate_id')
   async getCandidateDetailsRaisedByLocation(
     @Param('candidate_id') candidateId: string,
   ): Promise<CandidateDetailsRaisedByLocation> {
     return await this.apiCandidateDetailsService.getCandidateDetailsRaisedByLocation(
       candidateId,
+    );
+  }
+
+  @Get('candidate-details-raised-outside-money')
+  async getCandidateDetailsOutsideMoneyMultiple(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+    @Query('office', new DefaultValuePipe('')) office: string,
+    @Query('district', new DefaultValuePipe('')) district: string,
+  ): Promise<CandidateDetailsOutsideMoney[]> {
+    return await this.apiCandidateDetailsService.getCandidateDetailsOutsideMoneyMultiple(
+      {
+        year: year.toString(),
+        office,
+        district,
+      },
     );
   }
 
