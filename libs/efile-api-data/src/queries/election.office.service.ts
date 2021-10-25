@@ -20,6 +20,10 @@ export class ElectionOfficeService {
         'has_districts',
       )
       .addSelect(
+        'ARRAY_REMOVE(ARRAY_AGG( DISTINCT district ), NULL)',
+        'districts',
+      )
+      .addSelect(
         'array_remove(array_agg("candidate_controlled_committee_name"), NULL)',
         'committee_names',
       )
