@@ -35,7 +35,7 @@ export class CandidateListService {
       .getRepository(CalculationTransaction)
       .createQueryBuilder()
       .select('employer', 'name')
-      .addSelect('SUM(amount)', 'sum')
+      .addSelect('SUM(amount)', 'amount')
       // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
       .where('filer_name = :filerName', { filerName: filerName })
       .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
@@ -44,7 +44,7 @@ export class CandidateListService {
         excluded: ['N/A', 'n/a', 'None'],
       })
       .groupBy('employer')
-      .orderBy('sum', 'DESC')
+      .orderBy('amount', 'DESC')
       .limit(limit)
       .getRawMany();
 

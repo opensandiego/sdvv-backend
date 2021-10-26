@@ -57,7 +57,7 @@ export class APICandidateDetailsService {
         averageDonation: await this.candidateSummaryService.getContributionAvg(
           candidate['candidate_controlled_committee_name'],
         ),
-        imageUrl: candidate['imageURL'],
+        imageUrl: candidate['image_url'],
         website: candidate['website'],
         description: candidate['description'],
       };
