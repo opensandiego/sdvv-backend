@@ -15,7 +15,7 @@ export class CommonDto {
   filer_naml: string;
 
   @IsString()
-  @Length(3, 3)
+  @Length(1, 3)
   @IsNumberString()
   report_num: string;
 

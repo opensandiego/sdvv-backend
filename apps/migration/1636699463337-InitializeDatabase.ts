@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class InitializeDatabase1635109414610 implements MigrationInterface {
-    name = 'InitializeDatabase1635109414610'
+export class InitializeDatabase1636699463337 implements MigrationInterface {
+    name = 'InitializeDatabase1636699463337'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -82,6 +82,7 @@ export class InitializeDatabase1635109414610 implements MigrationInterface {
                 "election_id" character varying NOT NULL,
                 "election_type" character varying NOT NULL,
                 "internal" boolean NOT NULL,
+                "transactions_last_update" TIMESTAMP,
                 "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
                 "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
                 CONSTRAINT "UQ_cf7758224451c27b8eb821ee21c" UNIQUE ("election_date"),
@@ -107,6 +108,75 @@ export class InitializeDatabase1635109414610 implements MigrationInterface {
                 "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
                 "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
                 CONSTRAINT "PK_3ba24bab691783e6651ff6650cb" PRIMARY KEY ("filing_id")
+            )
+        `);
+        await queryRunner.query(`
+            CREATE TABLE "f460a" (
+                "filer_id" character varying NOT NULL,
+                "filer_naml" character varying NOT NULL,
+                "report_num" character varying NOT NULL,
+                "e_filing_id" character varying NOT NULL,
+                "orig_e_filing_id" character varying NOT NULL,
+                "cmtte_type" character varying NOT NULL,
+                "rpt_date" character varying NOT NULL,
+                "from_date" character varying NOT NULL,
+                "thru_date" character varying NOT NULL,
+                "elect_date" character varying,
+                "rec_type" character varying NOT NULL,
+                "form_type" character varying NOT NULL,
+                "tran_id" character varying NOT NULL,
+                "entity_cd" character varying NOT NULL,
+                "ctrib_naml" character varying NOT NULL,
+                "ctrib_namf" character varying,
+                "ctrib_namt" character varying,
+                "ctrib_nams" character varying,
+                "ctrib_adr1" character varying,
+                "ctrib_adr2" character varying,
+                "ctrib_city" character varying,
+                "ctrib_st" character varying,
+                "ctrib_zip4" character varying,
+                "ctrib_emp" character varying,
+                "ctrib_occ" character varying,
+                "ctrib_self" boolean NOT NULL,
+                "tran_type" character varying,
+                "rcpt_date" character varying NOT NULL,
+                "date_thru" character varying,
+                "amount" numeric NOT NULL,
+                "cum_ytd" numeric NOT NULL,
+                "ctrib_dscr" character varying,
+                "cmte_id" character varying,
+                "tres_naml" character varying,
+                "tres_namf" character varying,
+                "tres_namt" character varying,
+                "tres_nams" character varying,
+                "tres_adr1" character varying,
+                "tres_adr2" character varying,
+                "tres_city" character varying,
+                "tres_st" character varying,
+                "tres_zip4" character varying,
+                "intr_naml" character varying,
+                "intr_namf" character varying,
+                "intr_namt" character varying,
+                "intr_nams" character varying,
+                "intr_adr1" character varying,
+                "intr_adr2" character varying,
+                "intr_city" character varying,
+                "intr_st" character varying,
+                "intr_zip4" character varying,
+                "intr_emp" character varying,
+                "intr_occ" character varying,
+                "intr_self" boolean NOT NULL,
+                "memo_code" boolean NOT NULL,
+                "memo_refno" character varying,
+                "bakref_tid" character varying,
+                "xref_schnm" character varying,
+                "xref_match" character varying,
+                "int_rate" character varying,
+                "int_cmteid" character varying,
+                "xlsx_file_year" character varying,
+                "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+                "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+                CONSTRAINT "PK_65e674cfb1e61639b75a7cef902" PRIMARY KEY ("e_filing_id", "form_type", "tran_id")
             )
         `);
         await queryRunner.query(`
@@ -173,6 +243,7 @@ export class InitializeDatabase1635109414610 implements MigrationInterface {
                 "g_from_e_f" character varying,
                 "xref_schnm" character varying,
                 "xref_match" character varying,
+                "xlsx_file_year" character varying,
                 "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
                 "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
                 CONSTRAINT "PK_829cb8db29093742683a93a5871" PRIMARY KEY ("e_filing_id", "form_type", "tran_id")
@@ -241,6 +312,9 @@ export class InitializeDatabase1635109414610 implements MigrationInterface {
         `);
         await queryRunner.query(`
             DROP TABLE "f460d"
+        `);
+        await queryRunner.query(`
+            DROP TABLE "f460a"
         `);
         await queryRunner.query(`
             DROP TABLE "filing"

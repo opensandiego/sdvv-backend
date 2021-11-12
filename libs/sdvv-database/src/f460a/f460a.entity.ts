@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-@Entity({ name: 'f460d' })
-export class F460DEntity {
+@Entity({ name: 'f460a' })
+export class F460AEntity {
   // From common.dto
   @Column()
   filer_id: string;
@@ -39,7 +39,7 @@ export class F460DEntity {
   @Column({ nullable: true })
   elect_date: string;
 
-  // From expn.dto
+  // From rcpt.dto
   @Column()
   rec_type: string;
 
@@ -49,38 +49,53 @@ export class F460DEntity {
   @PrimaryColumn()
   tran_id: string;
 
-  @Column({ nullable: true })
+  @Column()
   entity_cd: string;
 
-  @Column({ nullable: true })
-  payee_naml: string;
+  @Column()
+  ctrib_naml: string;
 
   @Column({ nullable: true })
-  payee_namf: string;
+  ctrib_namf: string;
 
   @Column({ nullable: true })
-  payee_namt: string;
+  ctrib_namt: string;
 
   @Column({ nullable: true })
-  payee_nams: string;
+  ctrib_nams: string;
 
   @Column({ nullable: true })
-  payee_adr1: string;
+  ctrib_adr1: string;
 
   @Column({ nullable: true })
-  payee_adr2: string;
+  ctrib_adr2: string;
 
   @Column({ nullable: true })
-  payee_city: string;
+  ctrib_city: string;
 
   @Column({ nullable: true })
-  payee_st: string;
+  ctrib_st: string;
 
   @Column({ nullable: true })
-  payee_zip4: string;
+  ctrib_zip4: string;
+
+  @Column({ nullable: true })
+  ctrib_emp: string;
+
+  @Column({ nullable: true })
+  ctrib_occ: string;
 
   @Column()
-  expn_date: string;
+  ctrib_self: boolean;
+
+  @Column({ nullable: true })
+  tran_type: string;
+
+  @Column()
+  rcpt_date: string;
+
+  @Column({ nullable: true })
+  date_thru: string;
 
   @Column({ type: 'numeric' })
   amount: number;
@@ -89,22 +104,7 @@ export class F460DEntity {
   cum_ytd: number;
 
   @Column({ nullable: true })
-  expn_code: string;
-
-  @Column({ nullable: true })
-  expn_dscr: string;
-
-  @Column({ nullable: true })
-  agent_naml: string;
-
-  @Column({ nullable: true })
-  agent_namf: string;
-
-  @Column({ nullable: true })
-  agent_namt: string;
-
-  @Column({ nullable: true })
-  agent_nams: string;
+  ctrib_dscr: string;
 
   @Column({ nullable: true })
   cmte_id: string;
@@ -137,46 +137,40 @@ export class F460DEntity {
   tres_zip4: string;
 
   @Column({ nullable: true })
-  cand_naml: string;
+  intr_naml: string;
 
   @Column({ nullable: true })
-  cand_namf: string;
+  intr_namf: string;
 
   @Column({ nullable: true })
-  cand_namt: string;
+  intr_namt: string;
 
   @Column({ nullable: true })
-  cand_nams: string;
+  intr_nams: string;
 
   @Column({ nullable: true })
-  office_cd: string;
+  intr_adr1: string;
 
   @Column({ nullable: true })
-  office_dscr: string;
+  intr_adr2: string;
 
   @Column({ nullable: true })
-  juris_cd: string;
+  intr_city: string;
 
   @Column({ nullable: true })
-  juris_dscr: string;
+  intr_st: string;
 
   @Column({ nullable: true })
-  dist_no: string;
+  intr_zip4: string;
 
   @Column({ nullable: true })
-  off_s_h_cd: string;
+  intr_emp: string;
 
   @Column({ nullable: true })
-  bal_name: string;
+  intr_occ: string;
 
-  @Column({ nullable: true })
-  bal_num: string;
-
-  @Column({ nullable: true })
-  bal_juris: string;
-
-  @Column({ nullable: true })
-  supp_opp_cd: string;
+  @Column()
+  intr_self: boolean;
 
   @Column()
   memo_code: boolean;
@@ -188,21 +182,24 @@ export class F460DEntity {
   bakref_tid: string;
 
   @Column({ nullable: true })
-  g_from_e_f: string;
-
-  @Column({ nullable: true })
   xref_schnm: string;
 
   @Column({ nullable: true })
   xref_match: string;
+
+  @Column({ nullable: true })
+  int_rate: string;
+
+  @Column({ nullable: true })
+  int_cmteid: string;
 
   // Added fields that are not in the XLSX file.
   @Column({ nullable: true })
   xlsx_file_year: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }
