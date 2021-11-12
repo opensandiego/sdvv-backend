@@ -12,23 +12,33 @@ export class TransactionsXLSXService {
     private utilsService: UtilsService,
   ) {}
 
-  populateDatabaseWithXLSXTransactions(year, sheet) {
-    const options = this.worksheetLookup(sheet);
-    if (!options) return;
-
-    this.downloadValidateWorksheet(year, options).then(() =>
-      console.log('Adding XLSX Transactions complete'),
+  async populateDatabaseWithXLSXWorksheets(year) {
+    const workbookFileData: Uint8Array = await firstValueFrom(
+      this.transactionsXLSXDownloadService.getWorkbookFileData(year, true),
     );
+
+    const sheetCodes = ['F460-D'];
+
+    for await (const sheetCode of sheetCodes) {
+      await this.processWorkbookSheet(workbookFileData, sheetCode, year);
+    }
   }
 
-  private async downloadValidateWorksheet(year, options) {
-    const workbook = await firstValueFrom(
-      this.transactionsXLSXDownloadService.getXLSXFile(year, options.sheetName),
-    );
+  private async processWorkbookSheet(
+    workbookFileData: Uint8Array,
+    sheetCode: string,
+    year: string,
+  ) {
+    const options = this.worksheetLookup(sheetCode);
+    const workbookSheet =
+      this.transactionsXLSXDownloadService.readWorkbookSheet(
+        workbookFileData,
+        options.sheetName,
+      );
 
     const classes = await this.utilsService.getValidatedClass(
       options.sheetName,
-      workbook,
+      workbookSheet,
       options.dto,
     );
 

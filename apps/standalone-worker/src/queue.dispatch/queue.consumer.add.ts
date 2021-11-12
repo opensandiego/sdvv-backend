@@ -72,9 +72,12 @@ export class QueueConsumerAdd {
 
   @Process('transactions-xlsx')
   async addXLXSTransactionsToDatabase(job: Job) {
-    this.transactionsXLSXService.populateDatabaseWithXLSXTransactions(
-      job.data['year'],
-      job.data['sheet'],
+    console.log(
+      `Started adding ${job.data['year']} transactions from xlsx to database`,
     );
+    await this.transactionsXLSXService.populateDatabaseWithXLSXWorksheets(
+      job.data['year'],
+    );
+    console.log(`Finished adding ${job.data['year']} transactions`);
   }
 }

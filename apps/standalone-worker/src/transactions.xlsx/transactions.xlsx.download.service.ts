@@ -11,16 +11,29 @@ export class TransactionsXLSXDownloadService {
   private eFileBulkExportUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url';
 
-  public getXLSXFile(
+  public getWorkbookFileData(
     fileYear: number,
-    sheetName?: string,
     mostRecent = false,
-  ): Observable<any> {
+  ): Observable<Uint8Array> {
     return of(fileYear).pipe(
       mergeMap((year) => this.getDownloadURL(year, mostRecent)),
-      mergeMap((url) => this.downloadXLSXFile(url)),
-      mergeMap((data) => this.getXLSXWorkbook(data, sheetName)),
+      mergeMap((url) => this.downloadXLSXArrayBuffer(url)),
+      mergeMap((data) => this.convertToUint8Array(data)),
     );
+  }
+
+  public readWorkbookSheet(data: Uint8Array, worksheetName: string) {
+    try {
+      return XLSX.read(data, {
+        type: 'array',
+        sheets: worksheetName,
+      });
+    } catch (error) {
+      console.log(
+        `Error reading sheet "${worksheetName}" from Uint8Array data`,
+      );
+      throw error;
+    }
   }
 
   private getDownloadURL(year: number, mostRecent = false): Observable<string> {
@@ -38,7 +51,7 @@ export class TransactionsXLSXDownloadService {
     );
   }
 
-  private downloadXLSXFile(requestUrl: string): Observable<any> {
+  private downloadXLSXArrayBuffer(requestUrl: string): Observable<ArrayBuffer> {
     return of(requestUrl).pipe(
       mergeMap((url) => {
         return this.httpService.get(url, {
@@ -56,17 +69,11 @@ export class TransactionsXLSXDownloadService {
     );
   }
 
-  private getXLSXWorkbook(data: ArrayBuffer, worksheetName?: string) {
+  private convertToUint8Array(data: ArrayBuffer): Observable<Uint8Array> {
     return of(data).pipe(
       map((data) => new Uint8Array(data)),
-      map((data) => {
-        return XLSX.read(data, {
-          type: 'array',
-          sheets: worksheetName,
-        });
-      }),
       catchError((error) => {
-        console.log('Error converting downloaded file to xlsx format');
+        console.log('Error converting download from ArrayBuffer to Uint8Array');
         throw error;
       }),
     );
