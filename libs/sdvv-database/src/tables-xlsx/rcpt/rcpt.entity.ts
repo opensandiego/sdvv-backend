@@ -3,11 +3,18 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
+/**
+ * This table is for transactions of type contribution which have rec_type of RCPT.
+ * The transactions are from sheets: F460-A-Contribs, F460-C-Contribs,
+ * F460-I-MiscCashIncs, and F496-P3-Contribs.
+ */
+@Entity({ name: 'rcpt' })
+export class RCPTEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Entity({ name: 'f460a' })
-export class F460AEntity {
   // From common.dto
   @Column()
   filer_id: string;
@@ -18,22 +25,22 @@ export class F460AEntity {
   @Column()
   report_num: string;
 
-  @PrimaryColumn()
+  @Column()
   e_filing_id: string;
 
   @Column()
   orig_e_filing_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   cmtte_type: string;
 
   @Column()
   rpt_date: string;
 
-  @Column()
+  @Column({ nullable: true })
   from_date: string;
 
-  @Column()
+  @Column({ nullable: true })
   thru_date: string;
 
   @Column({ nullable: true })
@@ -43,10 +50,17 @@ export class F460AEntity {
   @Column()
   rec_type: string;
 
-  @PrimaryColumn()
+  /**
+   * Values for form_type: A, C, I, F496P3
+   * A: Schedule A Monetary Contributions Received
+   * C: Schedule C - Nonmonetary Contributions Received
+   * I: Schedule I - Miscellaneous Increases to Cash
+   * F496P3: Contributions of $100 or More Received
+   */
+  @Column()
   form_type: string;
 
-  @PrimaryColumn()
+  @Column()
   tran_id: string;
 
   @Column()
@@ -194,7 +208,7 @@ export class F460AEntity {
   int_cmteid: string;
 
   // Added fields that are not in the XLSX file.
-  @Column({ nullable: true })
+  @Column()
   xlsx_file_year: string;
 
   @CreateDateColumn()

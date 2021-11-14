@@ -17,8 +17,9 @@ module.exports = {
   logging: false,
   entities: [
     'libs/efile-api-data/src/tables/entity/**/*.entity{.ts,.js}',
-    'libs/sdvv-database/src/f460a/*.entity{.ts,.js}',
     'libs/sdvv-database/src/f460d/*.entity{.ts,.js}',
+    'libs/sdvv-database/src/tables-xlsx/expn/*.entity{.ts,.js}',
+    'libs/sdvv-database/src/tables-xlsx/rcpt/*.entity{.ts,.js}',
     'libs/sdvv-database/src/jurisdictions/*.entity{.ts,.js}',
     'libs/sdvv-database/src/zipCodes/*.entity{.ts,.js}',
     'libs/sdvv-database/src/zipCodes/*.entity{.ts,.js}',

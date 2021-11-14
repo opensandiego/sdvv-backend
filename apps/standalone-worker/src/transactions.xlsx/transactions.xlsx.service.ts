@@ -1,81 +1,84 @@
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { F460AService } from '@app/sdvv-database/f460a/f460a.service';
-import { F460DService } from '@app/sdvv-database/f460d/f460d.service';
-import { CreateF460ADto } from '@app/sdvv-database/f460a/f460a.dto';
-import { CreateF460DDto } from '@app/sdvv-database/f460d/dto/createF460D.dto';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
-import { UtilsService } from '../utils/utils.service';
+import { RCPTService } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.service';
+import { EXPNService } from '@app/sdvv-database/tables-xlsx/expn/expn.service';
+import { XLSXConversionService } from '../utils/xlsx.conversion.service';
 @Injectable()
 export class TransactionsXLSXService {
   constructor(
     private transactionsXLSXDownloadService: TransactionsXLSXDownloadService,
-    private f460AService: F460AService,
-    private f460DService: F460DService,
-    private utilsService: UtilsService,
+    private xlsxConversionService: XLSXConversionService,
+    private rcptService: RCPTService,
+    private expnService: EXPNService,
   ) {}
+
+  private sheetEXPN = [
+    {
+      sheetName: 'F460-A-Contribs',
+      formType: 'A',
+      serviceType: this.rcptService,
+    },
+    {
+      sheetName: 'F460-C-Contribs',
+      formType: 'C',
+      serviceType: this.rcptService,
+    },
+    {
+      sheetName: 'F460-I-MiscCashIncs',
+      formType: 'I',
+      serviceType: this.rcptService,
+    },
+    {
+      sheetName: 'F496-P3-Contribs',
+      formType: 'F496P3',
+      serviceType: this.rcptService,
+    },
+    {
+      sheetName: 'F460-D-ContribIndepExpn',
+      formType: 'D',
+      serviceType: this.expnService,
+    },
+    {
+      sheetName: 'F460-E-Expenditures',
+      formType: 'E',
+      serviceType: this.expnService,
+    },
+    {
+      sheetName: 'F460-G-AgentPayments',
+      formType: 'G',
+      serviceType: this.expnService,
+    },
+  ];
 
   async populateDatabaseWithXLSXWorksheets(year) {
     const workbookFileData: Uint8Array = await firstValueFrom(
       this.transactionsXLSXDownloadService.getWorkbookFileData(year, true),
     );
 
-    const sheetCodes = ['F460-A', 'F460-D'];
+    for await (const sheet of this.sheetEXPN) {
+      console.log(`Adding transactions from Sheet: ${sheet.sheetName}`);
 
-    for await (const sheetCode of sheetCodes) {
-      await this.processWorkbookSheet(workbookFileData, sheetCode, year);
+      await this.processWorkbookSheet(workbookFileData, sheet, year);
     }
   }
 
   private async processWorkbookSheet(
     workbookFileData: Uint8Array,
-    sheetCode: string,
+    sheet,
     year: string,
   ) {
-    const options = this.worksheetLookup(sheetCode);
     const workbookSheet =
       this.transactionsXLSXDownloadService.readWorkbookSheet(
         workbookFileData,
-        options.sheetName,
+        sheet.sheetName,
       );
 
-    const classes = await this.utilsService.getValidatedClass(
-      options.sheetName,
+    const sheetJSON = this.xlsxConversionService.getObjectRows(
       workbookSheet,
-      options.dto,
+      sheet.sheetName,
     );
 
-    classes.forEach((row) => {
-      row['xlsx_file_year'] = year;
-    });
-
-    await options.dbSheetService.createBulk(classes);
-  }
-
-  private worksheetLookup(shortName) {
-    switch (shortName.toUpperCase()) {
-      case 'F460-A':
-        return {
-          sheetName: 'F460-A-Contribs',
-          dto: CreateF460ADto,
-          dbSheetService: this.f460AService,
-        };
-        break;
-      case 'F460-D':
-        return {
-          sheetName: 'F460-D-ContribIndepExpn',
-          dto: CreateF460DDto,
-          dbSheetService: this.f460DService,
-        };
-        break;
-      // case 'S496':
-      //   return {
-      //     sheetName: 'S496',
-      //     dto: CreateS496DTO,
-      //   };
-      //   break;
-      default:
-        return null;
-    }
+    await sheet.serviceType.replaceYearData(sheetJSON, year, sheet.formType);
   }
 }

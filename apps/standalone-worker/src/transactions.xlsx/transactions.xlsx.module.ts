@@ -6,9 +6,19 @@ import { F460DModule } from '@app/sdvv-database/f460d/f460d.module';
 import { UtilsModule } from '../utils/utils.module';
 import { TransactionsXLSXService } from './transactions.xlsx.service';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
+import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
+import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 
 @Module({
-  imports: [DatabaseModule, F460AModule, F460DModule, UtilsModule, HttpModule],
+  imports: [
+    DatabaseModule,
+    F460AModule,
+    F460DModule,
+    UtilsModule,
+    HttpModule,
+    RCPTModule,
+    EXPNModule,
+  ],
   providers: [TransactionsXLSXService, TransactionsXLSXDownloadService],
   exports: [TransactionsXLSXService],
 })
