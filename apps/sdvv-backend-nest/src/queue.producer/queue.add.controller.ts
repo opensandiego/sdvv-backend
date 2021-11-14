@@ -42,14 +42,10 @@ export class QueueAddController {
     });
   }
 
-  @Post('transactions/xlsx/:year/:sheet/')
-  async transactionsXLSX(
-    @Param('year') year: number,
-    @Param('sheet') sheet: string,
-  ) {
+  @Post('transactions/xlsx/:year/')
+  async transactionsXLSX(@Param('year') year: number) {
     await this.workerQueueAdd.add('transactions-xlsx', {
       year: year,
-      sheet: sheet,
     });
   }
 
