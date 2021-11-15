@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
+import { RCPTEntity } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class RaisedCommitteeService {
   constructor(private connection: Connection) {}
+
+  // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
+  private RCPTTypes = ['A', 'C', 'I'];
 
   async getRaisedByCommittee(committeeName: string) {
     return this.getRaisedByCommittees([committeeName]);
@@ -12,14 +15,14 @@ export class RaisedCommitteeService {
 
   async getRaisedByCommittees(committeeNames?: string[]) {
     const result = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
-      .select()
       .select('SUM(amount)', 'sum')
-      .where('filer_name IN (:...filerNames)', {
-        filerNames: committeeNames,
+      .where('filer_naml IN (:...committeeNames)', {
+        committeeNames,
       })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
 
     return result['sum'];

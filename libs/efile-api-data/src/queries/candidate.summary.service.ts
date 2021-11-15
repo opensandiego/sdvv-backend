@@ -1,42 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { Brackets, Connection } from 'typeorm';
-import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
+import { RCPTEntity } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.entity';
+import { EXPNEntity } from '@app/sdvv-database/tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class CandidateSummaryService {
   constructor(private connection: Connection) {}
 
-  async getRaisedSum(filerName: string) {
+  // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
+  private RCPTTypes = ['A', 'C', 'I'];
+  private EXPNTypes = ['D', 'E', 'G'];
+
+  async getRaisedSum(committeeName: string) {
     const { sum: raisedSum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('tx_type = :txType', { txType: 'RCPT' })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
 
     return raisedSum;
   }
 
-  async getSpentSum(filerName: string) {
+  async getSpentSum(committeeName: string) {
     const { sum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('tx_type = :txType', { txType: 'EXPN' })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'EXPN' })
+      .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
       .getRawOne();
 
     return sum;
   }
 
-  async getContributionCount(filerName: string) {
+  async getContributionCount(committeeName: string) {
     const { count: contributionCount } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
-      .select('COUNT( DISTINCT name)', 'count')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
+      .select('COUNT( DISTINCT (ctrib_naml || ctrib_namf))', 'count')
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
 
     return contributionCount;
@@ -46,13 +54,14 @@ export class CandidateSummaryService {
     return await this.getContributionCount(filerName);
   }
 
-  async getContributionAvg(filerName: string) {
+  async getContributionAvg(committeeName: string) {
     const { avg: contributionAvg } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('AVG(amount)', 'avg')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
 
     return parseInt(contributionAvg).toString();
@@ -62,17 +71,18 @@ export class CandidateSummaryService {
     return await this.getContributionAvg(filerName);
   }
 
-  async getRaisedIndividualSum(filerName: string) {
+  async getRaisedIndividualSum(committeeName: string) {
     const { sum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .where('filer_name = :filerName', { filerName: filerName })
-      .andWhere('tx_type = :txType', { txType: 'RCPT' })
-      .andWhere('NOT (employer = :na AND occupation = :na)', { na: 'N/A' })
-      .andWhere('NOT (employer IS NULL AND occupation IS NULL)')
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('NOT (ctrib_emp = :na AND ctrib_occ = :na)', { na: 'N/A' })
+      .andWhere('NOT (ctrib_emp IS NULL AND ctrib_occ IS NULL)')
       // Individual also includes the In-Kind
-      // .andWhere('NOT (spending_code iLike :spendingCode)', {
+      // .andWhere('NOT (ctrib_dscr iLike :spendingCode)', {
       //   spendingCode: '%In-Kind%',
       // })
       .getRawOne();
@@ -80,14 +90,14 @@ export class CandidateSummaryService {
     return sum;
   }
 
-  async getRaisedInKindSum(filerName: string) {
+  async getRaisedInKindSum(committeeName: string) {
     const { sum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .where('filer_name = :filerName', { filerName: filerName })
-      .andWhere('tx_type = :txType', { txType: 'RCPT' })
-      .andWhere('spending_code iLike :spendingCode', {
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('ctrib_dscr iLike :spendingCode', {
         spendingCode: '%In-Kind%',
       })
       .getRawOne();
@@ -95,18 +105,19 @@ export class CandidateSummaryService {
     return sum;
   }
 
-  async getRaisedOtherSum(filerName: string) {
+  async getRaisedOtherSum(committeeName: string) {
     const { sum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .where('filer_name = :filerName', { filerName: filerName })
-      .andWhere('tx_type = :txType', { txType: 'RCPT' })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .andWhere(
         new Brackets((qb) => {
-          qb.where('(employer = :na AND occupation = :na)', {
+          qb.where('(ctrib_emp = :na AND ctrib_occ = :na)', {
             na: 'N/A',
-          }).orWhere('(employer IS NULL AND occupation IS NULL)');
+          }).orWhere('(ctrib_emp IS NULL AND ctrib_occ IS NULL)');
         }),
       )
       .getRawOne();

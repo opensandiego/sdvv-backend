@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
+import { EXPNEntity } from '@app/sdvv-database/tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class CandidateIndependentExpendituresService {
   constructor(private connection: Connection) {}
+
+  // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
+  private RCPTTypes = ['A', 'C', 'I'];
+  private EXPNTypes = ['D', 'E', 'G'];
 
   async support(candidateName: string, electionDate: string) {
     return this.getIndependentExpendituresSum(
@@ -28,23 +32,24 @@ export class CandidateIndependentExpendituresService {
     electionDate: string,
   ) {
     const { sum: expSum } = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .where('name iLike :candidateName', {
+      .where('cand_naml iLike :candidateName', {
         candidateName: `%${candidateName}%`,
       })
-      .andWhere('tx_type = :txType', { txType: 'EXPN' })
-      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' })
-      .andWhere('sup_opp_cd = :supOppCd', { supOppCd: supOppCd })
+      .andWhere('rec_type = :recType', { recType: 'EXPN' })
+      .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
+      .andWhere('expn_code = :spendingCode', { spendingCode: 'IND' })
+      .andWhere('supp_opp_cd = :supOppCd', { supOppCd: supOppCd })
       .andWhere(
-        `to_date(transaction_date, 'MM/DD/YYYY') >= to_date(:electionDate, 'MM/DD/YYYY') - interval '16 month'`,
+        `to_date(expn_date, 'YYYYMMDD') >= to_date(:electionDate, 'MM/DD/YYYY') - interval '16 month'`,
         {
           electionDate,
         },
       )
       .andWhere(
-        `to_date(transaction_date, 'MM/DD/YYYY') <= to_date(:electionDate , 'MM/DD/YYYY')`,
+        `to_date(expn_date, 'YYYYMMDD') <= to_date(:electionDate , 'MM/DD/YYYY')`,
         {
           electionDate,
         },
@@ -85,31 +90,33 @@ export class CandidateIndependentExpendituresService {
     );
 
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(EXPNEntity)
       .createQueryBuilder()
-      .select('filer_name', 'committee')
+      .select('filer_naml', 'committee')
       .addSelect('SUM(amount)', 'sum')
       .addSelect(`round(SUM(amount)::decimal * 100 / :total, 1)`, 'average')
       .setParameter('total', expSum)
-      .where('name iLike :candidateName', {
+      .where('cand_naml iLike :candidateName', {
         candidateName: `%${candidateName}%`,
       })
-      .andWhere('tx_type = :txType', { txType: 'EXPN' })
-      .andWhere('spending_code = :spendingCode', { spendingCode: 'IND' })
-      .andWhere('sup_opp_cd = :supOppCd', { supOppCd: supOppCd })
+      .andWhere('rec_type = :recType', { recType: 'EXPN' })
+      .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
+
+      .andWhere('expn_code = :spendingCode', { spendingCode: 'IND' })
+      .andWhere('supp_opp_cd = :supOppCd', { supOppCd: supOppCd })
       .andWhere(
-        `to_date(transaction_date, 'MM/DD/YYYY') >= to_date(:electionDate, 'MM/DD/YYYY') - interval '16 month'`,
+        `to_date(expn_date, 'YYYYMMDD') >= to_date(:electionDate, 'MM/DD/YYYY') - interval '16 month'`,
         {
           electionDate,
         },
       )
       .andWhere(
-        `to_date(transaction_date, 'MM/DD/YYYY') <= to_date(:electionDate , 'MM/DD/YYYY')`,
+        `to_date(expn_date, 'YYYYMMDD') <= to_date(:electionDate , 'MM/DD/YYYY')`,
         {
           electionDate,
         },
       )
-      .groupBy('filer_name')
+      .groupBy('filer_naml')
       .orderBy('sum', 'DESC')
       .limit(limit)
       .getRawMany();

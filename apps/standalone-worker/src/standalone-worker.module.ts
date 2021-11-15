@@ -8,8 +8,6 @@ import { DatabaseModule } from '@app/sdvv-database';
 import { StandaloneWorkerService } from './standalone-worker.service';
 import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
 import { TransactionsXLSXModule } from './transactions.xlsx/transactions.xlsx.module';
-import { F460AModule } from '@app/sdvv-database/f460a/f460a.module';
-import { F460DModule } from '@app/sdvv-database/f460d/f460d.module';
 import { ZipCodeCSVModule } from './zip.code.csv/zip.code.csv.module';
 import { EFileApiModule } from './efile.api/efile.api.module';
 import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
@@ -30,8 +28,6 @@ import { EfileApiDataModule } from '@app/efile-api-data';
       redis: process.env.REDIS_URL,
     }),
     HttpModule,
-    F460AModule,
-    F460DModule,
     QueueDispatchModule,
     TransactionsXLSXModule,
     ZipCodeCSVModule,

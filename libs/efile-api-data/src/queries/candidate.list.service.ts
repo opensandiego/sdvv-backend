@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
 import { CandidateSummaryService } from './candidate.summary.service';
+import { RCPTEntity } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.entity';
+import { EXPNEntity } from '@app/sdvv-database/tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class CandidateListService {
@@ -10,19 +11,24 @@ export class CandidateListService {
     private candidateSummaryService: CandidateSummaryService,
   ) {}
 
-  async getContributionByOccupation(filerName: string, limit = 20) {
+  // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
+  private RCPTTypes = ['A', 'C', 'I'];
+  private EXPNTypes = ['D', 'E', 'G'];
+
+  async getContributionByOccupation(committeeName: string, limit = 20) {
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
-      .select('occupation', 'name')
-      .where('filer_name = :filerName', { filerName: filerName })
+      .select('ctrib_occ', 'name')
       .addSelect('SUM(amount)', 'amount')
+      .andWhere('filer_naml = :committeeName', { committeeName })
       // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
-      .andWhere('occupation NOT IN (:...excludedOccupations)', {
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('ctrib_occ NOT IN (:...excludedOccupations)', {
         excludedOccupations: ['N/A'],
       })
-      .groupBy('occupation')
+      .groupBy('ctrib_occ')
       .orderBy('amount', 'DESC')
       .limit(limit)
       .getRawMany();
@@ -30,20 +36,21 @@ export class CandidateListService {
     return groups;
   }
 
-  async getContributionByEmployer(filerName: string, limit = 20) {
+  async getContributionByEmployer(committeeName: string, limit = 20) {
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
-      .select('employer', 'name')
+      .select('ctrib_emp', 'name')
       .addSelect('SUM(amount)', 'amount')
       // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
-      .where('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
-      .andWhere('(employer IS NOT NULL)')
-      .andWhere('employer NOT IN (:...excluded)', {
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('(ctrib_emp IS NOT NULL)')
+      .andWhere('ctrib_emp NOT IN (:...excluded)', {
         excluded: ['N/A', 'n/a', 'None'],
       })
-      .groupBy('employer')
+      .groupBy('ctrib_emp')
       .orderBy('amount', 'DESC')
       .limit(limit)
       .getRawMany();
@@ -51,14 +58,15 @@ export class CandidateListService {
     return groups;
   }
 
-  async getContributionByName(filerName: string, limit = 20) {
+  async getContributionByName(committeeName: string, limit = 20) {
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('name')
       .addSelect('SUM(amount)', 'sum')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .groupBy('name')
       .orderBy('sum', 'DESC')
       .limit(limit)
@@ -67,16 +75,17 @@ export class CandidateListService {
     return groups;
   }
 
-  async getContributionByIntrName(filerName: string, limit = 20) {
+  async getContributionByIntrName(committeeName: string, limit = 20) {
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('intr_name')
       .addSelect('SUM(amount)', 'sum')
       // .addSelect('COUNT( DISTINCT name)', 'uniqueContributorCount')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
-      .groupBy('intr_name')
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .groupBy('intr_naml')
       .orderBy('sum', 'DESC')
       .limit(limit)
       .getRawMany();
@@ -85,22 +94,22 @@ export class CandidateListService {
   }
 
   // CandidateSpendingListService
-  async getExpenseBySpendingCode(filerName: string, limit = 20) {
+  async getExpenseBySpendingCode(committeeName: string, limit = 20) {
     const totalSpent = await this.candidateSummaryService.getSpentSum(
-      filerName,
+      committeeName,
     );
 
     const groups = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(EXPNEntity)
       .createQueryBuilder()
-      .select('spending_code')
+      .select('expn_code', 'spending_code')
       .addSelect('SUM(amount)', 'sum')
       .addSelect(`round(SUM(amount)::decimal * 100 / :total, 1)`, 'average')
       .setParameter('total', totalSpent)
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      // .andWhere('tx_type = :txType', { txType: 'EXPN' })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['D', 'G', 'E'] })
-      .groupBy('spending_code')
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'EXPN' })
+      .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
+      .groupBy('expn_code')
       .orderBy('sum', 'DESC')
       .limit(limit)
       .getRawMany();
