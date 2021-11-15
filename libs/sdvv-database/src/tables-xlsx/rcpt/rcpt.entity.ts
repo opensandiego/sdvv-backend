@@ -114,7 +114,7 @@ export class RCPTEntity {
   @Column({ type: 'numeric' })
   amount: number;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'numeric', nullable: true })
   cum_ytd: number;
 
   @Column({ nullable: true })
