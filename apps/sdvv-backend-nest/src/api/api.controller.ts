@@ -26,6 +26,7 @@ import { CandidateDetailsOutsideMoney } from './interfaces/candidate.details.out
 import { CandidateNavigation } from './interfaces/candidate.navigation';
 import { Office } from './interfaces/office';
 import { Candidate } from './interfaces/candidate';
+import { OfficeSummary } from './interfaces/office.summary';
 
 @Controller('api')
 @UseInterceptors(CacheInterceptor)
@@ -45,6 +46,15 @@ export class APIController {
     @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
   ): Promise<CandidateNavigation[]> {
     return await this.apiService.getCandidateNavigationByYear(year.toString());
+  }
+
+  @Get('office-summary')
+  async getOfficeSummary(
+    @Query('year', new DefaultValuePipe(0), ParseIntPipe) year: number,
+  ): Promise<OfficeSummary[]> {
+    return await this.apiService.getOfficeSummary({
+      year: year.toString(),
+    });
   }
 
   @Get('offices')

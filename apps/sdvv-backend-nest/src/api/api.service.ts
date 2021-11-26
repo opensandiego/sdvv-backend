@@ -6,6 +6,7 @@ import { CandidateNavigationService } from '@app/efile-api-data/queries/candidat
 import { CandidateService } from '@app/efile-api-data/queries/candidate.service';
 import { Office } from './interfaces/office';
 import { Candidate } from './interfaces/candidate';
+import { OfficeSummary } from './interfaces/office.summary';
 
 @Injectable()
 export class APIService {
@@ -15,6 +16,25 @@ export class APIService {
     private candidateNavigationService: CandidateNavigationService,
     private candidateService: CandidateService,
   ) {}
+
+  async getOfficeSummary({ year = '0' } = {}): Promise<OfficeSummary[]> {
+    try {
+      const offices = await this.electionOfficeService.getOfficeSummary(year);
+
+      for await (const office of offices) {
+        office['total_raised'] =
+          await this.raisedCommitteeService.getRaisedByCommittees(
+            office['committee_names'],
+          );
+        delete office['committee_names'];
+      }
+
+      return offices;
+    } catch (error) {
+      console.log('Error in getOfficeSummary');
+      throw new NotFoundException();
+    }
+  }
 
   async getOffices({ year = '0', getSummary = true } = {}): Promise<Office[]> {
     try {
@@ -32,7 +52,7 @@ export class APIService {
 
       return offices;
     } catch (error) {
-      console.log('Error in getOfficesSummaryByYear');
+      console.log('Error in getOffices');
       throw new NotFoundException();
     }
   }
