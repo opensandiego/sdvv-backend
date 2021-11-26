@@ -36,7 +36,12 @@ export class CandidatesUpdateService {
         year,
       );
 
-      await this.sharedService.createBulkData(primaryClasses, CandidateEntity);
+      if (primaryClasses.length > 0) {
+        await this.sharedService.createBulkData(
+          primaryClasses,
+          CandidateEntity,
+        );
+      }
 
       const generalClasses = await this.getCandidatesClasses(
         elections,
@@ -44,9 +49,10 @@ export class CandidatesUpdateService {
         year,
       );
 
-      const filerIDs = generalClasses.map((election) => election.filer_id);
-
-      await this.candidateYearService.addInGeneralByYear(filerIDs, year);
+      if (generalClasses.length > 0) {
+        const filerIDs = generalClasses.map((election) => election.filer_id);
+        await this.candidateYearService.addInGeneralByYear(filerIDs, year);
+      }
 
       console.log('Update Candidates By Year Complete');
     } catch {
@@ -64,8 +70,7 @@ export class CandidatesUpdateService {
     );
 
     if (!candidatesElection) {
-      console.log(`No ${electionType} Election found for: ${year}`);
-      return;
+      return [];
     }
 
     const candidates = await this.downloadCandidates(
