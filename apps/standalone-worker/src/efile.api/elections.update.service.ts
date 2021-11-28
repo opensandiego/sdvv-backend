@@ -22,7 +22,9 @@ export class ElectionsUpdateService {
 
   async updateElections() {
     try {
-      await this.downloadUpdateElections();
+      const elections = await this.downloadElections();
+
+      await this.addElections(elections);
       this.logger.info('Update Elections Complete');
     } catch {
       this.logger.error('Error updating Elections');
@@ -47,9 +49,7 @@ export class ElectionsUpdateService {
     }
   }
 
-  private async downloadUpdateElections() {
-    const elections = await this.downloadElections();
-
+  private async addElections(elections) {
     const classes = await this.classValidationService.getValidatedClasses(
       elections,
       CreateElectionDto,
