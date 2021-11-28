@@ -41,6 +41,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.2",
     "currency.js": "^2.0.4",
+    "nestjs-console": "^7.0.1",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
