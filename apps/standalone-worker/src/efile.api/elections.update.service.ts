@@ -23,18 +23,32 @@ export class ElectionsUpdateService {
   async updateElections() {
     try {
       await this.downloadUpdateElections();
-      console.log('Update Elections Complete');
+      this.logger.info('Update Elections Complete');
     } catch {
-      console.error('Error updating Elections');
+      this.logger.error('Error updating Elections');
+    }
+  }
+
+  private async downloadElections() {
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get(this.eFileElectionUrl),
+      );
+      return response.data.data;
+    } catch (error) {
+      this.logger.log({
+        level: 'error',
+        message: 'Get request to eFile API failed',
+        type: 'efile API',
+        data: 'elections',
+        url: this.eFileElectionUrl,
+      });
+      throw error;
     }
   }
 
   private async downloadUpdateElections() {
-    const response = await firstValueFrom(
-      this.httpService.get(this.eFileElectionUrl),
-    );
-
-    const elections = response.data.data;
+    const elections = await this.downloadElections();
 
     const classes = await this.classValidationService.getValidatedClasses(
       elections,
