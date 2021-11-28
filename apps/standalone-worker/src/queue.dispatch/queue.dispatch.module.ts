@@ -7,6 +7,7 @@ import { EFileApiModule } from '../efile.api/efile.api.module';
 import { QueueService } from './queue.service';
 import { QueueConsumerAdd } from './queue.consumer.add';
 import { QueueConsumerProcess } from './queue.consumer.process';
+import { QueueConsumer } from './queue-consumer';
 
 @Module({
   imports: [
@@ -20,8 +21,16 @@ import { QueueConsumerProcess } from './queue.consumer.process';
     BullModule.registerQueue({
       name: 'worker-process-data',
     }),
+    BullModule.registerQueue({
+      name: 'worker-update-data',
+    }),
   ],
-  providers: [QueueService, QueueConsumerAdd, QueueConsumerProcess],
-  exports: [QueueConsumerAdd, QueueConsumerProcess],
+  providers: [
+    QueueService,
+    QueueConsumerAdd,
+    QueueConsumerProcess,
+    QueueConsumer,
+  ],
+  exports: [QueueConsumerAdd, QueueConsumerProcess, QueueConsumer],
 })
 export class QueueDispatchModule {}
