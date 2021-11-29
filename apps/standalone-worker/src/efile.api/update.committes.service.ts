@@ -42,7 +42,7 @@ export class UpdateCommitteesService {
       this.logger.log({
         level: 'error',
         message: 'Get request to eFile API failed',
-        type: 'efile API',
+        type: 'eFile API',
         data: 'committees',
         url: url,
       });

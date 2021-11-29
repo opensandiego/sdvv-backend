@@ -1,21 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class CandidateCommitteeService {
-  constructor(private connection: Connection) {}
+  constructor(
+    private connection: Connection,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   async addCandidateCommittees() {
-    console.log('candidate-committees-all: started');
     try {
       await this.updateCandidateCommittees();
-    } catch (error) {
-      console.log('Error in candidate-committees-all');
-    }
 
-    console.log('candidate-committees-all: completed');
-    return {};
+      this.logger.info('Add Committees to Candidates Complete');
+    } catch {
+      this.logger.error('Error adding Committees to Candidates');
+    }
   }
 
   private async getCandidateCommittee(

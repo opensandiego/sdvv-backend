@@ -8,12 +8,14 @@ import { UpdateTransactionsService } from '../efile.api/update.transactions.serv
 import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
+import { CandidateCommitteeService } from '@app/sdvv-database/process.data/candidate.committee.service';
 
 @Processor('worker-update-data')
 export class QueueConsumer {
   constructor(
     private electionsUpdateService: ElectionsUpdateService,
     private updateCommitteesService: UpdateCommitteesService,
+    private candidateCommitteeService: CandidateCommitteeService,
     private candidatesUpdateService: CandidatesUpdateService,
     private updateFilingsService: UpdateFilingsService,
     private updateTransactionsService: UpdateTransactionsService,
@@ -25,6 +27,20 @@ export class QueueConsumer {
   @Process('update-elections')
   async updateElections() {
     await this.electionsUpdateService.updateElections();
+  }
+
+  @Process('update-candidates-current')
+  async updateCandidatesCurrent() {
+    await this.updateCommitteesService.updateCommittees();
+    await this.candidatesUpdateService.updateCandidatesCurrent();
+    await this.candidateCommitteeService.addCandidateCommittees();
+  }
+
+  @Process('update-candidates-past')
+  async updateCandidatesPast() {
+    await this.updateCommitteesService.updateCommittees();
+    await this.candidatesUpdateService.updateCandidatesPast();
+    await this.candidateCommitteeService.addCandidateCommittees();
   }
 
   @Process('update-committees')
