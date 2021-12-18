@@ -43,36 +43,14 @@ export class QueueConsumer {
     await this.candidateCommitteeService.addCandidateCommittees();
   }
 
-  @Process('update-committees')
-  async updateCommittees() {
-    console.log('Starting Committees Job');
-    await this.updateCommitteesService.updateCommittees();
+  @Process('update-transactions-current')
+  async updateTransactionsCurrent() {
+    await this.transactionsXLSXService.updateTransactionsCurrent();
   }
 
-  @Process('update-candidates-year')
-  async updateCandidatesYear(job: Job) {
-    console.log('Starting Candidates by Year Job');
-    await this.candidatesUpdateService.updateCandidatesYear(job.data['year']);
-  }
-
-  @Process('update-filings')
-  async updateFilings(job: Job) {
-    console.log('Starting Filings Job');
-
-    await this.updateFilingsService.updateFilings(
-      job.data['oldestDate'],
-      job.data['newestDate'],
-    );
-  }
-
-  @Process('update-transactions')
-  async updateTransactions(job: Job) {
-    console.log('Starting Transactions Job');
-
-    await this.updateTransactionsService.updateTransactions(
-      job.data['oldestDate'],
-      job.data['newestDate'],
-    );
+  @Process('update-transactions-past')
+  async updateTransactionsPast() {
+    await this.transactionsXLSXService.updateTransactionsPast();
   }
 
   @Process('zip-codes')
