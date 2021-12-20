@@ -1,6 +1,14 @@
 import { Command, Console } from 'nestjs-console';
 import { QueueController } from '../queue-producer/queue.controller';
 
+/**
+ * Command line tool to update the database manually.
+ * Running a command when in development vs on the production server are below.
+ * Example for running 'update-elections'. Replace with a command from a function decorator.
+ *  production: node apps/standalone-worker/src/console.ts update-elections
+ *  dev: ts-node -r tsconfig-paths/register apps/standalone-worker/src/console.ts update-elections
+ */
+
 @Console()
 export class CLIService {
   constructor(private queueController: QueueController) {}
@@ -57,5 +65,14 @@ export class CLIService {
   })
   async updateZipCodes(): Promise<void> {
     await this.queueController.updateZipCodes();
+  }
+
+  @Command({
+    command: 'initialize-data',
+    description:
+      'Shortcut to run commands: update-elections, update-candidates-current, update-candidates-past, update-transactions-current, update-transactions-past, and update-zip-codes',
+  })
+  async initializeData(): Promise<void> {
+    await this.queueController.initializeData();
   }
 }
