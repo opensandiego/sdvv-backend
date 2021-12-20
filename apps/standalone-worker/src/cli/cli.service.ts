@@ -11,7 +11,7 @@ export class CLIService {
       'Download the list of elections from eFile and add/update them in the database.',
   })
   async updateElections(): Promise<void> {
-    this.queueController.updateElections();
+    await this.queueController.updateElections();
   }
 
   @Command({
@@ -20,7 +20,7 @@ export class CLIService {
       'Download the list of candidates for the current election and committees from eFile and add/update them in the database. Then add a committee name to each candidate.',
   })
   async updateCandidatesCurrent(): Promise<void> {
-    this.queueController.updateCandidatesCurrent();
+    await this.queueController.updateCandidatesCurrent();
   }
 
   @Command({
@@ -29,7 +29,7 @@ export class CLIService {
       'Download the list of candidates for the past elections and committees from eFile and add/update them in the database. Then add a committee name to each candidate.',
   })
   async updateCandidatesPast(): Promise<void> {
-    this.queueController.updateCandidatesPast();
+    await this.queueController.updateCandidatesPast();
   }
 
   @Command({
@@ -38,7 +38,7 @@ export class CLIService {
       'Download the XLSX files for the current election year then add the transactions from each sheet to the database.',
   })
   async updateTransactionsCurrent(): Promise<void> {
-    this.queueController.updateTransactionsCurrent();
+    await this.queueController.updateTransactionsCurrent();
   }
 
   @Command({
@@ -47,7 +47,7 @@ export class CLIService {
       'Download the XLSX files for the past election years then add the transactions from each sheet to the database.',
   })
   async updateTransactionsPast(): Promise<void> {
-    this.queueController.updateTransactionsPast();
+    await this.queueController.updateTransactionsPast();
   }
 
   @Command({
@@ -56,6 +56,6 @@ export class CLIService {
       'Load the list of all zip codes from a local file add them to the database. Load the list of zip codes for each city council district and add them to the database.',
   })
   async updateZipCodes(): Promise<void> {
-    this.queueController.updateZipCodes();
+    await this.queueController.updateZipCodes();
   }
 }
