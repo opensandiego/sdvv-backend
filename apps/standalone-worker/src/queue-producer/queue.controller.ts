@@ -31,4 +31,8 @@ export class QueueController {
   async updateZipCodes() {
     await this.workerQueueAdd.add('update-zip-codes');
   }
+
+  async initializeData() {
+    await this.workerQueueAdd.add('initialize-data');
+  }
 }

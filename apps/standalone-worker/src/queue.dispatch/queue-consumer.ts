@@ -1,14 +1,11 @@
 import { Process, Processor } from '@nestjs/bull';
-import { Job } from 'bull';
 import { ElectionsUpdateService } from '../efile.api/elections.update.service';
-import { UpdateCommitteesService } from '../efile.api/update.committes.service';
 import { CandidatesUpdateService } from '../efile.api/candidates.update.service';
-import { UpdateFilingsService } from '../efile.api/update.filings.service';
-import { UpdateTransactionsService } from '../efile.api/update.transactions.service';
+import { UpdateCommitteesService } from '../efile.api/update.committes.service';
+import { CandidateCommitteeService } from '@app/sdvv-database/process.data/candidate.committee.service';
 import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
-import { CandidateCommitteeService } from '@app/sdvv-database/process.data/candidate.committee.service';
 
 @Processor('worker-update-data')
 export class QueueConsumer {
@@ -17,8 +14,6 @@ export class QueueConsumer {
     private updateCommitteesService: UpdateCommitteesService,
     private candidateCommitteeService: CandidateCommitteeService,
     private candidatesUpdateService: CandidatesUpdateService,
-    private updateFilingsService: UpdateFilingsService,
-    private updateTransactionsService: UpdateTransactionsService,
     private transactionsXLSXService: TransactionsXLSXService,
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
@@ -63,14 +58,19 @@ export class QueueConsumer {
     await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
   }
 
-  @Process('transactions-xlsx')
-  async addXLXSTransactionsToDatabase(job: Job) {
-    console.log(
-      `Started adding ${job.data['year']} transactions from xlsx to database`,
-    );
-    await this.transactionsXLSXService.populateDatabaseWithXLSXWorksheets(
-      job.data['year'],
-    );
-    console.log(`Finished adding ${job.data['year']} transactions`);
+  @Process('update-zip-codes')
+  async updateZipCodes() {
+    await this.zipCodeCSVService.populateDatabaseWithZipCodes();
+    await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
+  }
+
+  @Process('initialize-data')
+  async initializeData() {
+    await this.updateElections();
+    await this.updateCandidatesCurrent();
+    await this.updateCandidatesPast();
+    await this.updateTransactionsCurrent();
+    await this.updateTransactionsPast();
+    await this.updateZipCodes();
   }
 }
