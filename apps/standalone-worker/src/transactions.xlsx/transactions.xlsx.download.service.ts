@@ -53,7 +53,7 @@ export class TransactionsXLSXDownloadService {
         this.logger.log({
           level: 'error',
           message: 'Not able to get URL of XLSX file from eFile.',
-          year: year,
+          transactionYear: year,
           url: requestUrl,
         });
 

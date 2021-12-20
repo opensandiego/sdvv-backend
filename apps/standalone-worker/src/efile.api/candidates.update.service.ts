@@ -48,7 +48,7 @@ export class CandidatesUpdateService {
           level: 'warn',
           message:
             'No Elections found in database for year. Skipping update of candidates for year.',
-          year: year,
+          electionYear: year,
         });
         throw `No Elections found: ${year}`;
       }
@@ -77,9 +77,13 @@ export class CandidatesUpdateService {
         await this.candidateYearService.addInGeneralByYear(filerIDs, year);
       }
 
-      this.logger.info('Update Candidates for Year Complete', { year: year });
+      this.logger.info('Update Candidates for Year Complete', {
+        electionYear: year,
+      });
     } catch {
-      this.logger.error('Updating Candidates for Year failed', { year: year });
+      this.logger.error('Updating Candidates for Year failed', {
+        electionYear: year,
+      });
     }
   }
 
@@ -93,10 +97,14 @@ export class CandidatesUpdateService {
     );
 
     if (!candidatesElection) {
+      const note =
+        electionType === 'General'
+          ? ' This warn can be ignored before the primary election.'
+          : '';
       this.logger.log({
         level: 'warn',
-        message: 'No Candidates found in database for election.',
-        year: year,
+        message: 'No Candidates found in database for election.' + note,
+        electionYear: year,
         electionType: electionType,
       });
       return [];

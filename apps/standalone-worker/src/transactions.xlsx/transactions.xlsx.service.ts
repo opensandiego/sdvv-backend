@@ -66,11 +66,13 @@ export class TransactionsXLSXService {
         await this.populateDatabaseWithXLSXWorksheets(year);
       }
       this.logger.info('Update Transactions for Current Election Complete', {
-        years: years,
+        transactionYears: years,
+        electionYear: currentElection.year,
       });
     } catch {
       this.logger.error('Updating Transactions for Current Election Failed', {
-        years: years,
+        transactionYears: years,
+        electionYear: currentElection.year,
       });
     }
   }
@@ -85,16 +87,16 @@ export class TransactionsXLSXService {
     try {
       for await (const year of years) {
         await this.populateDatabaseWithXLSXWorksheets(year);
-        this.logger.info('Updated Transactions for Election', {
-          year: year,
+        this.logger.info('Updated Transactions', {
+          transactionYear: year,
         });
       }
       this.logger.info('Update Transactions for all Past Elections Complete', {
-        years: years,
+        transactionYears: years,
       });
     } catch {
       this.logger.error('Update Transactions for all Past Elections Failed', {
-        years: years,
+        transactionYears: years,
       });
     }
   }
@@ -129,7 +131,7 @@ export class TransactionsXLSXService {
         await this.processWorkbookSheet(workbookFileData, sheet, year);
       } catch {
         this.logger.error('Skipping Transactions for XLSX workbook sheet', {
-          year: year,
+          transactionYear: year,
           sheetName: sheet.sheetName,
         });
       }
