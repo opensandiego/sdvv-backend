@@ -8,7 +8,6 @@ import { AppService } from './app.service';
 
 import { getConnectionOptions } from 'typeorm';
 import { ChartDataModule } from './chart.data/chart.data.module';
-import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
 import { APIModule } from './api/api.module';
 import { DatabaseModule } from '@app/sdvv-database';
@@ -34,7 +33,6 @@ import { DatabaseModule } from '@app/sdvv-database';
     EfileApiDataModule,
     DatabaseModule,
     ChartDataModule,
-    QueueProducerModule,
     APIModule,
   ],
   controllers: [AppController],
