@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateZipCodeDto } from '@app/sdvv-database/zipCodes/dto/createZipCode.dto';
 import { ZipCodesService } from '@app/sdvv-database/zipCodes/zipCodes.service';
 import { UtilsService } from '../utils/utils.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require('xlsx');
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class ZipCodeCSVService {
   constructor(
     private utilsService: UtilsService,
     private zipCodesService: ZipCodesService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async populateDatabaseWithZipCodes() {
@@ -23,8 +26,9 @@ export class ZipCodeCSVService {
       );
 
       await this.zipCodesService.createBulkZipCode(zipCodeClasses);
+      this.logger.info('Populating Database with All US Zip Codes Complete');
     } catch {
-      console.log('Error in populateDatabaseWithZipCodes');
+      this.logger.error('Populating Database with All US Zip Codes Failed');
     }
   }
 
@@ -33,7 +37,10 @@ export class ZipCodeCSVService {
     try {
       return XLSX.readFile(csvFilePath);
     } catch (error) {
-      console.log('File not found: ', csvFilePath);
+      this.logger.error('Not able to read CSV Zip Code file.', {
+        filePath: csvFilePath,
+      });
+
       throw error;
     }
   }
