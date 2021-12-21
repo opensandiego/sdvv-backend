@@ -17,6 +17,7 @@ import {
   WinstonModule,
 } from 'nest-winston';
 import * as winston from 'winston';
+import { SchedulerModule } from './scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import * as winston from 'winston';
     EfileApiDataModule,
     EFileApiModule,
     ProcessDataModule,
+    SchedulerModule,
   ],
   providers: [StandaloneWorkerService],
   exports: [],
