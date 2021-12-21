@@ -7,8 +7,6 @@ import { UpdateCommitteesService } from './update.committes.service';
 import { CandidatesUpdateService } from './candidates.update.service';
 import { TablesModule } from '@app/efile-api-data/tables/tables.module';
 import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
-import { UpdateFilingsService } from './update.filings.service';
-import { UpdateTransactionsService } from './update.transactions.service';
 
 @Module({
   imports: [
@@ -22,15 +20,11 @@ import { UpdateTransactionsService } from './update.transactions.service';
     ElectionsUpdateService,
     UpdateCommitteesService,
     CandidatesUpdateService,
-    UpdateFilingsService,
-    UpdateTransactionsService,
   ],
   exports: [
     ElectionsUpdateService,
     UpdateCommitteesService,
     CandidatesUpdateService,
-    UpdateFilingsService,
-    UpdateTransactionsService,
   ],
 })
 export class EFileApiModule {}

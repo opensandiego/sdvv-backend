@@ -7,33 +7,11 @@ import { Logger } from 'winston';
 @Injectable()
 export class QueueService implements OnModuleInit {
   constructor(
-    @InjectQueue('worker-add-data') private workerAddDataQueue: Queue,
-    @InjectQueue('worker-process-data') private workerProcessDataQueue: Queue,
     @InjectQueue('worker-update-data') private workerProcessUpdateQueue: Queue,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async onModuleInit() {
-    await this.workerAddDataQueue
-      .empty()
-      .then((result) =>
-        console.log(`Queue: 'worker-add-data' emptied`, result),
-      );
-
-    await this.workerAddDataQueue
-      .getJobCounts()
-      .then((counts) => console.log(`worker-add-data`, counts));
-
-    await this.workerProcessDataQueue
-      .empty()
-      .then((result) =>
-        console.log(`Queue: 'worker-process-data' emptied`, result),
-      );
-
-    await this.workerProcessDataQueue
-      .getJobCounts()
-      .then((counts) => console.log(`worker-process-data`, counts));
-
     await this.workerProcessUpdateQueue.empty().then(() =>
       this.logger.log({
         level: 'info',
