@@ -7,7 +7,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { getConnectionOptions } from 'typeorm';
-import { ChartDataModule } from './chart.data/chart.data.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
 import { APIModule } from './api/api.module';
 import { DatabaseModule } from '@app/sdvv-database';
@@ -25,14 +24,9 @@ import { DatabaseModule } from '@app/sdvv-database';
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
-      // redis: {
-      //   host: 'localhost',
-      //   port: 6379,
-      // },
     }),
     EfileApiDataModule,
     DatabaseModule,
-    ChartDataModule,
     APIModule,
   ],
   controllers: [AppController],
