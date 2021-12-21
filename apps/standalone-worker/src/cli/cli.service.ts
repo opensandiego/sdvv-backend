@@ -4,9 +4,9 @@ import { QueueController } from '../queue-producer/queue.controller';
 /**
  * Command line tool to update the database manually.
  * Running a command when in development vs on the production server are below.
- * Example for running 'update-elections'. Replace with a command from a function decorator.
- *  production: node apps/standalone-worker/src/console.ts update-elections
- *  dev: ts-node -r tsconfig-paths/register apps/standalone-worker/src/console.ts update-elections
+ * Example for running 'initialize-data'. Replace with a command from a function decorator.
+ *  production: node apps/standalone-worker/src/console.ts initialize-data
+ *  dev: ts-node -r tsconfig-paths/register apps/standalone-worker/src/console.ts initialize-data
  */
 
 @Console()
