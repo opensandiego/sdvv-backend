@@ -39,7 +39,12 @@ export class APIController {
     private apiCandidateDetailsService: APICandidateDetailsService,
   ) {}
 
-  // @Get('elections')
+  @Get('last-update')
+  async getLastUpdate() {
+    return await {
+      updated: '12/20/2021',
+    };
+  }
 
   @Get('candidate-navigation')
   async getCandidateNavigation(

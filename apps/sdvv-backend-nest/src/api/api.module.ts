@@ -9,8 +9,8 @@ import { APICandidateDetailsService } from './api.candidate.details.service';
 @Module({
   imports: [
     CacheModule.register({
-      ttl: 30, // seconds
-      // ttl: 0, // disable expiration
+      // In production set cache to 6 hours = 21600 seconds
+      ttl: process.env.NODE_ENV === 'production' ? 21600 : 10,
     }),
     QueriesModule,
   ],

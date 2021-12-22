@@ -13,7 +13,10 @@ import { DatabaseModule } from '@app/sdvv-database';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
