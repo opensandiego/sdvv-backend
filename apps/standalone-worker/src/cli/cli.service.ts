@@ -3,12 +3,9 @@ import { QueueController } from '../queue-producer/queue.controller';
 
 /**
  * Command line tool to update the database manually.
- * Running a command when in development vs on the production server are below.
  * Example for running 'initialize-data'. Replace with a command from a function decorator.
- *  production: node apps/standalone-worker/src/console.ts initialize-data
- *  dev: ts-node -r tsconfig-paths/register apps/standalone-worker/src/console.ts initialize-data
+ *  node -r ts-node/register apps/standalone-worker/src/console.ts initialize-data
  */
-
 @Console()
 export class CLIService {
   constructor(private queueController: QueueController) {}
@@ -49,6 +46,7 @@ export class CLIService {
     await this.queueController.updateTransactionsCurrent();
   }
 
+  // High memory usage. Gets upto 700MB then drops to ~ 200 MB after a year is processed.
   @Command({
     command: 'update-transactions-past',
     description:

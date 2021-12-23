@@ -42,7 +42,7 @@ export class APIController {
   @Get('last-update')
   async getLastUpdate() {
     return await {
-      updated: '12/20/2021',
+      updated: '12/22/2021',
     };
   }
 
