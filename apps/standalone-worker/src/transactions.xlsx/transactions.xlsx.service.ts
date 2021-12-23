@@ -7,6 +7,7 @@ import { XLSXConversionService } from '../utils/xlsx.conversion.service';
 import { ElectionYears } from '../assets/elections';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+require('expose-gc');
 
 @Injectable()
 export class TransactionsXLSXService {
@@ -87,6 +88,11 @@ export class TransactionsXLSXService {
     try {
       for await (const year of years) {
         await this.populateDatabaseWithXLSXWorksheets(year);
+
+        if (global.gc) {
+          global.gc(); // Run Garbage Collection to free up memory on the Heap
+        }
+
         this.logger.info('Updated Transactions', {
           transactionYear: year,
         });
@@ -129,6 +135,9 @@ export class TransactionsXLSXService {
     for await (const sheet of this.sheetCAL) {
       try {
         await this.processWorkbookSheet(workbookFileData, sheet, year);
+        if (global.gc) {
+          global.gc(); // Run Garbage Collection to free up memory on the Heap
+        }
       } catch {
         this.logger.error('Skipping Transactions for XLSX workbook sheet', {
           transactionYear: year,
@@ -138,21 +147,26 @@ export class TransactionsXLSXService {
     }
   }
 
+  private getSheetJSON(workbookFileData, sheetName) {
+    const workbookSheet =
+      this.transactionsXLSXDownloadService.readWorkbookSheet(
+        workbookFileData,
+        sheetName,
+      );
+
+    return this.xlsxConversionService.getObjectRows(workbookSheet, sheetName);
+  }
+
   private async processWorkbookSheet(
     workbookFileData: Uint8Array,
     sheet,
     year: string,
   ) {
-    const workbookSheet =
-      this.transactionsXLSXDownloadService.readWorkbookSheet(
-        workbookFileData,
-        sheet.sheetName,
-      );
+    const sheetJSON = this.getSheetJSON(workbookFileData, sheet.sheetName);
 
-    const sheetJSON = this.xlsxConversionService.getObjectRows(
-      workbookSheet,
-      sheet.sheetName,
-    );
+    if (global.gc) {
+      global.gc(); // Run Garbage Collection to free up memory on the Heap
+    }
 
     await sheet.serviceType.replaceYearData(sheetJSON, year, sheet.formType);
   }

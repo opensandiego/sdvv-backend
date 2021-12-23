@@ -14,8 +14,6 @@ export class ZipCodesService {
   ) {}
 
   async findAll(): Promise<ZipCodeEntity[]> {
-    console.log('zipCodeRepository findAll');
-
     return await this.zipCodeRepository.find();
   }
 

@@ -38,7 +38,10 @@ export class RCPTService {
         CreateRCPTDto,
       );
 
-    this.sharedService.addYear(sheetClasses, year);
+    const sheetClassesWithYears = this.sharedService.addYear(
+      sheetClasses,
+      year,
+    );
 
     await this.sharedService.deleteBulkData(
       RCPTEntity,
@@ -47,6 +50,6 @@ export class RCPTService {
       formType,
     );
 
-    await this.sharedService.createBulkData(sheetClasses, RCPTEntity);
+    await this.sharedService.createBulkData(sheetClassesWithYears, RCPTEntity);
   }
 }
