@@ -24,6 +24,9 @@ export class ElectionEntity {
   internal: boolean;
 
   // Fields below are not from eFile
+  @Column({ nullable: true })
+  transactions_last_update: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

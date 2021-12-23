@@ -8,17 +8,11 @@ import {
 
 @Entity({ name: 'candidate' })
 export class CandidateEntity {
-  @PrimaryColumn()
-  coe_id: string;
-
   @Column()
   filer_id: string;
 
   @Column()
   office_id: string;
-
-  @Column()
-  election_id: string;
 
   @Column()
   first_name: string;
@@ -44,6 +38,7 @@ export class CandidateEntity {
   @Column()
   jurisdiction_id: string;
 
+  // If district has a non-null value then the candidate is running for City Council and district is the district number
   @Column({ nullable: true })
   district: string;
 
@@ -65,6 +60,27 @@ export class CandidateEntity {
   // Fields below are not from eFile
   @Column({ nullable: true })
   candidate_controlled_committee_name: string;
+
+  @Column()
+  full_office_name: string;
+
+  @Column()
+  election_year: string;
+
+  @PrimaryColumn()
+  candidate_id: string;
+
+  @Column({ default: false })
+  in_general_election: boolean;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ nullable: true })
+  image_url: string;
+
+  @Column({ nullable: true })
+  website: string;
 
   @CreateDateColumn()
   createdAt: Date;

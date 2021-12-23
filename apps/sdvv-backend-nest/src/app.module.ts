@@ -7,15 +7,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { getConnectionOptions } from 'typeorm';
-import { ChartDataModule } from './chart.data/chart.data.module';
-import { QueueProducerModule } from './queue.producer/queue.producer.module';
 import { EfileApiDataModule } from '@app/efile-api-data';
 import { APIModule } from './api/api.module';
 import { DatabaseModule } from '@app/sdvv-database';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
@@ -26,15 +27,9 @@ import { DatabaseModule } from '@app/sdvv-database';
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
-      // redis: {
-      //   host: 'localhost',
-      //   port: 6379,
-      // },
     }),
     EfileApiDataModule,
     DatabaseModule,
-    ChartDataModule,
-    QueueProducerModule,
     APIModule,
   ],
   controllers: [AppController],

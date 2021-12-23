@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { CreateJurisdictionDto } from '@app/sdvv-database/jurisdictions/dto/createJurisdiction.dto';
 import { JurisdictionsService } from '@app/sdvv-database/jurisdictions/jurisdictions.service';
 import { ClassValidationService } from '../utils/utils.class.validation.service';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class JurisdictionZipCodeService {
   constructor(
     private classValidationService: ClassValidationService,
     private jurisdictionsService: JurisdictionsService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   async populateDatabaseWithJurisdictionZipCodes() {
@@ -24,8 +27,14 @@ export class JurisdictionZipCodeService {
       await this.jurisdictionsService.createBulkJurisdictions(
         jurisdictionClasses,
       );
+
+      this.logger.info(
+        'Populating Database with Zip Codes by jurisdiction Complete',
+      );
     } catch {
-      console.log('Error in populateDatabaseWithJurisdictionZipCodes');
+      this.logger.error(
+        'Populating Database with Zip Codes by jurisdiction Failed',
+      );
     }
   }
 
@@ -34,7 +43,10 @@ export class JurisdictionZipCodeService {
     const filePath = `${__dirname}/assets/${jsonFileName}`;
 
     if (!fs.existsSync(filePath)) {
-      console.log('File not found: ', filePath);
+      this.logger.error('File with Zip Codes by jurisdiction not found:.', {
+        filePath: filePath,
+      });
+
       throw `File not found: ${filePath}`;
     }
 

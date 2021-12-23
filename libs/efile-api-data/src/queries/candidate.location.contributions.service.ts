@@ -1,35 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { JurisdictionEntity } from '@app/sdvv-database/jurisdictions/jurisdictions.entity';
-import { CalculationTransaction } from '../tables/entity/calculation.transactions.entity';
 import { ZipCodeEntity } from '@app/sdvv-database/zipCodes/zipCodes.entity';
+import { RCPTEntity } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class CandidateLocationContributionsService {
   constructor(private connection: Connection) {}
 
-  async getContributionInZipCodes(filerName: string, zipCodes: string[]) {
+  // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
+  private RCPTTypes = ['A', 'C', 'I'];
+
+  async getContributionInZipCodes(committeeName: string, zipCodes: string[]) {
     const result = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
-      .andWhere('zip IN (:...zipCodes)', { zipCodes })
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('ctrib_zip4 IN (:...zipCodes)', { zipCodes })
       .getRawOne();
 
     return result.sum;
   }
 
-  async getContributionOutZipCodes(filerName: string, zipCodes: string[]) {
+  async getContributionOutZipCodes(committeeName: string, zipCodes: string[]) {
     const result = await this.connection
-      .getRepository(CalculationTransaction)
+      .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .andWhere('filer_name = :filerName', { filerName: filerName })
-      .andWhere('schedule IN (:...schedules)', { schedules: ['A', 'C', 'I'] })
-      .andWhere('zip NOT IN (:...zipCodes)', { zipCodes })
-      // .andWhere('zip IS NOT NULL')
+      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('ctrib_zip4 NOT IN (:...zipCodes)', { zipCodes })
+      // .andWhere('ctrib_zip4 IS NOT NULL')
       .getRawOne();
 
     return result.sum;

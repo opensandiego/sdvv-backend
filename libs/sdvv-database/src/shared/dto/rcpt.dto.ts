@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNumber,
   IsNumberString,
   IsString,
@@ -68,9 +69,9 @@ export class RCPTDto {
   @MaxLength(60)
   ctrib_occ: string;
 
-  @IsString()
-  @MaxLength(1)
-  ctrib_self: string;
+  @Type(() => Boolean)
+  @IsBoolean()
+  ctrib_self: boolean;
 
   @IsString()
   @MaxLength(1)
@@ -182,13 +183,13 @@ export class RCPTDto {
   @MaxLength(60)
   intr_occ: string;
 
-  @IsString()
-  @MaxLength(1)
-  intr_self: string;
+  @Type(() => Boolean)
+  @IsBoolean()
+  intr_self: boolean;
 
-  @IsString()
-  @MaxLength(1)
-  memo_code: string;
+  @Type(() => Boolean)
+  @IsBoolean()
+  memo_code: boolean;
 
   @IsString()
   @MaxLength(20)

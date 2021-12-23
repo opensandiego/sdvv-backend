@@ -1,28 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
-import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.entity';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class CandidateCommitteeService {
-  constructor(private connection: Connection) {}
+  constructor(
+    private connection: Connection,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   async addCandidateCommittees() {
-    console.log('candidate-committees-all: started');
     try {
       await this.updateCandidateCommittees();
-    } catch (error) {
-      console.log('Error in candidate-committees-all');
-    }
 
-    console.log('candidate-committees-all: completed');
-    return {};
+      this.logger.info('Add Committees to Candidates Complete');
+    } catch {
+      this.logger.error('Error adding Committees to Candidates');
+    }
   }
 
   private async getCandidateCommittee(
     candidate: CandidateEntity,
-    electionDate: string,
-  ) {
+  ): Promise<string> {
     let lastName = candidate.last_name;
 
     if (lastName.includes('-')) {
@@ -37,8 +38,6 @@ export class CandidateCommitteeService {
       ? candidate.office.split(' ')[1]
       : candidate.office;
 
-    const electionYear = new Date(electionDate).getFullYear();
-
     const committeeMatches = await this.connection
       .getRepository('committee')
       .createQueryBuilder('committee')
@@ -49,7 +48,7 @@ export class CandidateCommitteeService {
         {
           name_str: `%(${lastName.toLocaleLowerCase()})%`,
           office_str: `%${office}%`,
-          year_str: `%${electionYear}%`,
+          year_str: `%${candidate.election_year}%`,
         },
       )
       .orderBy('LENGTH(committee.entity_name)', 'ASC')
@@ -65,40 +64,23 @@ export class CandidateCommitteeService {
   private async setCommitteesForCandidates(
     candidates: CandidateEntity[],
   ): Promise<CandidateEntity[]> {
-    const electionRepository = this.connection.getRepository(ElectionEntity);
-
     for await (const candidate of candidates) {
-      const election = await electionRepository.findOne(candidate.election_id);
-
-      const committeeName = await this.getCandidateCommittee(
-        candidate,
-        election.election_date,
-      );
-
-      candidate.candidate_controlled_committee_name = committeeName;
+      candidate.candidate_controlled_committee_name =
+        await this.getCandidateCommittee(candidate);
     }
 
     return candidates;
   }
 
-  private async getCandidates(electionID?: string): Promise<CandidateEntity[]> {
-    let queryOptions = {};
-
-    if (electionID) {
-      queryOptions = {
-        where: {
-          election_id: electionID,
-        },
-      };
-    }
-
+  private async getAllCandidates(): Promise<CandidateEntity[]> {
     return await this.connection
       .getRepository(CandidateEntity)
-      .find(queryOptions);
+      .createQueryBuilder()
+      .getMany();
   }
 
-  private async updateCandidateCommittees(electionID?: string) {
-    let candidates: CandidateEntity[] = await this.getCandidates(electionID);
+  private async updateCandidateCommittees() {
+    let candidates: CandidateEntity[] = await this.getAllCandidates();
     candidates = await this.setCommitteesForCandidates(candidates);
     await this.connection.getRepository(CandidateEntity).save(candidates);
   }

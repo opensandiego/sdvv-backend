@@ -1,17 +1,12 @@
+import { Expose } from 'class-transformer';
 import { IsUUID } from 'class-validator';
 
 export class CreateCandidateDto {
-  @IsUUID()
-  coe_id: string;
-
   @IsUUID()
   filer_id: string;
 
   @IsUUID()
   office_id: string;
-
-  @IsUUID()
-  election_id: string;
 
   first_name: string;
 
@@ -41,4 +36,18 @@ export class CreateCandidateDto {
   jurisdiction_code: string;
 
   candidate_name: string;
+
+  election_year: string;
+
+  @Expose()
+  get candidate_id() {
+    return `${this.filer_id}|${this.election_year}`;
+  }
+
+  @Expose()
+  get full_office_name() {
+    return this.district
+      ? `${this.office} ${this.jurisdiction_name} - Dist ${this.district}`
+      : `${this.office} ${this.jurisdiction_name}`;
+  }
 }

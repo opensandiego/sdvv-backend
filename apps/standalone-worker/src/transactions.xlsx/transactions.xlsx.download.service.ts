@@ -1,44 +1,68 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { catchError, map, mergeMap, Observable, of } from 'rxjs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const XLSX = require('xlsx');
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class TransactionsXLSXDownloadService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   private eFileBulkExportUrl =
     'https://efile.sandiego.gov/api/v1/public/campaign-bulk-export-url';
 
-  public getXLSXFile(
+  public getWorkbookFileData(
     fileYear: number,
-    sheetName?: string,
     mostRecent = false,
-  ): Observable<any> {
+  ): Observable<Uint8Array> {
     return of(fileYear).pipe(
       mergeMap((year) => this.getDownloadURL(year, mostRecent)),
-      mergeMap((url) => this.downloadXLSXFile(url)),
-      mergeMap((data) => this.getXLSXWorkbook(data, sheetName)),
+      mergeMap((url) => this.downloadXLSXArrayBuffer(url)),
+      mergeMap((data) => this.convertToUint8Array(data)),
     );
   }
 
-  private getDownloadURL(year: number, mostRecent = false): Observable<string> {
-    console.log('IN getDownloadURL');
+  public readWorkbookSheet(data: Uint8Array, worksheetName: string) {
+    try {
+      return XLSX.read(data, {
+        type: 'array',
+        sheets: worksheetName,
+      });
+    } catch (error) {
+      this.logger.log({
+        level: 'error',
+        message: 'Not able to read sheet from Uint8Array data.',
+        sheetName: worksheetName,
+      });
+      throw error;
+    }
+  }
 
+  private getDownloadURL(year: number, mostRecent = false): Observable<string> {
     const requestUrl = `${this.eFileBulkExportUrl}?year=${year}&most_recent_only=${mostRecent}`;
 
     return this.httpService.get(requestUrl).pipe(
       map((axiosResponse) => axiosResponse.data),
       map((eFileResponse) => eFileResponse.data),
       catchError((error) => {
-        console.log('Error getting location of xlsx file from eFile');
+        this.logger.log({
+          level: 'error',
+          message: 'Not able to get URL of XLSX file from eFile.',
+          transactionYear: year,
+          url: requestUrl,
+        });
+
         throw error;
       }),
     );
   }
 
-  private downloadXLSXFile(requestUrl: string): Observable<any> {
+  private downloadXLSXArrayBuffer(requestUrl: string): Observable<ArrayBuffer> {
     return of(requestUrl).pipe(
       mergeMap((url) => {
         return this.httpService.get(url, {
@@ -49,24 +73,25 @@ export class TransactionsXLSXDownloadService {
         });
       }),
       catchError((error) => {
-        console.log('Error downloading xlsx file');
+        this.logger.log({
+          level: 'error',
+          message: 'Not able to download XLSX file.',
+          url: requestUrl,
+        });
         throw error;
       }),
       map((response) => response.data),
     );
   }
 
-  private getXLSXWorkbook(data: ArrayBuffer, worksheetName?: string) {
+  private convertToUint8Array(data: ArrayBuffer): Observable<Uint8Array> {
     return of(data).pipe(
       map((data) => new Uint8Array(data)),
-      map((data) => {
-        return XLSX.read(data, {
-          type: 'array',
-          sheets: worksheetName,
-        });
-      }),
       catchError((error) => {
-        console.log('Error converting downloaded file to xlsx format');
+        this.logger.log({
+          level: 'error',
+          message: 'Not able to convert data from ArrayBuffer to Uint8Array.',
+        });
         throw error;
       }),
     );
