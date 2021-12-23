@@ -47,7 +47,7 @@ export class APICandidateDetailsService {
 
       return {
         id: candidate['candidate_id'],
-        candidateName: candidate['candidate_name'],
+        candidateName: `${candidate['first_name']} ${candidate['last_name']}`,
         raised: await this.candidateSummaryService.getRaisedSum(
           candidate['candidate_controlled_committee_name'],
         ),
