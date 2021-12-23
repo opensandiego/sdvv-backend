@@ -44,7 +44,7 @@ export class APICandidateCardService {
 
       return {
         id: candidate['candidate_id'],
-        name: candidate['candidate_name'],
+        name: `${candidate['first_name']} ${candidate['last_name']}`,
         description: candidate['description'],
         // committee_name: candidate['candidate_controlled_committee_name'],
         year: candidate['election_year'],
