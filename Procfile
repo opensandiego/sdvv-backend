@@ -1,1 +1,2 @@
-web: node app/server.js
+web: npm run start:prod:web
+worker: npm run start:prod:worker

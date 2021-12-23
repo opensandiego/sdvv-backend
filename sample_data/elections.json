@@ -1,0 +1,176 @@
+[
+  {
+      "election_date": "06/07/2022",
+      "election_id": "aa5a5716-6c3c-6ffa-5516-b9f0bc959ad3",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/03/2020",
+      "election_id": "c0cd8d33-f9d7-0ab4-1dab-d1a37216b7b3",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "03/03/2020",
+      "election_id": "cf3a337a-87c1-5b52-608c-b3484aa13e7f",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/06/2018",
+      "election_id": "3ad9fb0e-7244-5ba9-cead-98d49dbb11d8",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/05/2018",
+      "election_id": "9968cc51-16d2-ab73-1429-9b897282f1bc",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/08/2016",
+      "election_id": "8ef87b94-71e2-d27f-5f4b-78135cede06a",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/07/2016",
+      "election_id": "ab1d86dc-0035-f137-ef6f-5477bbc83c62",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/04/2014",
+      "election_id": "6bdae28d-4dc3-a017-fc72-a916feef66dd",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/03/2014",
+      "election_id": "cea141e5-e6c5-1424-e418-ba1fc7b1b6dd",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "02/11/2014",
+      "election_id": "a3022bf7-e3bc-2aee-56ba-2343c8b7e34e",
+      "election_type": "Runoff",
+      "internal": false
+  },
+  {
+      "election_date": "11/19/2013",
+      "election_id": "139c5ff3-d3d0-8ac6-6b69-fba8755228e4",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "05/21/2013",
+      "election_id": "69b43a7c-8ca5-1ce6-88e8-439d52346c12",
+      "election_type": "Runoff",
+      "internal": false
+  },
+  {
+      "election_date": "03/26/2013",
+      "election_id": "d121f249-6cd0-87e0-564b-fee8dbdee21a",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "11/06/2012",
+      "election_id": "c0eb51d6-aa12-a56d-e684-095f8f9d0919",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/05/2012",
+      "election_id": "fe5db0cc-f648-4bb5-85f9-065a958a2072",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/02/2010",
+      "election_id": "90fc65a0-a991-56b8-39b9-adaa96d3737b",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/08/2010",
+      "election_id": "ddba9b61-40b8-aca0-462d-50fc8c2f77b4",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/03/2009",
+      "election_id": "0a6608b9-0865-9aa4-c347-e6946629d286",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "06/02/2009",
+      "election_id": "2ff21cda-8dc5-0714-e92a-7e33e7382bc4",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "11/04/2008",
+      "election_id": "868e0ab9-feb3-1bb6-04f1-5f9dba75c6ef",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "06/03/2008",
+      "election_id": "7059ab7e-fd65-edee-a30a-61a40570e3be",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/07/2006",
+      "election_id": "2705b353-5058-1328-f2b1-75bb1fa17142",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "06/06/2006",
+      "election_id": "59254bee-5aac-cddf-d938-6948f70149cb",
+      "election_type": "Primary",
+      "internal": false
+  },
+  {
+      "election_date": "11/08/2005",
+      "election_id": "8b34ce26-b85e-05a8-83e5-de7ddfc40995",
+      "election_type": "Runoff",
+      "internal": false
+  },
+  {
+      "election_date": "07/26/2005",
+      "election_id": "e0338af2-1631-9c1b-35db-f693e5c8c873",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "01/04/2005",
+      "election_id": "73325b46-d5f3-3d4a-6268-d49d4654f8b7",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "11/16/2004",
+      "election_id": "48ec0a11-1da5-a5c3-5ef3-3c77fef9c906",
+      "election_type": "Special",
+      "internal": false
+  },
+  {
+      "election_date": "11/02/2004",
+      "election_id": "41dfd683-c859-76fb-64f1-15c16fa89d3d",
+      "election_type": "General",
+      "internal": false
+  },
+  {
+      "election_date": "03/02/2004",
+      "election_id": "d4b45158-4ea1-f933-505d-445be19a4ac9",
+      "election_type": "Primary",
+      "internal": false
+  }
+]
