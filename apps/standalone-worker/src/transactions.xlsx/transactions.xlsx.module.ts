@@ -8,9 +8,11 @@ import { TransactionsXLSXService } from './transactions.xlsx.service';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     DatabaseModule,
     UtilsModule,
     HttpModule,
