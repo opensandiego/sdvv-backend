@@ -8,6 +8,7 @@ import { APICandidateCardService } from './api.candidate.card.service';
 import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 import { APICandidateDetailsService } from './api.candidate.details.service';
 import { APILastUpdatedService } from './api-last-updated.service';
+import { APINonCachedController } from './api-non-cached.controller';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { APILastUpdatedService } from './api-last-updated.service';
     APICandidateDetailsService,
     APILastUpdatedService,
   ],
-  controllers: [APIController],
+  controllers: [APIController, APINonCachedController],
 })
 export class APIModule {}
