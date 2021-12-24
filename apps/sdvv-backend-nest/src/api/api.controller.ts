@@ -1,22 +1,18 @@
 import {
   CacheInterceptor,
-  CACHE_MANAGER,
   Controller,
   DefaultValuePipe,
   Get,
-  Inject,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { Cache } from 'cache-manager';
 import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
 import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 import { APICandidateDetailsService } from './api.candidate.details.service';
-import { APILastUpdatedService } from './api-last-updated.service';
 import { CandidateCard } from './interfaces/candidate.card';
 import { CandidateQuickView } from './interfaces/candidate.quickview';
 import { CandidateDetailsHeader } from './interfaces/candidate.details.header';
@@ -33,18 +29,11 @@ import { OfficeSummary } from './interfaces/office.summary';
 @UseInterceptors(CacheInterceptor)
 export class APIController {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private apiService: APIService,
     private apiCandidateCardService: APICandidateCardService,
     private apiCandidateQuickViewService: APICandidateQuickViewService,
     private apiCandidateDetailsService: APICandidateDetailsService,
-    private apiLastUpdatedService: APILastUpdatedService,
   ) {}
-
-  @Get('last-update')
-  async getLastUpdate() {
-    return this.apiLastUpdatedService.getLastUpdated();
-  }
 
   @Get('candidate-navigation')
   async getCandidateNavigation(
