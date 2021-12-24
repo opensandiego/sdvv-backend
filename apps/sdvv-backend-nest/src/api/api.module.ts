@@ -13,7 +13,7 @@ import { APILastUpdatedService } from './api-last-updated.service';
   imports: [
     CacheModule.register<RedisClientOpts>({
       store: redisStore,
-      redis: process.env.REDIS_URL,
+      url: process.env.REDIS_URL,
       // In production set cache to 6 hours = 21600 seconds
       ttl: process.env.NODE_ENV === 'production' ? 21600 : 10,
     }),

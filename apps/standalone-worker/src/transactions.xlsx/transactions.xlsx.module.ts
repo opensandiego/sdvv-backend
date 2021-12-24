@@ -20,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
     EXPNModule,
     CacheModule.register<RedisClientOpts>({
       store: redisStore,
-      redis: process.env.REDIS_URL,
+      url: process.env.REDIS_URL,
     }),
   ],
   providers: [TransactionsXLSXService, TransactionsXLSXDownloadService],
