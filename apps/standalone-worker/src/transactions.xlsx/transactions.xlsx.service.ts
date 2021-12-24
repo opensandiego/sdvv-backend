@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { firstValueFrom } from 'rxjs';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 import { RCPTService } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.service';
@@ -17,6 +18,7 @@ export class TransactionsXLSXService {
     private rcptService: RCPTService,
     private expnService: EXPNService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   private sheetCAL = [
@@ -66,6 +68,9 @@ export class TransactionsXLSXService {
       for await (const year of years) {
         await this.populateDatabaseWithXLSXWorksheets(year);
       }
+
+      await this.setLastUpdatedDateTime();
+
       this.logger.info('Update Transactions for Current Election Complete', {
         transactionYears: years,
         electionYear: currentElection.year,
@@ -76,6 +81,21 @@ export class TransactionsXLSXService {
         electionYear: currentElection.year,
       });
     }
+  }
+
+  private async setLastUpdatedDateTime() {
+    const dateTimeNow = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      timeZoneName: 'short',
+    }).format(new Date());
+
+    await this.cacheManager.set('last-updated-date-time', dateTimeNow, {
+      ttl: 0,
+    });
   }
 
   public async updateTransactionsPast() {
