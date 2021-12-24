@@ -16,6 +16,7 @@ import { APIService } from './api.service';
 import { APICandidateCardService } from './api.candidate.card.service';
 import { APICandidateQuickViewService } from './api.candidate.quickview.service';
 import { APICandidateDetailsService } from './api.candidate.details.service';
+import { APILastUpdatedService } from './api-last-updated.service';
 import { CandidateCard } from './interfaces/candidate.card';
 import { CandidateQuickView } from './interfaces/candidate.quickview';
 import { CandidateDetailsHeader } from './interfaces/candidate.details.header';
@@ -37,13 +38,12 @@ export class APIController {
     private apiCandidateCardService: APICandidateCardService,
     private apiCandidateQuickViewService: APICandidateQuickViewService,
     private apiCandidateDetailsService: APICandidateDetailsService,
+    private apiLastUpdatedService: APILastUpdatedService,
   ) {}
 
   @Get('last-update')
   async getLastUpdate() {
-    return await {
-      updated: '12/22/2021',
-    };
+    return this.apiLastUpdatedService.getLastUpdated();
   }
 
   @Get('candidate-navigation')
