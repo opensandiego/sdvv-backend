@@ -26,4 +26,8 @@ import { ConfigModule } from '@nestjs/config';
   providers: [TransactionsXLSXService, TransactionsXLSXDownloadService],
   exports: [TransactionsXLSXService],
 })
-export class TransactionsXLSXModule {}
+export class TransactionsXLSXModule {
+  constructor() {
+    console.log('process.env.REDIS_URL', process.env.REDIS_URL);
+  }
+}
