@@ -39,10 +39,25 @@ $ docker-compose up -d
 npm run typeorm migration:run
 ```
 
+## Load the data into the database
+
+- Run the worker process. This starts up the queue to wait for tasks. The console for this process will update after each item in the queue is completed.
+```
+npm run start:worker:dev
+```
+
+- Run the console command to add the database initialization tasks to the queue. This command completes immediately. The console running the worker process will update as the queue is processed.
+```
+node -r ts-node/register apps/standalone-worker/src/console.ts initialize-data
+```
+
+The worker process will fetch and add the data to the database. This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
+
+
 ## Run the web part of the backend
 
 ```
-$ npm run start:web:dev
+npm run start:web:dev
 ```
 
 To test the backend server browse to http://localhost:3000/
