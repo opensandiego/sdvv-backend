@@ -10,38 +10,68 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
+- Install Docker https://docs.docker.com/get-docker/
 
+- Fork this repo to your personal GitHub.
+
+- Use git to clone your fork to your local development environment.
+
+- Checkout the ```develop``` branch
+
+- Install the dependencies  
 ```bash
 $ npm install
 ```
-To install the Postgres database using Docker run 
+
+Create a ``.env`` file in the root of your local repository then copy and paste in the following:
+```
+DATABASE_URL=postgres://postgres:example@localhost:54321/postgres
+REDIS_URL=redis://localhost:6379
+```
+
+- Install the three Docker containers (Postgres, pgAdmin, Redis) using:
+```
 $ docker-compose up -d
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+- Create the database tables using:
+``` 
+npm run typeorm migration:run
 ```
+
+## Load the data into the database
+
+- Run the worker process. This starts up the queue to wait for tasks. The console for this process will update after each item in the queue is completed.
+```
+npm run start:worker:dev
+```
+
+- Run the console command to add the database initialization tasks to the queue. This command completes immediately. The console running the worker process will update as the queue is processed.
+```
+node -r ts-node/register apps/standalone-worker/src/console.ts initialize-data
+```
+
+The worker process will fetch and add the data to the database. This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
+
+
+## Run the web part of the backend
+
+```
+npm run start:web:dev
+```
+
+To test the backend server browse to http://localhost:3000/
+
+
+<!-- ## View the database in pgAdmin
+The docker containers need to be running to access pgAdmin.
+From a browser go to http://localhost:5050/
+Login to pgAdmin with:
+Username: admin@admin.com
+Pasword: admin
+
+Create a connection to the database in pgAdmin
+... not yet available  -->
 
 ## Deploying to Heroku for development testing
 This repo can be deployed to Heroku using a free account but billing will need to be added to the account unless Redis is disabled before deploying.
