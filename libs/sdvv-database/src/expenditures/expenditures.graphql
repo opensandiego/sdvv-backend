@@ -1,0 +1,17 @@
+
+type ExpenditureCategory {
+  code: String
+  sum: Int
+  percent: Float
+}
+
+type Expenditures { # Expenditures Made
+  id: String #committeeName
+  committeeName: String
+  total: Int
+  categories: [ExpenditureCategory] # spending per category/expense code
+}
+
+type Query {
+  expenditures(committeeName: String!): Expenditures
+}
