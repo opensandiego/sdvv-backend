@@ -1,0 +1,12 @@
+
+type Contributions { # Contributions Received
+  id: String # committeeName
+  committeeName: String
+  total: Int # total of the donations raised by committee 
+  average: Int # average donation
+  count: Int # count of distinct donors
+}
+
+type Query {
+  contributions(committeeName: String!): Contributions
+}
