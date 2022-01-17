@@ -7,21 +7,19 @@ export class ExpendituresResolver {
 
   @Query()
   async expenditures(@Args('committeeName') committeeName: string) {
+    return { committeeName };
+  }
+
+  @ResolveField()
+  async id(@Parent() expenditures) {
+    const { committeeName } = expenditures;
     return committeeName;
   }
 
   @ResolveField()
-  async id(@Parent() committeeName) {
-    return committeeName;
-  }
+  async total(@Parent() expenditures) {
+    const { committeeName } = expenditures;
 
-  @ResolveField()
-  async committeeName(@Parent() committeeName) {
-    return committeeName;
-  }
-
-  @ResolveField()
-  async total(@Parent() committeeName) {
     const expenses = await this.expendituresService.getTotalSpent({
       committeeName: committeeName,
     });
@@ -30,7 +28,9 @@ export class ExpendituresResolver {
   }
 
   @ResolveField()
-  async categories(@Parent() committeeName) {
+  async categories(@Parent() expenditures) {
+    const { committeeName } = expenditures;
+
     const categories =
       await this.expendituresService.getCategoriesBySpendingCode(committeeName);
 
