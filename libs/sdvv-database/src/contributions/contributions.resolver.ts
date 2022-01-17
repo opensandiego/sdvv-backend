@@ -7,30 +7,24 @@ export class ContributionsResolver {
 
   @Query()
   async contributions(@Args('committeeName') committeeName: string) {
-    return committeeName;
+    return { committeeName: committeeName, id: committeeName };
   }
 
   @ResolveField()
-  async id(@Parent() committeeName) {
-    return committeeName;
-  }
+  async total(@Parent() contributions) {
+    const { committeeName } = contributions;
 
-  @ResolveField()
-  async committeeName(@Parent() committeeName) {
-    return committeeName;
-  }
-
-  @ResolveField()
-  async total(@Parent() committeeName) {
-    const contributions = await this.contributionsService.getContributionSum({
+    const total = await this.contributionsService.getContributionSum({
       committeeName: committeeName,
     });
 
-    return contributions;
+    return total;
   }
 
   @ResolveField()
-  async average(@Parent() committeeName) {
+  async average(@Parent() contributions) {
+    const { committeeName } = contributions;
+
     const average = await this.contributionsService.getContributionAverage({
       committeeName: committeeName,
     });
@@ -39,7 +33,9 @@ export class ContributionsResolver {
   }
 
   @ResolveField()
-  async count(@Parent() committeeName) {
+  async count(@Parent() contributions) {
+    const { committeeName } = contributions;
+
     const count = await this.contributionsService.getContributorCount({
       committeeName: committeeName,
     });
