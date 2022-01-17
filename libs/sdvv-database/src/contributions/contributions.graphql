@@ -1,10 +1,18 @@
 
+type ContributionOccupation { 
+  occupation: String
+  sum: Int
+  percent: Float
+  count: Int
+}
+
 type Contributions { # Contributions Received
   id: String # committeeName
   committeeName: String
   total: Int # total of the donations raised by committee 
   average: Int # average donation
   count: Int # count of distinct donors
+  byOccupation(limit: Int): [ContributionOccupation]
 }
 
 type Query {

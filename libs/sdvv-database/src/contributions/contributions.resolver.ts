@@ -1,13 +1,36 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ContributionsService } from './contributions.service';
+import { ContributorsListService } from './contributors-list.service';
 
 @Resolver('Contributions')
 export class ContributionsResolver {
-  constructor(private contributionsService: ContributionsService) {}
+  constructor(
+    private contributionsService: ContributionsService,
+    private contributorsListService: ContributorsListService,
+  ) {}
 
   @Query()
   async contributions(@Args('committeeName') committeeName: string) {
-    return { committeeName: committeeName, id: committeeName };
+    return { committeeName: committeeName };
+  }
+
+  @ResolveField()
+  async id(@Parent() contributions) {
+    const { committeeName } = contributions;
+    return committeeName;
+  }
+
+  @ResolveField()
+  async byOccupation(@Parent() contributions, @Args('limit') limit) {
+    const { committeeName } = contributions;
+
+    const list =
+      await this.contributorsListService.getContributionsByOccupation({
+        committeeName,
+        limit,
+      });
+
+    return list;
   }
 
   @ResolveField()
