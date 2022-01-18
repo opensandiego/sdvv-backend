@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ExpendituresModule } from './expenditures/expenditures.module';
-import { ContributionsModule } from './contributions/contributions.module';
+import { ContributionsSummaryModule } from './contributions-summary/contributions-summary.module';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ContributionsModule } from './contributions/contributions.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     ExpendituresModule,
-    ContributionsModule,
+    ContributionsSummaryModule,
   ],
 })
 export class GraphQLSetupModule {}

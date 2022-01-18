@@ -3,7 +3,7 @@ import { Connection } from 'typeorm';
 import { RCPTEntity } from '../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
-export class ContributionsService {
+export class ContributionsSummaryService {
   constructor(private connection: Connection) {}
 
   private RCPTTypes = ['A', 'C', 'I'];

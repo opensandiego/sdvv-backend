@@ -1,16 +1,16 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { ContributionsService } from './contributions.service';
+import { ContributionsSummaryService } from './contributions-summary.service';
 import { ContributorsListService } from './contributors-list.service';
 
-@Resolver('Contributions')
-export class ContributionsResolver {
+@Resolver('ContributionsSummary')
+export class ContributionsSummaryResolver {
   constructor(
-    private contributionsService: ContributionsService,
+    private contributionsSummaryService: ContributionsSummaryService,
     private contributorsListService: ContributorsListService,
   ) {}
 
   @Query()
-  async contributions(@Args('committeeName') committeeName: string) {
+  async contributionsSummary(@Args('committeeName') committeeName: string) {
     return { committeeName: committeeName };
   }
 
@@ -37,7 +37,7 @@ export class ContributionsResolver {
   async total(@Parent() contributions) {
     const { committeeName } = contributions;
 
-    const total = await this.contributionsService.getContributionSum({
+    const total = await this.contributionsSummaryService.getContributionSum({
       committeeName: committeeName,
     });
 
@@ -48,9 +48,10 @@ export class ContributionsResolver {
   async average(@Parent() contributions) {
     const { committeeName } = contributions;
 
-    const average = await this.contributionsService.getContributionAverage({
-      committeeName: committeeName,
-    });
+    const average =
+      await this.contributionsSummaryService.getContributionAverage({
+        committeeName: committeeName,
+      });
 
     return average;
   }
@@ -59,7 +60,7 @@ export class ContributionsResolver {
   async count(@Parent() contributions) {
     const { committeeName } = contributions;
 
-    const count = await this.contributionsService.getContributorCount({
+    const count = await this.contributionsSummaryService.getContributorCount({
       committeeName: committeeName,
     });
 

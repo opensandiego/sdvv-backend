@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { RCPTEntity } from '../tables-xlsx/rcpt/rcpt.entity';
-import { ContributionsService } from './contributions.service';
+import { ContributionsSummaryService } from './contributions-summary.service';
 
 @Injectable()
 export class ContributorsListService {
   constructor(
     private connection: Connection,
-    private contributionsService: ContributionsService,
+    private contributionsService: ContributionsSummaryService,
   ) {}
 
   private RCPTTypes = ['A', 'C', 'I'];
