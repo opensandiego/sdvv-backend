@@ -4,6 +4,7 @@ import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ExpendituresModule } from './expenditures/expenditures.module';
 import { ContributionsSummaryModule } from './contributions-summary/contributions-summary.module';
+import { ContributorsModule } from './contributors/contributors.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ContributionsSummaryModule } from './contributions-summary/contribution
     }),
     ExpendituresModule,
     ContributionsSummaryModule,
+    ContributorsModule,
   ],
 })
 export class GraphQLSetupModule {}
