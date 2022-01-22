@@ -3,9 +3,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ExpendituresModule } from './expenditures/expenditures.module';
-import { ContributionsSummaryModule } from './contributions-summary/contributions-summary.module';
-import { ContributorsModule } from './contributors/contributors.module';
-
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -17,8 +14,6 @@ import { ContributorsModule } from './contributors/contributors.module';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     ExpendituresModule,
-    ContributionsSummaryModule,
-    ContributorsModule,
   ],
 })
 export class GraphQLSetupModule {}
