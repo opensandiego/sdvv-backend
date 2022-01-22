@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { CandidateModule } from './graph/candidate/candidate.module';
 import { ExpendituresModule } from './expenditures/expenditures.module';
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ExpendituresModule } from './expenditures/expenditures.module';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
+    CandidateModule,
     ExpendituresModule,
   ],
 })
