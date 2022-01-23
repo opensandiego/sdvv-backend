@@ -1,0 +1,10 @@
+
+type Committee {
+  id: String
+  name: String
+  contributions: ContributionDetails
+}
+
+type Query {
+  committee(committeeName: String!): Committee
+}
