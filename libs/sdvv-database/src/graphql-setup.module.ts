@@ -5,6 +5,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { CandidateModule } from './candidate/candidate.module';
 import { CommitteeModule } from './committee/committee.module';
 import { ExpendituresModule } from './expenditures/expenditures.module';
+import { ContributionsModule } from './contributions/contributions.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ExpendituresModule } from './expenditures/expenditures.module';
     }),
     CandidateModule,
     CommitteeModule,
+    ContributionsModule,
     ExpendituresModule,
   ],
 })

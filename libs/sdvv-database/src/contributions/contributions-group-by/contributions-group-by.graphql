@@ -1,0 +1,30 @@
+
+type ContributionGroup { 
+  name: String
+  sum: Int
+  percent: Float
+  count: Int
+}
+
+type ContributionZipCode { 
+  name: String # should this be labeled 'name' or 'zipCode'
+  sum: Int
+  percent: Float
+  count: Int
+}
+
+# Used to show detail of a contributor found from a contribution / transaction
+# There may be more than one contributor with the same first and last name
+type ContributionContributor {
+  name: String
+  sum: Int
+  percent: Float
+  count: Int # number of contributions / transaction from the contributor
+}
+
+type ContributionsGroupBy {
+  occupation(limit: Int): [ContributionGroup]
+  employer(limit: Int): [ContributionGroup]
+  zipCode(limit: Int): [ContributionZipCode]
+  individual(limit: Int): [ContributionContributor]
+}

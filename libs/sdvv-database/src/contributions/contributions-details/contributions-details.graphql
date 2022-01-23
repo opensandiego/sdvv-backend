@@ -1,0 +1,46 @@
+
+enum ContributionMethod {
+  IN_KIND
+  INDIVIDUAL
+  OTHER
+}
+
+enum ContributionLocation {
+  IN_DISTRICT
+  IN_CITY
+  IN_COUNTY
+  IN_STATE
+  OUT_OF_STATE
+}
+
+enum ContributionJurisdiction {
+  IN
+  OUT
+}
+
+# The firstName, lastName, and lastFirstName in TransactionFilters
+# refer to the individual making the contribution 
+input TransactionFilters {
+  firstName: String
+  lastName: String
+  lastFirstName: String # Example 'last, first'
+  zipCodes: [String]
+  employers: [String]
+  occupations: [String]
+  # method: ContributionMethod # not yet implemented in ContributionService
+  # location: ContributionLocation # not yet implemented in ContributionService
+  # jurisdiction: ContributionJurisdiction # not yet implemented in ContributionService
+}
+
+type ContributionDetails {
+  sum: Int # total donations
+  average: Int # average of all donations
+  count: Int # number on unique donors
+  groupBy: ContributionsGroupBy # each group is an object with an array of unknown length with each object having an unknown name, sum and additional fields. 
+  categorizedBy: ContributionsSumBy # each category is an object with predetermined fields with a sum as the value
+
+  # List of all contributions to a Committee optional filtered
+  transactions(filters: TransactionFilters, limit: Int): [Contribution]
+
+  # contributors: [ContributionContributor?]
+}

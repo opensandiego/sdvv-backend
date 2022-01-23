@@ -1,0 +1,12 @@
+
+# Jurisdiction could be a district or city
+type ContributionsSumByJurisdiction { 
+  inside: Int
+  outside: Int
+}
+
+type ContributionsSumBy {
+  jurisdiction: ContributionsSumByJurisdiction
+  method: ContributionsSumByMethod
+  location: ContributionsSumByLocation
+}
