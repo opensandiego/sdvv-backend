@@ -5,6 +5,12 @@ type Committee {
   contributions: ContributionDetails
 }
 
+# Valid strings for committeeName can be found the the Filer_NamL column
+#  from the xlsx files at: 
+# https://efile.sandiego.gov/public/search/campaign/bulk-export
+# Examples: 
+#  "Aaron Brennan for City Council 2020"
+#  "Adrian Kwiatkowski for City Council 2020"
 type Query {
   committee(committeeName: String!): Committee
 }
