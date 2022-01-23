@@ -18,6 +18,29 @@ export class CandidateQLService {
     return candidate;
   }
 
+  async getDistrict(committeeName) {
+    const candidate = await this.getCandidateFromCommittee({
+      committeeName,
+    });
+
+    const { district } = candidate;
+    return district;
+  }
+
+  async getCandidateFromCommittee({ committeeName }) {
+    const query = this.connection
+      .getRepository(CandidateEntity)
+      .createQueryBuilder()
+      .andWhere('candidate_controlled_committee_name = :committeeName', {
+        committeeName,
+      });
+
+    this.addSelectionFields(query);
+
+    const candidate = await query.getRawOne();
+    return candidate;
+  }
+
   async getCandidates({ electionYear }) {
     const query = this.connection
       .getRepository(CandidateEntity)

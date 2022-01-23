@@ -21,7 +21,15 @@ type Candidate {
   committee: Committee
 }
 
+# type CandidateFilters {
+#   offices: [String]
+#   districts: [String]
+#   hasCommittee: Boolean
+#   inGeneralElection: Boolean
+# }
+
 type Query {
   candidate(id: String!): Candidate
   candidates(year: String!): [Candidate]
+  # candidates(year: String!, filter: CandidateFilters): [Candidate]
 }
