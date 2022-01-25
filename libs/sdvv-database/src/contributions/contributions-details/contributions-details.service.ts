@@ -6,7 +6,7 @@ import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 export class ContributionsDetailsService {
   constructor(private connection: Connection) {}
 
-  private RCPTTypes = ['A', 'C', 'I'];
+  private RCPTTypes = ['A', 'C'];
 
   async getContributionSum({ committeeName }) {
     const query = this.connection

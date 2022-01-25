@@ -10,7 +10,7 @@ export class ContributionsGroupByService {
     private contributionsDetailsService: ContributionsDetailsService,
   ) {}
 
-  private RCPTTypes = ['A', 'C', 'I'];
+  private RCPTTypes = ['A', 'C'];
 
   async getContributionsByOccupation({ committeeName, limit = 20 }) {
     const totalContributions =

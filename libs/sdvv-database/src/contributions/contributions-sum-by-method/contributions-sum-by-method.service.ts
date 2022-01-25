@@ -6,7 +6,8 @@ import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 export class ContributionsSumByMethodService {
   constructor(private connection: Connection) {}
 
-  private RCPTTypes = ['A', 'C', 'I'];
+  private RCPTTypes = ['A', 'C'];
+  private NonMonetaryContributions = ['C'];
 
   async getContributionsInKindSum({ committeeName }) {
     const query = this.connection
@@ -16,7 +17,9 @@ export class ContributionsSumByMethodService {
 
       .andWhere('filer_naml = :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
-      .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
+      .andWhere('form_type IN (:...formType)', {
+        formType: this.NonMonetaryContributions,
+      })
 
       .andWhere('ctrib_dscr iLike :spendingCode', {
         spendingCode: '%In-Kind%',
