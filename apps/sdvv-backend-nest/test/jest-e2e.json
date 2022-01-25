@@ -5,5 +5,9 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@app/sdvv-database(|/.*)$": "<rootDir>../../../libs/sdvv-database/src/$1",
+    "^@app/efile-api-data(|/.*)$": "<rootDir>../../../libs/efile-api-data/src/$1"
   }
 }
