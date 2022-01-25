@@ -1,0 +1,35 @@
+
+type Candidate {
+  id: String!
+  firstName: String
+  lastName: String
+  fullName: String
+
+  # Details
+  description: String
+  imageUrl: String
+  website: String
+
+  jurisdictionName: String
+  agency: String
+  office: String
+  district: String
+  electionYear: String
+  committeeName: String
+  inGeneralElection: Boolean
+  fullOfficeName: String
+  committee: Committee
+}
+
+# type CandidateFilters {
+#   offices: [String]
+#   districts: [String]
+#   hasCommittee: Boolean
+#   inGeneralElection: Boolean
+# }
+
+type Query {
+  candidate(id: String!): Candidate
+  candidates(year: String!): [Candidate]
+  # candidates(year: String!, filter: CandidateFilters): [Candidate]
+}

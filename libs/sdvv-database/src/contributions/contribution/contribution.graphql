@@ -1,0 +1,15 @@
+
+type Contribution {
+  amount: Int
+  name: String # 'last, first'
+  lastName: String
+  firstName: String
+  date: String
+  committee: String
+  tranId: String
+  city: String
+  state: String
+  zip: String
+  employer: String
+  occupation: String
+}

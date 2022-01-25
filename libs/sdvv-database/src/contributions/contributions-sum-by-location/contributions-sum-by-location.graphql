@@ -1,0 +1,8 @@
+
+type ContributionsSumByLocation {
+  inDistrict: Int
+  inCity: Int
+  inCounty: Int
+  inState: Int
+  outOfState: Int
+}

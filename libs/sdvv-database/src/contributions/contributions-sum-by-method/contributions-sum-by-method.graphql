@@ -1,0 +1,6 @@
+
+type ContributionsSumByMethod {
+  inKind: Int
+  individual: Int
+  other: Int
+}
