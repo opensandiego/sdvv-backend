@@ -41,13 +41,18 @@ export class CandidateQLService {
     return candidate;
   }
 
-  async getCandidates({ electionYear }) {
+  async getCandidates({ electionYear, filters }) {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
-      .andWhere('election_year = :electionYear', { electionYear });
+      .andWhere('election_year = :electionYear', { electionYear })
+
+      // This limits the results to city offices and excludes
+      // state offices that may show up in the data.
+      .andWhere('jurisdiction_code = :jurCode', { jurCode: 'CIT' });
 
     this.addSelectionFields(query);
+    this.addWhereFilters(query, filters);
 
     const candidates = await query.getRawMany();
     return candidates;
@@ -71,5 +76,36 @@ export class CandidateQLService {
       .addSelect('in_general_election', 'inGeneralElection')
       .addSelect('full_office_name', 'fullOfficeName');
     return query;
+  }
+
+  getOfficeList(offices): string[] {
+    const officeList = [];
+
+    if (offices.includes('MAYOR')) {
+      officeList.push('Mayor');
+    }
+    if (offices.includes('CITY_COUNCIL')) {
+      officeList.push('City Council');
+    }
+    if (offices.includes('CITY_ATTORNEY')) {
+      officeList.push('City Attorney');
+    }
+
+    return officeList;
+  }
+
+  addWhereFilters(query, filters) {
+    if (!filters) {
+      return;
+    }
+
+    if (filters?.offices) {
+      const officeList = this.getOfficeList(filters.offices);
+      if (officeList.length > 0) {
+        query.andWhere('office IN (:...officeList)', {
+          officeList,
+        });
+      }
+    }
   }
 }
