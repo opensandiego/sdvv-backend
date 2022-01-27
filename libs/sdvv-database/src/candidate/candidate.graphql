@@ -21,15 +21,20 @@ type Candidate {
   committee: Committee
 }
 
-# type CandidateFilters {
-#   offices: [String]
+enum OfficesEnum {
+  MAYOR
+  CITY_COUNCIL
+  CITY_ATTORNEY
+}
+
+input CandidateFilters {
+  offices: [OfficesEnum]
 #   districts: [String]
 #   hasCommittee: Boolean
 #   inGeneralElection: Boolean
-# }
+}
 
 type Query {
   candidate(id: String!): Candidate
-  candidates(year: String!): [Candidate]
-  # candidates(year: String!, filter: CandidateFilters): [Candidate]
+  candidates(year: String!, filters: CandidateFilters): [Candidate]
 }
