@@ -8,7 +8,7 @@ export class CandidateIndependentExpendituresService {
 
   // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
   private RCPTTypes = ['A', 'C', 'I'];
-  private EXPNTypes = ['D', 'E', 'G'];
+  private EXPNTypes = ['D'];
 
   async support(candidateName: string, electionDate: string) {
     return this.getIndependentExpendituresSum(

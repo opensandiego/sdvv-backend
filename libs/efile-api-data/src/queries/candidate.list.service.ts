@@ -13,7 +13,7 @@ export class CandidateListService {
 
   // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
   private RCPTTypes = ['A', 'C', 'I'];
-  private EXPNTypes = ['D', 'E', 'G'];
+  private EXPNTypes = ['E'];
 
   async getContributionByOccupation(committeeName: string, limit = 20) {
     const groups = await this.connection
