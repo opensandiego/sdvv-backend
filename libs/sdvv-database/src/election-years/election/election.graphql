@@ -1,0 +1,10 @@
+
+enum ElectionType {
+  PRIMARY
+  GENERAL
+}
+
+type Election {
+  date: String
+  type: ElectionType 
+}
