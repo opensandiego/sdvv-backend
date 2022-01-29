@@ -1,11 +1,29 @@
 
 type ElectionYear {
+  "A election year that has at least one primary or general election. This is usually an even numbered year"
   year: String
+
+  "All elections within the year that are in eFile and which have candidates."
   elections: [Election]
-  # offices: Offices
-  # lastUpdated: String
+
+  "All candidates that are running in an election year and which have an identified committee"
+  candidates: [Candidate]
+
+  "The count of all candidates that are running in an election year and which have a identified committee"
+  candidateCount: Int
+
+  "Returns and object with a key for each type of office. If the office does not have an election in the year then its value is null"
+  officesByType: OfficesByType
 }
 
 type Query {
+  """
+  If a year argument is provided then only one election year will be returned, for example '2020' or '2022'. If no year is provided then all election years will be returned.
+
+  Only years with an election, candidates, and Campaign Finance Data available
+  in XLSX on eFile are returned.  
+
+  The range of election years start at '2016' 
+  """
   electionYears(year: String): [ElectionYear]
 }

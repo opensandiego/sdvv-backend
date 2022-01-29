@@ -1,4 +1,5 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CandidateQLService } from '../candidate/candidate.service';
 import { ElectionYearsService } from './election-years.service';
 import { ElectionService } from './election/election.service';
 
@@ -7,31 +8,42 @@ export class ElectionYearsResolver {
   constructor(
     private electionYearsService: ElectionYearsService,
     private electionService: ElectionService,
+    private candidateQLService: CandidateQLService,
   ) {}
 
   @Query()
-  async electionYears(@Args('year') year: string) {
-    if (year) {
-      return [{ year }];
-    }
+  async electionYears(@Args() args) {
+    const { year: electionYear } = args;
 
-    const result = await this.electionYearsService.getYears();
-
+    const result = await this.electionYearsService.getYears({
+      electionYear,
+    });
     return result;
   }
 
   @ResolveField()
   async elections(@Parent() parent) {
-    const { year } = parent;
+    const { year: electionYear } = parent;
 
-    const result = await this.electionService.getElections(year);
+    const elections = await this.electionService.getElections({ electionYear });
 
-    return result;
+    return elections;
   }
 
-  // @ResolveField()
-  // async offices(@Parent() parent) {
-  //   const { year } = parent;
-  //   return { year };
-  // }
+  @ResolveField()
+  async candidates(@Parent() parent) {
+    const { year: electionYear } = parent;
+
+    const candidates = await this.candidateQLService.getCandidates({
+      electionYear,
+      filters: null,
+    });
+
+    return candidates;
+  }
+
+  @ResolveField()
+  async officesByType(@Parent() parent) {
+    return parent;
+  }
 }

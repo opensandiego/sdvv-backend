@@ -49,7 +49,8 @@ export class CandidateQLService {
 
       // This limits the results to city offices and excludes
       // state offices that may show up in the data.
-      .andWhere('jurisdiction_code = :jurCode', { jurCode: 'CIT' });
+      .andWhere('jurisdiction_code = :jurCode', { jurCode: 'CIT' })
+      .andWhere('candidate_controlled_committee_name IS NOT NULL');
 
     this.addSelectionFields(query);
     this.addWhereFilters(query, filters);
