@@ -12,7 +12,13 @@ export class ElectionYearsResolver {
   ) {}
 
   @Query()
-  async electionYears(@Args() args) {
+  async electionYears() {
+    const result = await this.electionYearsService.getYears({});
+    return result;
+  }
+
+  @Query()
+  async electionYear(@Args() args) {
     const { year: electionYear } = args;
 
     const result = await this.electionYearsService.getYears({

@@ -6,7 +6,7 @@ import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.en
 export class ElectionYearsService {
   constructor(private connection: Connection) {}
 
-  async getYears({ electionYear }) {
+  async getYears({ electionYear = null }) {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
