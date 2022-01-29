@@ -5,7 +5,7 @@ import { ElectionService } from './election/election.service';
 import { ElectionYearParams } from './election-year.validator';
 
 @Resolver('ElectionYear')
-export class ElectionYearsResolver {
+export class ElectionYearResolver {
   constructor(
     private electionYearsService: ElectionYearsService,
     private electionService: ElectionService,

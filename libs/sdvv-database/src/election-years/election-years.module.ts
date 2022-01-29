@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CandidateModule } from '../candidate/candidate.module';
-import { ElectionYearsResolver } from './election-years.resolver';
+import { ElectionYearResolver } from './election-year.resolver';
 import { ElectionYearsService } from './election-years.service';
 import { ElectionService } from './election/election.service';
 import { ElectionYearParams } from './election-year.validator';
@@ -8,7 +8,7 @@ import { ElectionYearParams } from './election-year.validator';
 @Module({
   imports: [CandidateModule],
   providers: [
-    ElectionYearsResolver,
+    ElectionYearResolver,
     ElectionYearsService,
     ElectionService,
     ElectionYearParams,
