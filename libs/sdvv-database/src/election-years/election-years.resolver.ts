@@ -2,6 +2,7 @@ import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CandidateQLService } from '../candidate/candidate.service';
 import { ElectionYearsService } from './election-years.service';
 import { ElectionService } from './election/election.service';
+import { ElectionYearParams } from './election-year.validator';
 
 @Resolver('ElectionYear')
 export class ElectionYearsResolver {
@@ -18,13 +19,14 @@ export class ElectionYearsResolver {
   }
 
   @Query()
-  async electionYear(@Args() args) {
+  async electionYear(@Args() args: ElectionYearParams) {
     const { year: electionYear } = args;
 
     const result = await this.electionYearsService.getYears({
       electionYear,
     });
-    return result;
+
+    return result[0];
   }
 
   @ResolveField()
