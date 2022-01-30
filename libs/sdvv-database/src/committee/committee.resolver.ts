@@ -12,4 +12,10 @@ export class CommitteeResolver {
     const { name } = parent;
     return { committeeName: name };
   }
+
+  @ResolveField()
+  async expenses(@Parent() parent) {
+    const { name } = parent;
+    return { committeeName: name };
+  }
 }

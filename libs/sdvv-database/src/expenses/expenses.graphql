@@ -1,0 +1,10 @@
+
+type Expenses {
+  """
+  The total spent by a candidate committee. Data from sheet 'F460-E-Expenditures'
+  Same as the total expenses.
+  """
+  sum: Int
+
+  groupBy: ExpensesGroupBy
+}
