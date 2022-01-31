@@ -9,12 +9,16 @@ export class ContributionsDetailsService {
   private RCPTTypes = ['A', 'C'];
 
   async getContributionSum({ committeeName }) {
+    const committeeNames = Array.isArray(committeeName)
+      ? committeeName
+      : [committeeName];
+
     const query = this.connection
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')
+      .andWhere('filer_naml IN (:...committeeNames)', { committeeNames })
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes });
 

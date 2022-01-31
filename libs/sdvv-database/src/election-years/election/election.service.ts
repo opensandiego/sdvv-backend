@@ -6,7 +6,7 @@ import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.enti
 export class ElectionService {
   constructor(private connection: Connection) {}
 
-  async getElections(year) {
+  async getElections({ electionYear }) {
     const query = this.connection
       .getRepository(ElectionEntity)
       .createQueryBuilder()
@@ -14,13 +14,13 @@ export class ElectionService {
       .addSelect('UPPER(election_type)', 'type')
       .addSelect('election_date', 'date')
       .where(
-        `EXTRACT(YEAR FROM TO_DATE(election_date, 'MM/DD/YYYY')) = :year`,
+        `EXTRACT(YEAR FROM TO_DATE(election_date, 'MM/DD/YYYY')) = :electionYear`,
         {
-          year,
+          electionYear,
         },
       )
-      .andWhere('election_type IN (:...election_types)', {
-        election_types: ['General', 'Primary'],
+      .andWhere('UPPER(election_type) IN (:...election_types)', {
+        election_types: ['GENERAL', 'PRIMARY'],
       });
 
     const elections = await query.getRawMany();

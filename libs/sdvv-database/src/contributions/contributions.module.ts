@@ -30,6 +30,6 @@ import { ContributionsSumByZipCodes } from './contributions-sum-by-zip-codes/con
     ContributionsSumByMethodService,
     ContributionsSumByZipCodes,
   ],
-  exports: [],
+  exports: [ContributionsDetailsService],
 })
 export class ContributionsModule {}
