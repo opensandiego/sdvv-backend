@@ -1,0 +1,6 @@
+
+type OfficesByType {
+  mayor: Office
+  cityCouncil: Office
+  cityAttorney: Office
+}

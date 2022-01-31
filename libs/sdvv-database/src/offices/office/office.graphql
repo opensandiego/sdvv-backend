@@ -1,0 +1,25 @@
+
+enum OfficeType { 
+  MAYOR
+  CITY_COUNCIL
+  CITY_ATTORNEY
+}
+
+type Office {
+  "Examples: 'Mayor', 'City Council', 'City Attorney'"
+  title: String
+  type: OfficeType
+
+  "Total amount raised by the committees of all candidates running for this office"
+  totalContributions: Int
+
+  "The number of candidates with committees running for this office. Candidates without committees are excluded since they will not have finance data available. If an office has districts then all districts will be included."
+  committeeCount: Int
+
+  "The candidates running for this office"
+  candidates: [Candidate]
+
+  "The committee names for the candidates running for this office.. One committee per candidate."
+  committeeNames: [String]
+  # districts: [District]
+}

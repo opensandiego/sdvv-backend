@@ -3,6 +3,7 @@ type Committee {
   id: String
   name: String
   contributions: ContributionDetails
+  expenses: Expenses
 }
 
 # Valid strings for committeeName can be found the the Filer_NamL column

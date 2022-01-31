@@ -18,6 +18,7 @@ type Candidate {
   committeeName: String
   inGeneralElection: Boolean
   fullOfficeName: String
+  "Finance data for a candidate committee"
   committee: Committee
 }
 

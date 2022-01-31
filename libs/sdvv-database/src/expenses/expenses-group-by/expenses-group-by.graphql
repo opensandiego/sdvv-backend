@@ -1,0 +1,21 @@
+
+type ExpensesGroupBy {
+ """
+ Expenses grouped by 'Expn_Code'
+ """
+  expenseByCode(limit: Int): [ExpenseGroup]
+}
+
+type ExpenseGroup {
+  "Expn_Code"
+  code: String
+
+  "Total of all transactions with code in this group."
+  sum: Int
+
+  "Total expenses in this group / total overall expenses."
+  percent: Float
+
+  "Number of transactions in this group."
+  count: Int
+}
