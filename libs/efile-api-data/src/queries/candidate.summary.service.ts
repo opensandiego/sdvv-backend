@@ -9,7 +9,7 @@ export class CandidateSummaryService {
 
   // private RCPTTypes = ['A', 'C', 'I', 'F496P3'];
   private RCPTTypes = ['A', 'C', 'I'];
-  private EXPNTypes = ['D', 'E', 'G'];
+  private EXPNTypes = ['E'];
 
   async getRaisedSum(committeeName: string) {
     const { sum: raisedSum } = await this.connection

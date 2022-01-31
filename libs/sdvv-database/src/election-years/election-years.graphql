@@ -1,0 +1,11 @@
+
+type ElectionYear {
+  year: String
+  elections: [Election]
+  # offices: Offices
+  # lastUpdated: String
+}
+
+type Query {
+  electionYears(year: String): [ElectionYear]
+}
