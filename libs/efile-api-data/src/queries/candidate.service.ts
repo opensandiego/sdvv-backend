@@ -31,14 +31,14 @@ export class CandidateService {
         return subQuery1
           .select('COALESCE(SUM(amount), 0)', 'sum')
           .from(RCPTEntity, 'transaction')
-          .where('filer_naml = candidate_controlled_committee_name')
+          .where('filer_naml iLike candidate_controlled_committee_name')
           .andWhere('rec_type = :recType', { recType: 'RCPT' });
       }, 'total_contributions')
       .addSelect((subQuery2) => {
         return subQuery2
           .select('COUNT( DISTINCT (ctrib_naml || ctrib_namf))', 'counts')
           .from(RCPTEntity, 'transaction')
-          .where('filer_naml = candidate_controlled_committee_name')
+          .where('filer_naml iLike candidate_controlled_committee_name')
           .andWhere('rec_type = :recType', { recType: 'RCPT' });
       }, 'contributor_count')
 
