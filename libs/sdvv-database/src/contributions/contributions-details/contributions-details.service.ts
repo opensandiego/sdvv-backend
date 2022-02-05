@@ -17,7 +17,9 @@ export class ContributionsDetailsService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')
-      .andWhere('filer_naml IN (:...committeeNames)', { committeeNames })
+      .andWhere(`filer_naml iLike ANY(ARRAY[:...committeeNames])`, {
+        committeeNames,
+      })
 
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes });
@@ -32,7 +34,7 @@ export class ContributionsDetailsService {
       .createQueryBuilder()
       .select('COALESCE(ROUND(AVG(amount)), 0)', 'average')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes });
 
@@ -46,7 +48,7 @@ export class ContributionsDetailsService {
       .createQueryBuilder()
       .select('COUNT(DISTINCT(ctrib_naml || ctrib_namf))', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes });
 

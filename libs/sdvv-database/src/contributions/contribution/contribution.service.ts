@@ -25,7 +25,7 @@ export class ContributionService {
       .addSelect(`ctrib_emp`, 'employer')
       .addSelect(`ctrib_occ`, 'occupation')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes });
 

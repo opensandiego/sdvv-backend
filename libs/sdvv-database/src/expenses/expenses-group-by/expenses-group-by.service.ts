@@ -31,7 +31,7 @@ export class ExpensesGroupByService {
 
       .addSelect('COUNT(amount)', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'EXPN' })
       .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
 

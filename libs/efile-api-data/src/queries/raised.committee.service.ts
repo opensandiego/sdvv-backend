@@ -18,7 +18,7 @@ export class RaisedCommitteeService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('SUM(amount)', 'sum')
-      .where('filer_naml IN (:...committeeNames)', {
+      .where('filer_naml iLike ANY(ARRAY[:...committeeNames])', {
         committeeNames,
       })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
