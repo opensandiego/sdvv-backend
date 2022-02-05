@@ -16,7 +16,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
@@ -29,7 +29,7 @@ export class CandidateSummaryService {
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'EXPN' })
       .andWhere('form_type IN (:...formType)', { formType: this.EXPNTypes })
       .getRawOne();
@@ -42,7 +42,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COUNT( DISTINCT (ctrib_naml || ctrib_namf))', 'count')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
@@ -59,7 +59,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('AVG(amount)', 'avg')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .getRawOne();
@@ -76,7 +76,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .andWhere('NOT (ctrib_emp = :na AND ctrib_occ = :na)', { na: 'N/A' })
@@ -95,7 +95,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('ctrib_dscr iLike :spendingCode', {
         spendingCode: '%In-Kind%',
@@ -110,7 +110,7 @@ export class CandidateSummaryService {
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(SUM(amount), 0)', 'sum')
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
       .andWhere(
