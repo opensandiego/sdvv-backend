@@ -58,8 +58,12 @@ export class CandidatesUpdateService {
         year,
       );
 
-      if (primaryClasses.length > 0) {
-        await this.candidateAddService.addCandidate(primaryClasses);
+      const filteredClasses = primaryClasses.filter(
+        (candidate) => candidate.jurisdiction_code.toUpperCase() === 'CIT',
+      );
+
+      if (filteredClasses.length > 0) {
+        await this.candidateAddService.addCandidate(filteredClasses);
       }
 
       const generalClasses = await this.getCandidatesClasses(
