@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { SharedService } from '@app/sdvv-database/shared/shared.service';
 import { ClassValidationService } from '../utils/utils.class.validation.service';
 import { CreateCandidateDto } from '@app/efile-api-data/tables/dto/createCandidate.dto';
-import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
 import { CandidateYearService } from '@app/sdvv-database/process.data/candidates.year.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';

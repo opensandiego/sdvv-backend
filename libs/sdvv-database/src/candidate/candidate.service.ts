@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
-import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { Connection, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CandidateEntity } from './candidates.entity';
 
 @Injectable()
 export class CandidateQLService {
-  constructor(private connection: Connection) {}
+  constructor(
+    private connection: Connection,
+    @InjectRepository(CandidateEntity)
+    private candidateRepository: Repository<CandidateEntity>,
+  ) {}
 
   async getCandidate({ candidateId }) {
     const query = this.connection

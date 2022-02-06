@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { Candidate } from 'apps/sdvv-backend-nest/src/api/interfaces/candidate';
-import { CandidateEntity } from '../tables/entity/candidates.entity';
+import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
 import { RCPTEntity } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()

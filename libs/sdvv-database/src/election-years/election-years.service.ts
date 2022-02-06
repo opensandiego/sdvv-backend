@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { CandidateEntity } from '../candidate/candidates.entity';
 
 @Injectable()
 export class ElectionYearsService {
