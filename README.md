@@ -19,8 +19,8 @@
 - Checkout the ```develop``` branch
 
 - Install the dependencies  
-```bash
-$ npm install
+```
+npm install
 ```
 
 Create a ``.env`` file in the root of your local repository then copy and paste in the following:
@@ -31,12 +31,12 @@ REDIS_URL=redis://localhost:6379
 
 - Install the three Docker containers (Postgres, pgAdmin, Redis) using:
 ```
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 - Create the database tables using:
 ``` 
-npm run typeorm migration:run
+npm run db:migration:run
 ```
 
 ## Load the data into the database
@@ -48,7 +48,7 @@ npm run start:worker:dev
 
 - Run the console command to add the database initialization tasks to the queue. This command completes immediately. The console running the worker process will update as the queue is processed.
 ```
-node -r ts-node/register apps/standalone-worker/src/console.ts initialize-data
+npm run db:initialize:data
 ```
 
 The worker process will fetch and add the data to the database. This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
@@ -88,10 +88,10 @@ This repo can be deployed to Heroku using a free account but billing will need t
 8. First run: `npm run typeorm schema:log`.  This should show something like `Schema syncronization will execute following sql queries:`
 9. To create  the tables in the database run the migrations using the Run console with: 
 ``` 
-npm run typeorm migration:run
+npm run db:migration:run
 ```
 If there is a need to reverse the migrations use:
 ```
-npm run typeorm migration:revert
+npm run db:migration:revert
 ```
 It is recommended to connect to the Heroku database using pgAdmin to monitor contents of the database.
