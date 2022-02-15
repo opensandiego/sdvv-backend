@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { SharedService } from '@app/sdvv-database/shared/shared.service';
 import { ClassValidationService } from '../utils/utils.class.validation.service';
 import { CreateCandidateDto } from '@app/efile-api-data/tables/dto/createCandidate.dto';
-import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { CandidateAddService } from '@app/sdvv-database/candidate/candidate-add.service';
 import { CandidateYearService } from '@app/sdvv-database/process.data/candidates.year.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
@@ -15,7 +14,7 @@ export class CandidatesUpdateService {
   constructor(
     private httpService: HttpService,
     private classValidationService: ClassValidationService,
-    private sharedService: SharedService,
+    private candidateAddService: CandidateAddService,
     private candidateYearService: CandidateYearService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
@@ -59,11 +58,12 @@ export class CandidatesUpdateService {
         year,
       );
 
-      if (primaryClasses.length > 0) {
-        await this.sharedService.createBulkData(
-          primaryClasses,
-          CandidateEntity,
-        );
+      const filteredClasses = primaryClasses.filter(
+        (candidate) => candidate.jurisdiction_code.toUpperCase() === 'CIT',
+      );
+
+      if (filteredClasses.length > 0) {
+        await this.candidateAddService.addCandidate(filteredClasses);
       }
 
       const generalClasses = await this.getCandidatesClasses(

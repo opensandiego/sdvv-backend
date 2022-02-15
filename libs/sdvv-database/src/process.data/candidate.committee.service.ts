@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CandidateEntity } from '@app/efile-api-data/tables/entity/candidates.entity';
+import { CandidateEntity } from '../candidate/candidates.entity';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 

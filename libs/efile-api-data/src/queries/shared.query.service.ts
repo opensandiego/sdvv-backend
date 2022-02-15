@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CandidateEntity } from '../tables/entity/candidates.entity';
+import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
 import { Connection } from 'typeorm';
 
 @Injectable()

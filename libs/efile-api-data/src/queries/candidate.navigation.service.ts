@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { CandidateEntity } from '../tables/entity/candidates.entity';
+import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
 import { CandidateNavigation } from 'apps/sdvv-backend-nest/src/api/interfaces/candidate.navigation';
 
 @Injectable()
