@@ -60,6 +60,9 @@ export class CandidateQLService {
     this.addSelectionFields(query);
     this.addWhereFilters(query, filters);
 
+    query.orderBy('in_general_election', 'DESC');
+    query.addOrderBy('first_name', 'ASC');
+
     const candidates = await query.getRawMany();
     return candidates;
   }
