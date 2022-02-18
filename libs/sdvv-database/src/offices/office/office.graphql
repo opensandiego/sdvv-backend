@@ -10,6 +10,8 @@ type Office {
   title: String
   type: OfficeType
 
+  electionYear: String
+
   "Total amount raised by the committees of all candidates running for this office"
   totalContributions: Int
 
