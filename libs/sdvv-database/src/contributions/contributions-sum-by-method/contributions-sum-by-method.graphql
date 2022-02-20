@@ -1,6 +1,17 @@
 
+type ContributionsSumByCode {
+  ind: Int
+  com: Int
+  oth: Int
+  pty: Int
+  scc: Int
+}
+
 type ContributionsSumByMethod {
-  inKind: Int
-  individual: Int
-  other: Int
+  inKind: Int @deprecated
+  individual: Int @deprecated
+  other: Int @deprecated
+  monetary: ContributionsSumByCode
+  nonMonetary: ContributionsSumByCode
+  # loans: ContributionsSumByCode
 }

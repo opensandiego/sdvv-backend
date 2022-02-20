@@ -7,7 +7,71 @@ export class ContributionsSumByMethodService {
   constructor(private connection: Connection) {}
 
   private RCPTTypes = ['A', 'C'];
+  private MonetaryContributions = ['A'];
   private NonMonetaryContributions = ['C'];
+
+  async getMonetaryContributionsByCode({ committeeName }) {
+    return await this.getContributionsByCode({
+      committeeName,
+      formType: this.MonetaryContributions,
+    });
+  }
+
+  async getNonMonetaryContributionsByCode({ committeeName }) {
+    return await this.getContributionsByCode({
+      committeeName,
+      formType: this.NonMonetaryContributions,
+    });
+  }
+
+  private async getContributionsByCode({ committeeName, formType }) {
+    const query = this.connection
+      .getRepository(RCPTEntity)
+      .createQueryBuilder()
+      .select('entity_cd', 'code')
+      .addSelect('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')
+
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
+      .andWhere('rec_type = :recType', { recType: 'RCPT' })
+      .andWhere('form_type IN (:...formType)', {
+        formType: formType,
+      })
+
+      .groupBy('entity_cd');
+
+    const results = await query.getRawMany();
+
+    return {
+      ind: this.getCodeSum('ind', results),
+      com: this.getCodeSum('com', results),
+      oth: this.getCodeSum('oth', results),
+      pty: this.getCodeSum('pty', results),
+      scc: this.getCodeSum('scc', results),
+    };
+  }
+
+  private getCodeSum(code: string, sums: any[]): number {
+    const codeSum = sums.find(
+      (sum) => sum.code.toUpperCase() === code.toUpperCase(),
+    );
+    return codeSum ? codeSum.sum : 0;
+  }
+
+  // async getContributionSumNonMonetary({ committeeName }) {
+  //   const query = this.connection
+  //     .getRepository(RCPTEntity)
+  //     .createQueryBuilder()
+  //     .select('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')
+
+  //     .andWhere('filer_naml iLike :committeeName', { committeeName })
+  //     .andWhere('rec_type = :recType', { recType: 'RCPT' })
+  //     .andWhere('form_type IN (:...formType)', {
+  //       formType: this.NonMonetaryContributions,
+  //     });
+
+  //   const { sum } = await query.getRawOne();
+  //   return sum;
+  // }
 
   async getContributionsInKindSum({ committeeName }) {
     const query = this.connection

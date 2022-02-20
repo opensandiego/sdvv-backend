@@ -42,4 +42,32 @@ export class ContributionsSumByMethodResolver {
 
     return sum;
   }
+
+  @ResolveField()
+  async monetary(@Parent() contributions) {
+    const { committeeName } = contributions;
+
+    const sums =
+      await this.contributionsSumByMethodService.getMonetaryContributionsByCode(
+        {
+          committeeName,
+        },
+      );
+
+    return sums;
+  }
+
+  @ResolveField()
+  async nonMonetary(@Parent() contributions) {
+    const { committeeName } = contributions;
+
+    const sums =
+      await this.contributionsSumByMethodService.getNonMonetaryContributionsByCode(
+        {
+          committeeName,
+        },
+      );
+
+    return sums;
+  }
 }
