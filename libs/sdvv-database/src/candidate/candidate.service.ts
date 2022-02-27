@@ -108,22 +108,18 @@ export class CandidateQLService {
       return;
     }
 
-    if (filters?.offices) {
-      const officeList = this.getOfficeList(filters.offices);
-      if (officeList.length > 0) {
-        query.andWhere('office IN (:...officeList)', {
-          officeList,
-        });
-      }
+    if (filters?.offices?.length > 0) {
+      const officeList = filters.offices.map((office) => `%${office}%`);
+      query.andWhere('office iLike ANY(ARRAY[:...officeList])', {
+        officeList,
+      });
     }
 
-    if (filters?.districts) {
+    if (filters?.districts?.length > 0) {
       const districtList = filters?.districts;
-      if (districtList.length > 0) {
-        query.andWhere('district IN (:...districtList)', {
-          districtList,
-        });
-      }
+      query.andWhere('district IN (:...districtList)', {
+        districtList,
+      });
     }
   }
 }

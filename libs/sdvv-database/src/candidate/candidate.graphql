@@ -22,14 +22,15 @@ type Candidate {
   committee: Committee
 }
 
-enum OfficesEnum {
-  MAYOR
-  CITY_COUNCIL
-  CITY_ATTORNEY
-}
+# enum OfficesEnum {
+#   MAYOR
+#   CITY_COUNCIL
+#   CITY_ATTORNEY
+# }
 
 input CandidateFilters {
-  offices: [OfficesEnum]
+  # offices: [OfficesEnum]
+  offices: [String]
   districts: [String]
 #   inGeneralElection: Boolean
 }
