@@ -30,8 +30,7 @@ enum OfficesEnum {
 
 input CandidateFilters {
   offices: [OfficesEnum]
-#   districts: [String]
-#   hasCommittee: Boolean
+  districts: [String]
 #   inGeneralElection: Boolean
 }
 

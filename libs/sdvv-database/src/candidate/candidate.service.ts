@@ -116,5 +116,14 @@ export class CandidateQLService {
         });
       }
     }
+
+    if (filters?.districts) {
+      const districtList = filters?.districts;
+      if (districtList.length > 0) {
+        query.andWhere('district IN (:...districtList)', {
+          districtList,
+        });
+      }
+    }
   }
 }
