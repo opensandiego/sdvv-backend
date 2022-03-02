@@ -33,7 +33,7 @@ export class OfficeResolver {
 
     const candidates = await this.candidateQLService.getCandidates({
       electionYear,
-      filters: { offices: type },
+      filters: { offices: [type] },
     });
 
     return candidates;
