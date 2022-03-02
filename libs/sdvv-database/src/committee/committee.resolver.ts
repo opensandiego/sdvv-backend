@@ -4,7 +4,7 @@ import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 export class CommitteeResolver {
   @Query()
   async committee(@Args('committeeName') committeeName: string) {
-    return { id: committeeName, name: committeeName };
+    return { name: committeeName };
   }
 
   @ResolveField()
