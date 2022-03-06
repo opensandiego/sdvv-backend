@@ -87,22 +87,6 @@ export class CandidateQLService {
     return query;
   }
 
-  getOfficeList(offices): string[] {
-    const officeList = [];
-
-    if (offices.includes('MAYOR')) {
-      officeList.push('Mayor');
-    }
-    if (offices.includes('CITY_COUNCIL')) {
-      officeList.push('City Council');
-    }
-    if (offices.includes('CITY_ATTORNEY')) {
-      officeList.push('City Attorney');
-    }
-
-    return officeList;
-  }
-
   addWhereFilters(query, filters) {
     if (!filters) {
       return;

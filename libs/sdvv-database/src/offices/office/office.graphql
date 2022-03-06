@@ -1,14 +1,7 @@
 
-enum OfficeType { 
-  MAYOR
-  CITY_COUNCIL
-  CITY_ATTORNEY
-}
-
 type Office {
   "Examples: 'Mayor', 'City Council', 'City Attorney'"
   title: String
-  type: OfficeType
 
   electionYear: String
 
