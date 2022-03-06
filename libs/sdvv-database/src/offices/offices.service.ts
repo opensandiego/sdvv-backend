@@ -11,7 +11,7 @@ export class OfficesService {
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('candidate_controlled_committee_name', 'name')
-      .andWhere('UPPER(office) = UPPER(:officeName)', { officeName })
+      .andWhere('office iLike :officeName', { officeName })
       .andWhere('election_year = :year', { year: electionYear })
       .andWhere('(candidate_controlled_committee_name IS NOT NULL)')
 
