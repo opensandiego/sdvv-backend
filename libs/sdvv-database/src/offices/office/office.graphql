@@ -18,3 +18,7 @@ type Office {
   committeeNames: [String]
   # districts: [District]
 }
+
+type Query {
+  office(electionYear: String!, title: String!): Office
+}

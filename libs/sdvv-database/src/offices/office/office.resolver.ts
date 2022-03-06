@@ -1,13 +1,22 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CandidateQLService } from '../../candidate/candidate.service';
 import { ContributionsDetailsService } from '../../contributions/contributions-details/contributions-details.service';
+import { OfficesService } from '../offices.service';
 
 @Resolver('Office')
 export class OfficeResolver {
   constructor(
     private candidateQLService: CandidateQLService,
     private contributionsDetailsService: ContributionsDetailsService,
+    private officesService: OfficesService,
   ) {}
+
+  @Query()
+  async office(@Args() args) {
+    const { electionYear, title } = args;
+
+    return { electionYear, title };
+  }
 
   @ResolveField()
   async committeeCount(@Parent() parent) {
