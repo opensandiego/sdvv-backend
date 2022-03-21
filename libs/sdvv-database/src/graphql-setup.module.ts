@@ -8,6 +8,7 @@ import { CandidateModule } from './candidate/candidate.module';
 import { CommitteeModule } from './committee/committee.module';
 import { ContributionsModule } from './contributions/contributions.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { IndependentExpendituresModule } from './independent-expenditures/independent-expenditures.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ExpensesModule } from './expenses/expenses.module';
     CommitteeModule,
     ContributionsModule,
     ExpensesModule,
+    IndependentExpendituresModule,
   ],
 })
 export class GraphQLSetupModule {}
