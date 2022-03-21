@@ -19,4 +19,9 @@ export class CandidateResolver {
     const { committeeName } = candidate;
     return { name: committeeName };
   }
+
+  @ResolveField()
+  async independentExpenditures(@Parent() candidate) {
+    return candidate;
+  }
 }

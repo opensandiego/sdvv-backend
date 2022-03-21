@@ -1,0 +1,5 @@
+
+type IndependentExpenditureSums {
+  support: Int
+  oppose: Int
+}
