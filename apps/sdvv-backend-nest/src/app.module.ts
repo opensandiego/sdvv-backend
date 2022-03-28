@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -27,6 +29,9 @@ import { DatabaseModule } from '@app/sdvv-database';
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'sdvv-backend-nest/public'),
     }),
     EfileApiDataModule,
     DatabaseModule,
