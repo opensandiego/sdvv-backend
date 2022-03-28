@@ -83,6 +83,7 @@ export class CandidateQLService {
       .addSelect('district')
       .addSelect('election_year', 'electionYear')
       .addSelect('in_general_election', 'inGeneralElection')
+      .addSelect('in_primary_election', 'inPrimaryElection')
       .addSelect('full_office_name', 'fullOfficeName');
     return query;
   }
