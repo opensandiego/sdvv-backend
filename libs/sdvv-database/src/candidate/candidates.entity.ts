@@ -73,6 +73,9 @@ export class CandidateEntity {
   @Column({ default: false })
   in_general_election: boolean;
 
+  @Column({ default: false })
+  in_primary_election: boolean;
+
   @Column({ nullable: true })
   description: string;
 
