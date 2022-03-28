@@ -12,6 +12,9 @@
       },
       {
         "include": "**/*.json"
+      },
+      {
+        "include": "**/public/images/*.png"
       }
     ]
   },
