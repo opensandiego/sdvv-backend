@@ -38,6 +38,15 @@ export class CLIService {
   }
 
   @Command({
+    command: 'update-candidates-info',
+    description:
+      'Use a local file and add/update the candidates in the database with the info from the file. This info. includes description, website, image file name, ...',
+  })
+  async updateCandidatesInfo(): Promise<void> {
+    await this.queueController.updateCandidatesInfo();
+  }
+
+  @Command({
     command: 'update-transactions-current',
     description:
       'Download the XLSX files for the current election year then add the transactions from each sheet to the database.',

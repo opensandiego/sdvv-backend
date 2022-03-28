@@ -20,6 +20,10 @@ export class QueueController {
     await this.workerQueueAdd.add('update-candidates-past');
   }
 
+  async updateCandidatesInfo() {
+    await this.workerQueueAdd.add('update-candidates-info');
+  }
+
   async updateTransactionsCurrent() {
     await this.workerQueueAdd.add('update-transactions-current');
   }
