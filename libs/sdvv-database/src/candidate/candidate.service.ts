@@ -82,8 +82,8 @@ export class CandidateQLService {
       .addSelect('jurisdiction_name', 'jurisdictionName')
       .addSelect('district')
       .addSelect('election_year', 'electionYear')
-      .addSelect('in_general_election', 'inGeneralElection')
       .addSelect('in_primary_election', 'inPrimaryElection')
+      .addSelect('in_general_election', 'inGeneralElection')
       .addSelect('full_office_name', 'fullOfficeName');
     return query;
   }
@@ -105,6 +105,14 @@ export class CandidateQLService {
       query.andWhere('district IN (:...districtList)', {
         districtList,
       });
+    }
+
+    if (filters?.inPrimaryElection) {
+      query.andWhere('in_primary_election = true');
+    }
+
+    if (filters?.inGeneralElection) {
+      query.andWhere('in_general_election = true');
     }
   }
 }

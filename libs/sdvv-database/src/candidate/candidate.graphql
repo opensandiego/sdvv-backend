@@ -34,7 +34,8 @@ input CandidateFilters {
   # offices: [OfficesEnum]
   offices: [String]
   districts: [String]
-#   inGeneralElection: Boolean
+  inPrimaryElection: Boolean = false
+  inGeneralElection: Boolean = false
 }
 
 type Query {
