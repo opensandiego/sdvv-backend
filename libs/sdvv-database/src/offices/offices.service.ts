@@ -6,19 +6,48 @@ import { CandidateEntity } from '../candidate/candidates.entity';
 export class OfficesService {
   constructor(private connection: Connection) {}
 
-  async getCommitteeNames({ officeName, electionYear }) {
+  async getCommitteeNames({ electionYear, filters }) {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('candidate_controlled_committee_name', 'name')
-      .andWhere('office iLike :officeName', { officeName })
       .andWhere('election_year = :year', { year: electionYear })
-      .andWhere('(candidate_controlled_committee_name IS NOT NULL)')
+      .andWhere('(candidate_controlled_committee_name IS NOT NULL)');
 
-      .orderBy('name', 'DESC');
+    this.addWhereFilters(query, filters);
+
+    query.orderBy('name', 'DESC');
 
     const committees = await query.getRawMany();
     const committeeNames = committees.map((committee) => committee.name);
     return committeeNames;
+  }
+
+  private addWhereFilters(query, filters) {
+    if (!filters) {
+      return;
+    }
+
+    if (filters?.offices?.length > 0) {
+      const officeList = filters.offices.map((office) => `%${office}%`);
+      query.andWhere('office iLike ANY(ARRAY[:...officeList])', {
+        officeList,
+      });
+    }
+
+    if (filters?.districts?.length > 0) {
+      const districtList = filters?.districts;
+      query.andWhere('district IN (:...districtList)', {
+        districtList,
+      });
+    }
+
+    if (filters?.inPrimaryElection) {
+      query.andWhere('in_primary_election = true');
+    }
+
+    if (filters?.inGeneralElection) {
+      query.andWhere('in_general_election = true');
+    }
   }
 }

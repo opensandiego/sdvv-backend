@@ -7,25 +7,40 @@ export class OfficesResolver {
 
   @ResolveField()
   async mayor(@Parent() parent) {
-    const { year: electionYear } = parent;
+    const { year: electionYear, filters: parentFilters } = parent;
     const title = 'Mayor';
 
-    return { title, electionYear };
+    const filters = {
+      ...parentFilters,
+      offices: [title],
+    };
+
+    return { title, electionYear, filters };
   }
 
   @ResolveField()
   async cityCouncil(@Parent() parent) {
-    const { year: electionYear } = parent;
+    const { year: electionYear, filters: parentFilters } = parent;
     const title = 'City Council';
 
-    return { title, electionYear };
+    const filters = {
+      ...parentFilters,
+      offices: [title],
+    };
+
+    return { title, electionYear, filters };
   }
 
   @ResolveField()
   async cityAttorney(@Parent() parent) {
-    const { year: electionYear } = parent;
+    const { year: electionYear, filters: parentFilters } = parent;
     const title = 'City Attorney';
 
-    return { title, electionYear };
+    const filters = {
+      ...parentFilters,
+      offices: [title],
+    };
+
+    return { title, electionYear, filters };
   }
 }

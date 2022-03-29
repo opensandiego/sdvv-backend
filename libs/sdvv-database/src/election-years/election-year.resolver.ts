@@ -20,13 +20,18 @@ export class ElectionYearResolver {
 
   @Query()
   async electionYear(@Args() args: ElectionYearParams) {
-    const { year: electionYear } = args;
+    const { year: electionYear, filters } = args;
 
     const result = await this.electionYearsService.getYears({
       electionYear,
     });
 
-    return result[0];
+    const resultWithFilters = {
+      ...result[0],
+      filters,
+    };
+
+    return resultWithFilters;
   }
 
   @ResolveField()
@@ -40,11 +45,11 @@ export class ElectionYearResolver {
 
   @ResolveField()
   async candidates(@Parent() parent) {
-    const { year: electionYear } = parent;
+    const { year: electionYear, filters } = parent;
 
     const candidates = await this.candidateQLService.getCandidates({
       electionYear,
-      filters: null,
+      filters: filters,
     });
 
     return candidates;

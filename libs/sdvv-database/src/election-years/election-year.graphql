@@ -16,6 +16,11 @@ type ElectionYear {
   officesByType: OfficesByType
 }
 
+input YearCandidateFilters {
+  inPrimaryElection: Boolean = false
+  inGeneralElection: Boolean = false
+}
+
 type Query {
   """
   Returns all years with an election, candidates, and Campaign Finance Data available
@@ -28,5 +33,5 @@ type Query {
   """
   Returns a single election year. Use electionYears: to determine valid inputs for year.
   """
-  electionYear(year: String!): ElectionYear
+  electionYear(year: String!, filters: YearCandidateFilters): ElectionYear
 }

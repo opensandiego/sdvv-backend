@@ -15,16 +15,20 @@ export class OfficeResolver {
   async office(@Args() args) {
     const { electionYear, title } = args;
 
-    return { electionYear, title };
+    const filters = {
+      offices: [title],
+    };
+
+    return { title, electionYear, filters };
   }
 
   @ResolveField()
   async committeeCount(@Parent() parent) {
-    const { electionYear, title } = parent;
+    const { electionYear, filters } = parent;
 
     const committeeNames = await this.officesService.getCommitteeNames({
       electionYear,
-      officeName: title,
+      filters: filters,
     });
 
     let committeeCount = null;
@@ -38,11 +42,11 @@ export class OfficeResolver {
 
   @ResolveField()
   async totalContributions(@Parent() parent) {
-    const { electionYear, title } = parent;
+    const { electionYear, filters } = parent;
 
     const committeeNames = await this.officesService.getCommitteeNames({
       electionYear,
-      officeName: title,
+      filters: filters,
     });
 
     let sum = null;
@@ -58,11 +62,11 @@ export class OfficeResolver {
 
   @ResolveField()
   async candidates(@Parent() parent) {
-    const { electionYear, title } = parent;
+    const { electionYear, filters } = parent;
 
     const candidates = await this.candidateQLService.getCandidates({
       electionYear,
-      filters: { offices: [title] },
+      filters: filters,
     });
 
     return candidates;
