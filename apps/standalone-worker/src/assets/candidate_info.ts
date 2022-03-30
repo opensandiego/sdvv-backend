@@ -1,6 +1,7 @@
 /**
  * Sources:
- * https://www.sandiego.gov/sites/default/files/qualified_candidates_list_2022_updated_3-22-2022.pdf
+ * https://www.sandiego.gov/city-clerk/elections/city/2022elections
+ * https://www.sandiego.gov/sites/default/files/qualified_candidates_list_2022_updated_3-29-2022.pdf
  * https://www.sandiego.gov/sites/default/files/qualified_candidates_list_november_2020_3.pdf
  * https://www.sandiego.gov/sites/default/files/qualified_candidates_list_2020_1.pdf
  */
@@ -142,7 +143,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Martinez, Antonio',
     inPrimary: true,
     description: 'Congressional Community Representative',
-    imageFileName: null,
+    imageFileName: 'antonio_martinez_5314.png',
     website: 'https://www.antoniomartinezsd.com/',
   },
   {
