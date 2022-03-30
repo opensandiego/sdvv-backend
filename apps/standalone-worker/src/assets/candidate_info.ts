@@ -52,7 +52,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Havlik, Mandy',
     inPrimary: true,
     description: 'Community Volunteer',
-    imageFileName: null,
+    imageFileName: 'mandy_havlik_3216.png',
     website: 'https://mandyhavlik.com/',
   },
   {
@@ -61,7 +61,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Lukacs, Linda',
     inPrimary: true,
     description: 'Dentist/Professor',
-    imageFileName: null,
+    imageFileName: 'linda_lukacs_2795.png',
     website: 'https://www.lindalukacs.com/',
   },
   {
@@ -70,7 +70,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Saldaña, Lori',
     inPrimary: true,
     description: 'Retired Business Technology Professor',
-    imageFileName: null,
+    imageFileName: 'lori_saldana_4515.png',
     website: null,
   },
   {
@@ -79,7 +79,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Smiechowski, Daniel',
     inPrimary: true,
     description: 'Landlord/Real Estate Sales',
-    imageFileName: null,
+    imageFileName: 'daniel_smiechowski_3042.png',
     website: null,
   },
   {
@@ -106,7 +106,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Suseberry, Tylisa D.',
     inPrimary: true,
     description: 'N/A',
-    imageFileName: null,
+    imageFileName: 'tylisa_suseberry_9754.png',
     website: null,
   },
   {
@@ -115,7 +115,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Glasson, Jane L.',
     inPrimary: true,
     description: 'Special Education Assistant',
-    imageFileName: null,
+    imageFileName: 'jane_glasson_7726.png',
     website: 'https://www.instagram.com/jane_glasson/',
   },
   {
@@ -124,7 +124,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Hough, Tommy',
     inPrimary: true,
     description: 'County Planning Commissioner',
-    imageFileName: '',
+    imageFileName: 'tommy_hough_6050.png',
     website: null,
   },
   {
@@ -133,10 +133,9 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Lee, Kent',
     inPrimary: true,
     description: 'Nonprofit Executive Director',
-    imageFileName: '',
+    imageFileName: 'kent_lee_8092.png',
     website: 'https://www.kentleeforsd.com/',
   },
-
   {
     year: '2022',
     candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2022',
@@ -155,7 +154,6 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     imageFileName: 'vivian_moreno_5899.png',
     website: 'https://vivianmorenosd.com/',
   },
-
   {
     year: '2022',
     candidateId: '1c489060-d460-4952-b7c2-0efbb3922a78|2022',
