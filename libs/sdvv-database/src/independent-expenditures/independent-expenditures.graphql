@@ -3,4 +3,5 @@ type IndependentExpenditures {
   candidateName: String
   electionYear: String
   sums: IndependentExpenditureSums
+  committees: IndependentExpendituresByCommittees
 }

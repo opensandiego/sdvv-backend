@@ -18,4 +18,9 @@ export class IndependentExpendituresResolver {
   async sums(@Parent() candidate) {
     return candidate;
   }
+
+  @ResolveField()
+  async committees(@Parent() candidate) {
+    return candidate;
+  }
 }

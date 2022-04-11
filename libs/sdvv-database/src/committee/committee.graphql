@@ -1,5 +1,6 @@
 
 type Committee {
+  id: String
   name: String
   dashedName: String
   contributions: ContributionDetails

@@ -1,0 +1,11 @@
+
+type IndependentExpendituresByCommittees {
+  support: [IndependentExpenditureCommittee]
+  oppose: [IndependentExpenditureCommittee]
+}
+
+type IndependentExpenditureCommittee {
+  committee: Committee
+  sum: Int
+  # percent: Int
+}
