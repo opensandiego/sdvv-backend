@@ -36,7 +36,7 @@ export class ContributionsGroupByService {
       // The result of this field needs to be checked for accuracy.
       .addSelect('COUNT(DISTINCT CONCAT(ctrib_naml, ctrib_namf))', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
 
@@ -75,7 +75,7 @@ export class ContributionsGroupByService {
 
       .addSelect('COUNT(DISTINCT CONCAT(ctrib_naml, ctrib_namf))', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
 
@@ -115,7 +115,7 @@ export class ContributionsGroupByService {
 
       .addSelect('COUNT(DISTINCT CONCAT(ctrib_naml, ctrib_namf))', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
 
@@ -153,7 +153,7 @@ export class ContributionsGroupByService {
 
       .addSelect('COUNT(amount)', 'count')
 
-      .andWhere('filer_naml = :committeeName', { committeeName })
+      .andWhere('filer_naml iLike :committeeName', { committeeName })
       .andWhere('rec_type = :recType', { recType: 'RCPT' })
       .andWhere('form_type IN (:...formType)', { formType: this.RCPTTypes })
 

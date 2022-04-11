@@ -24,14 +24,7 @@ type Candidate {
   independentExpenditures: IndependentExpenditures
 }
 
-# enum OfficesEnum {
-#   MAYOR
-#   CITY_COUNCIL
-#   CITY_ATTORNEY
-# }
-
 input CandidateFilters {
-  # offices: [OfficesEnum]
   offices: [String]
   districts: [String]
   inPrimaryElection: Boolean = false
