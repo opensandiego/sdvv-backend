@@ -1,6 +1,7 @@
 
 type Committee {
   name: String
+  dashedName: String
   contributions: ContributionDetails
   expenses: Expenses
 }

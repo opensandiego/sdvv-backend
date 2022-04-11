@@ -8,6 +8,12 @@ export class CommitteeResolver {
   }
 
   @ResolveField()
+  async dashedName(@Parent() parent) {
+    const { name } = parent;
+    return name.replaceAll(' ', '-').toLowerCase();
+  }
+
+  @ResolveField()
   async contributions(@Parent() parent) {
     const { name } = parent;
     return { committeeName: name };
