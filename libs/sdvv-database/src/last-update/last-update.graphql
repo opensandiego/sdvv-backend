@@ -1,0 +1,8 @@
+
+type LastUpdate {
+  dateTime: String
+}
+
+type Query {
+  lastUpdate: LastUpdate
+}

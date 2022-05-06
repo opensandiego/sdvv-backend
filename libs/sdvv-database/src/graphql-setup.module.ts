@@ -9,6 +9,7 @@ import { CommitteeModule } from './committee/committee.module';
 import { ContributionsModule } from './contributions/contributions.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { IndependentExpendituresModule } from './independent-expenditures/independent-expenditures.module';
+import { LastUpdateModule } from './last-update/last-update.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { IndependentExpendituresModule } from './independent-expenditures/indepe
     ContributionsModule,
     ExpensesModule,
     IndependentExpendituresModule,
+    LastUpdateModule,
   ],
 })
 export class GraphQLSetupModule {}
