@@ -16,7 +16,7 @@ export class RCPTEntity {
   id: number;
 
   // From common.dto
-  @Column()
+  @Column({ nullable: true })
   filer_id: string;
 
   @Column()
