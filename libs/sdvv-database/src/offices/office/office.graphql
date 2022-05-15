@@ -1,4 +1,9 @@
 
+input CommitteeFilters {
+  inPrimaryElection: Boolean = false
+  inGeneralElection: Boolean = false
+}
+
 type Office {
   "Examples: 'Mayor', 'City Council', 'City Attorney'"
   title: String
@@ -6,19 +11,26 @@ type Office {
   electionYear: String
 
   "Total amount raised by the committees of all candidates running for this office"
-  totalContributions: Int
+  totalContributions(filters: CommitteeFilters): Int
 
   "The number of candidates with committees running for this office. Candidates without committees are excluded since they will not have finance data available. If an office has districts then all districts will be included."
-  committeeCount: Int
+  committeeCount(filters: CommitteeFilters): Int
 
   "The candidates running for this office"
-  candidates: [Candidate]
+  candidates(filters: CommitteeFilters): [Candidate]
 
-  "The committee names for the candidates running for this office.. One committee per candidate."
-  committeeNames: [String]
+  # "The committee names for the candidates running for this office.. One committee per candidate."
+  # committeeNames: [String]
   # districts: [District]
 }
 
+# input OfficeFilters {
+#   agencyIds: [String]
+#   years: [String]
+#   # elections: [String]
+# }
+
 type Query {
   office(electionYear: String!, title: String!): Office
+  # offices(filters: OfficeFilters): [Office]
 }

@@ -25,6 +25,7 @@ type Candidate {
 }
 
 input CandidateFilters {
+  years: [String]
   offices: [String]
   districts: [String]
   inPrimaryElection: Boolean = false
@@ -33,5 +34,5 @@ input CandidateFilters {
 
 type Query {
   candidate(id: String!): Candidate
-  candidates(year: String!, filters: CandidateFilters): [Candidate]
+  candidates(year: String @deprecated(reason: "Use `filters.years`."), filters: CandidateFilters): [Candidate]
 }

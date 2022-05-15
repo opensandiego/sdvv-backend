@@ -3,6 +3,19 @@ import { Connection, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CandidateEntity } from './candidates.entity';
 
+interface CandidatesFilters {
+  years: [string];
+  offices: [string];
+  districts: [string];
+  inPrimaryElection: boolean;
+  inGeneralElection: boolean;
+}
+
+interface GetCandidatesInput {
+  electionYear?: string;
+  filters?: CandidatesFilters;
+}
+
 @Injectable()
 export class CandidateQLService {
   constructor(
@@ -46,11 +59,26 @@ export class CandidateQLService {
     return candidate;
   }
 
-  async getCandidates({ electionYear, filters }) {
+  async getCandidates({ electionYear, filters }: GetCandidatesInput) {
+    const year = electionYear;
+
+    const years = [
+      ...(year ? [year] : []),
+      ...(filters?.years ? filters?.years : []),
+    ];
+
+    return this.getCandidatesWithFilters({
+      filters: {
+        ...filters,
+        years: [...new Set(years)],
+      },
+    });
+  }
+
+  async getCandidatesWithFilters({ filters }) {
     const query = this.connection
       .getRepository(CandidateEntity)
       .createQueryBuilder()
-      .andWhere('election_year = :electionYear', { electionYear })
 
       // This limits the results to city offices and excludes
       // state offices that may show up in the data.
@@ -91,6 +119,13 @@ export class CandidateQLService {
   addWhereFilters(query, filters) {
     if (!filters) {
       return;
+    }
+
+    if (filters?.years?.length > 0) {
+      const yearList = filters.years.map((year) => `%${year}%`);
+      query.andWhere('election_year iLike ANY(ARRAY[:...yearList])', {
+        yearList,
+      });
     }
 
     if (filters?.offices?.length > 0) {
