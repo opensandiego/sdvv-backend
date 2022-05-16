@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { CandidateEntity } from '../candidate/candidates.entity';
+import { TransactionCommitteeService } from './transaction-committee.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
@@ -8,6 +9,7 @@ import { Logger } from 'winston';
 export class CandidateCommitteeService {
   constructor(
     private connection: Connection,
+    private transactionCommitteeService: TransactionCommitteeService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -67,6 +69,17 @@ export class CandidateCommitteeService {
     for await (const candidate of candidates) {
       candidate.candidate_controlled_committee_name =
         await this.getCandidateCommittee(candidate);
+
+      const committeeName =
+        await this.transactionCommitteeService.getCommitteeFromRCPT(candidate);
+
+      const hasNewCommitteeName =
+        committeeName?.toLocaleLowerCase() !==
+        candidate?.candidate_controlled_committee_name?.toLocaleLowerCase();
+
+      if (committeeName && hasNewCommitteeName) {
+        candidate.candidate_controlled_committee_name = committeeName;
+      }
     }
 
     return candidates;
