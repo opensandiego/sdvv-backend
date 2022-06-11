@@ -6,7 +6,7 @@ import {
   Length,
   MaxLength,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class EXPNDto {
   @IsString()
@@ -27,10 +27,16 @@ export class EXPNDto {
 
   @IsString()
   @MaxLength(200)
+  @Transform(({ value }) =>
+    value ? value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '',
+  )
   payee_naml: string;
 
   @IsString()
   @MaxLength(45)
+  @Transform(({ value }) =>
+    value ? value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '',
+  )
   payee_namf: string;
 
   @IsString()
@@ -140,10 +146,16 @@ export class EXPNDto {
 
   @IsString()
   @MaxLength(200)
+  @Transform(({ value }) =>
+    value ? value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '',
+  )
   cand_naml: string;
 
   @IsString()
   @MaxLength(45)
+  @Transform(({ value }) =>
+    value ? value.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '',
+  )
   cand_namf: string;
 
   @IsString()
