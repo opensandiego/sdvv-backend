@@ -8,6 +8,7 @@ import { TransactionsXLSXService } from './transactions.xlsx.service';
 import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.service';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
+import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     HttpModule,
     RCPTModule,
     EXPNModule,
+    S496Module,
     CacheModule.register<RedisClientOpts>({
       store: redisStore,
       url: process.env.REDIS_URL,
