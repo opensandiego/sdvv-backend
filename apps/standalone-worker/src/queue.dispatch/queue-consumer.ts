@@ -6,6 +6,7 @@ import { CandidatesInfoUpdateService } from '../efile.api/candidates-info.update
 import { UpdateCommitteesService } from '../efile.api/update.committes.service';
 import { CandidateCommitteeService } from '@app/sdvv-database/process.data/candidate.committee.service';
 import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.service';
+import { DeduplicateExpendituresService } from '@app/sdvv-database/process.data/deduplicate-expenditures.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
 
@@ -18,6 +19,7 @@ export class QueueConsumer {
     private candidatesUpdateService: CandidatesUpdateService,
     private candidatesInfoUpdateService: CandidatesInfoUpdateService,
     private transactionsXLSXService: TransactionsXLSXService,
+    private deduplicateExpendituresService: DeduplicateExpendituresService,
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
   ) {
@@ -53,11 +55,13 @@ export class QueueConsumer {
   @Process('update-transactions-current')
   async updateTransactionsCurrent() {
     await this.transactionsXLSXService.updateTransactionsCurrent();
+    await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
   }
 
   @Process('update-transactions-past')
   async updateTransactionsPast() {
     await this.transactionsXLSXService.updateTransactionsPast();
+    await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
   }
 
   @Process('zip-codes')
