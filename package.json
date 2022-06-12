@@ -2,6 +2,9 @@
   "name": "sdvv-backend-nest",
   "version": "0.0.1",
   "description": "San Diego Voters Voice backend and data store",
+  "engines": {
+    "node": "16.x"
+  },
   "author": "Open San Diego",
   "private": true,
   "license": "MIT",
