@@ -15,6 +15,7 @@ import { EfileApiDataModule } from '@app/efile-api-data';
 import { DatabaseModule } from '@app/sdvv-database';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
+import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
 
 @Module({
   imports: [
@@ -46,6 +47,6 @@ import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
     DatabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RCPTModule, EXPNModule],
+  providers: [AppService, RCPTModule, EXPNModule, S496Module],
 })
 export class AppModule {}

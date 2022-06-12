@@ -20,6 +20,7 @@ module.exports = {
     'libs/sdvv-database/src/f460d/*.entity{.ts,.js}',
     'libs/sdvv-database/src/tables-xlsx/expn/*.entity{.ts,.js}',
     'libs/sdvv-database/src/tables-xlsx/rcpt/*.entity{.ts,.js}',
+    'libs/sdvv-database/src/tables-xlsx/s496/*.entity{.ts,.js}',
     'libs/sdvv-database/src/jurisdictions/*.entity{.ts,.js}',
     'libs/sdvv-database/src/zipCodes/*.entity{.ts,.js}',
     'libs/sdvv-database/src/candidate/*.entity{.ts,.js}',
