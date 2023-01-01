@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  heroku: circleci/heroku@2.0.0
+
+jobs:
+  heroku_deploy:
+    executor: heroku/default
+    parameters:
+      heroku_app_name:
+        type: string
+    steps:
+      - checkout
+      - heroku/deploy-via-git:
+          app-name: << parameters.heroku_app_name >>
+          force: true
+
+workflows:
+  heroku_deploy_staging:
+    jobs:
+      - heroku_deploy:
+          name: Deploy Staging branch to Heroku
+          heroku_app_name: $staging_HEROKU_APP_NAME
+          filters:
+            branches:
+              only: 
+                - staging
+      - heroku_deploy:
+          name: Deploy Production branch to Heroku
+          heroku_app_name: $production_HEROKU_APP_NAME
+          filters:
+            branches:
+              only: 
+                - production
