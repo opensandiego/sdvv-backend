@@ -67,7 +67,7 @@ export class S496Entity {
   @Column()
   expn_dscr: string;
 
-  @Column()
+  @Column({ nullable: true })
   supp_opp_cd: string;
 
   @Column({ nullable: true })
