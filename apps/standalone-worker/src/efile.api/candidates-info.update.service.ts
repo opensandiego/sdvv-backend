@@ -47,6 +47,10 @@ export class CandidatesInfoUpdateService {
       candidate.website = candidateWithInfo?.website
         ? candidateWithInfo?.website
         : null;
+      candidate.candidate_controlled_committee_name =
+        candidateWithInfo?.committeeNameOverride
+          ? candidateWithInfo?.committeeNameOverride
+          : candidate.candidate_controlled_committee_name;
     }
 
     return candidates;

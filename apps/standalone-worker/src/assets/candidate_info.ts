@@ -14,6 +14,15 @@ export interface CandidateInfo {
   description: string;
   imageFileName: string;
   website: string;
+
+  /**
+   * committeeNameOverride is used to correct committee names from efile that do not match names in the xlxs files.
+   * In most cases the committee name contains the candidate's first name twice.
+   * example:
+   *  incorrect committee name: 'First First Last for City Council 2020'
+   *  committeeNameOverride: 'First Last for City Council 2020'
+   */
+  committeeNameOverride?: string;
 }
 
 /* Template
@@ -55,6 +64,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: 'Community Volunteer',
     imageFileName: 'mandy_havlik_3216.png',
     website: 'https://mandyhavlik.com/',
+    committeeNameOverride: 'Mandy Havlik for City Council District 2 2022',
   },
   {
     year: '2022',
@@ -73,6 +83,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: 'Retired Business Technology Professor',
     imageFileName: 'lori_saldana_4515.png',
     website: null,
+    committeeNameOverride: 'Lori Saldana for City Council 2022',
   },
   {
     year: '2022',
@@ -145,6 +156,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: 'Congressional Community Representative',
     imageFileName: 'antonio_martinez_5314.png',
     website: 'https://www.antoniomartinezsd.com/',
+    committeeNameOverride: 'Antonio Martinez for City Council 2022',
   },
   {
     year: '2022',

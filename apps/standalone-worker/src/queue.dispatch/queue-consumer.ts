@@ -36,6 +36,7 @@ export class QueueConsumer {
     await this.updateCommitteesService.updateCommittees();
     await this.candidatesUpdateService.updateCandidatesCurrent();
     await this.candidateCommitteeService.addCandidateCommittees();
+    await this.candidatesInfoUpdateService.updateCandidatesInfo();
   }
 
   @Process('update-candidates-past')
@@ -43,6 +44,7 @@ export class QueueConsumer {
     await this.updateCommitteesService.updateCommittees();
     await this.candidatesUpdateService.updateCandidatesPast();
     await this.candidateCommitteeService.addCandidateCommittees();
+    await this.candidatesInfoUpdateService.updateCandidatesInfo();
   }
 
   @Process('update-candidates-info')
