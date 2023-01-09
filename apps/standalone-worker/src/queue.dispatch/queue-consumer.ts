@@ -1,4 +1,11 @@
-import { Process, Processor } from '@nestjs/bull';
+import {
+  OnQueueActive,
+  OnQueueCompleted,
+  // OnQueueProgress,
+  Process,
+  Processor,
+} from '@nestjs/bull';
+import { Job } from 'bull';
 import { EventEmitter } from 'events';
 import { ElectionsUpdateService } from '../efile.api/elections.update.service';
 import { CandidatesUpdateService } from '../efile.api/candidates.update.service';
@@ -9,6 +16,8 @@ import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.
 import { DeduplicateExpendituresService } from '@app/sdvv-database/process.data/deduplicate-expenditures.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
+import { ConfigService } from '@nestjs/config';
+import { ShutdownService } from './shutdown.service';
 
 @Processor('worker-update-data')
 export class QueueConsumer {
@@ -22,9 +31,32 @@ export class QueueConsumer {
     private deduplicateExpendituresService: DeduplicateExpendituresService,
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
+    private configService: ConfigService,
+    private shutdownService: ShutdownService,
   ) {
     EventEmitter.defaultMaxListeners = 15;
   }
+
+  @OnQueueActive()
+  onActive(job: Job) {
+    console.log(`Started job with id: ${job.id}, type: '${job.name}'`);
+  }
+
+  @OnQueueCompleted()
+  onCompleted(job: Job) {
+    console.log(`Completed job with id: ${job.id}, type: '${job.name}'`);
+
+    const inTESTING_MODE = this.configService.get<boolean>('root.TESTING_MODE');
+    if (inTESTING_MODE) {
+      console.log(`Requesting Shutdown ...`);
+      this.shutdownService.shutdown();
+    }
+  }
+
+  // @OnQueueProgress()
+  // onProgress(job: Job, progress: number) {
+  //   console.log(`Job ${job.id} progress at ${progress}%.`);
+  // }
 
   @Process('update-elections')
   async updateElections() {
@@ -83,12 +115,39 @@ export class QueueConsumer {
   }
 
   @Process('initialize-data')
-  async initializeData() {
-    await this.updateElections();
-    await this.updateCandidatesCurrent();
-    await this.updateCandidatesPast();
-    await this.updateTransactionsCurrent();
-    await this.updateTransactionsPast();
-    await this.updateZipCodes();
+  async initializeData(job: Job<unknown>) {
+
+    let progress = 0;
+    await job.progress(progress);
+
+    await this.electionsUpdateService.updateElections();
+    await job.progress((progress += 5));
+
+    await this.updateCommitteesService.updateCommittees();
+    await job.progress((progress += 5));
+    await this.candidatesUpdateService.updateCandidatesCurrent();
+    await job.progress((progress += 10));
+
+    await this.candidatesUpdateService.updateCandidatesPast();
+    await job.progress((progress += 10));
+
+    await this.candidateCommitteeService.addCandidateCommittees();
+    await job.progress((progress += 5));
+
+    await this.candidatesInfoUpdateService.updateCandidatesInfo();
+    await job.progress((progress += 5));
+
+    await this.transactionsXLSXService.updateTransactionsCurrent();
+    await job.progress((progress += 10));
+
+    await this.transactionsXLSXService.updateTransactionsPast();
+    await job.progress((progress += 20));
+
+    await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+    await job.progress((progress += 5));
+
+    // await this.zipCodeCSVService.populateDatabaseWithZipCodes(); // Is this needed?
+    await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
+    await job.progress(100);
   }
 }

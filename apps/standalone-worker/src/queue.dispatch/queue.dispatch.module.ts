@@ -6,6 +6,8 @@ import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.
 import { EFileApiModule } from '../efile.api/efile.api.module';
 import { QueueService } from './queue.service';
 import { QueueConsumer } from './queue-consumer';
+import { ConfigModule } from '@nestjs/config';
+import { ShutdownService } from './shutdown.service';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { QueueConsumer } from './queue-consumer';
     BullModule.registerQueue({
       name: 'worker-update-data',
     }),
+    ConfigModule,
   ],
-  providers: [QueueService, QueueConsumer],
+  providers: [QueueService, QueueConsumer, ShutdownService],
   exports: [QueueConsumer],
 })
 export class QueueDispatchModule {}

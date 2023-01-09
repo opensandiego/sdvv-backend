@@ -18,10 +18,13 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
         Object.assign(await getConnectionOptions(), {
