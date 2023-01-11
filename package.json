@@ -50,7 +50,7 @@
     "cache-manager": "^3.4.4",
     "cache-manager-redis-store": "^2.0.0",
     "class-transformer": "^0.4.0",
-    "class-validator": "^0.13.2",
+    "class-validator": "^0.14.0",
     "currency.js": "^2.0.4",
     "expose-gc": "^1.0.0",
     "graphql": "^15.8.0",
