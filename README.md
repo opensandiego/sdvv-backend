@@ -31,7 +31,7 @@ REDIS_URL=redis://localhost:6379
 
 - Install the three Docker containers (Postgres, pgAdmin, Redis) using:
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 - Create the database tables using:
