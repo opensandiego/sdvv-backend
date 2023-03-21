@@ -1,23 +1,27 @@
-# Base image
 FROM node:18 As development
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 
-# Install app dependencies
-RUN npm install
+RUN npm ci
 
-# Bundle app source
-COPY . .
+COPY --chown=node:node . .
 
-# Creates a "dist" folder with the production build
+USER node
+
+FROM node:18 As build
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+COPY --chown=node:node . .
+
 RUN npm run build
 
-# ENV NODE_ENV production
-ENV NODE_ENV development
+USER node
 
-# Start the server
 CMD [ "node", "dist/apps/sdvv-backend-nest/main.js" ]

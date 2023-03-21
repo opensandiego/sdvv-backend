@@ -1,42 +1,63 @@
 # This docker-compose.yml is only used to run containers locally for development and testing.
+# To run olny this compose and explude the override run:
+#  docker compose -f docker-compose.yml up
+# To include the override run:
+#  docker compose up
 version: "3.9"
 services:
+  api:
+    extends:
+      file: common-services.yml
+      service: server
+    command: >
+      bash -c "node dist/apps/sdvv-backend-nest/main"
+    depends_on:
+      - postgres_db_dev
+      - redis
+      - migrations
+    ports:
+      - 3000:3000
+
+  worker:
+    extends:
+      file: common-services.yml
+      service: server
+    # Run this in the container's terminal: 
+    #  npm run db:initialize:data
+    command: >
+      bash -c "node dist/apps/standalone-worker/main"
+    depends_on:
+      - postgres_db_dev
+      - redis
+      - migrations
+      - api
+
+  migrations:
+    extends:
+      file: common-services.yml
+      service: server
+    build: 
+      target: development
+    command: >
+      bash -c "npm run db:migration:run"
+    depends_on:
+      - postgres_db_dev
+      - redis
+
   postgres_db_dev:
     image: "postgres:latest"
-    container_name: postgres_dev
     ports:
       - "54321:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example # not necessary when using POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: example
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
     networks:
       - postgres_db_network
 
-  pgadmin:
-    image: dpage/pgadmin4:6.20
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_LISTEN_PORT: 5050
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-      MASTER_PASSWORD_REQUIRED: "False"
-    ports:
-      - "5050:5050"
-    networks:
-      - postgres_db_network
-    volumes:
-      - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
-      # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
-    depends_on:
-      - postgres_db_dev
-    # The password field for connectiong to Local Postgres Server can be left blank
-
   redis:
     image: redis:alpine
-    container_name: redis
     ports:
      - 6379:6379
     networks:
@@ -45,3 +66,10 @@ services:
 networks:
   postgres_db_network:
     driver: bridge
+
+# https://www.tomray.dev/nestjs-docker-compose-postgres
+
+# when changing docker file run: 
+# docker compose build
+# then
+# docker compose up
