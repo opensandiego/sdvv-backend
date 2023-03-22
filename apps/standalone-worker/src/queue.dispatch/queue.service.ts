@@ -12,13 +12,15 @@ export class QueueService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.workerProcessUpdateQueue.empty().then(() =>
-      this.logger.log({
-        level: 'info',
-        message: 'Queue emptied',
-        queue: 'worker-update-data',
-      }),
-    );
+    if (process.env.PURGE_QUEUE.toLocaleLowerCase() === 'true') {
+      await this.workerProcessUpdateQueue.empty().then(() =>
+        this.logger.log({
+          level: 'info',
+          message: 'Queue emptied',
+          queue: 'worker-update-data',
+        }),
+      );
+    }
 
     await this.workerProcessUpdateQueue.getJobCounts().then((queue) =>
       this.logger.log({

@@ -21,13 +21,25 @@ services:
     extends:
       file: common-services.yml
       service: server
-    # Run this in the container's terminal: 
-    #  npm run db:initialize:data
+    environment:
+      PURGE_QUEUE: false
     command: >
       bash -c "node dist/apps/standalone-worker/main"
     depends_on:
       migrations:
         condition: service_completed_successfully
+
+  initialize_data:
+    extends:
+      file: common-services.yml
+      service: server
+    build: 
+      target: development
+    command: >
+      bash -c "npm run db:initialize:data"
+    depends_on:
+      redis:
+        condition: service_healthy
 
   migrations:
     extends:
