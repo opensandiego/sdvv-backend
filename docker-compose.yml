@@ -12,9 +12,8 @@ services:
     command: >
       bash -c "node dist/apps/sdvv-backend-nest/main"
     depends_on:
-      - postgres_db_dev
-      - redis
-      - migrations
+      migrations:
+        condition: service_completed_successfully
     ports:
       - 3000:3000
 
@@ -27,10 +26,8 @@ services:
     command: >
       bash -c "node dist/apps/standalone-worker/main"
     depends_on:
-      - postgres_db_dev
-      - redis
-      - migrations
-      - api
+      migrations:
+        condition: service_completed_successfully
 
   migrations:
     extends:
@@ -41,23 +38,37 @@ services:
     command: >
       bash -c "npm run db:migration:run"
     depends_on:
-      - postgres_db_dev
-      - redis
+      postgres_db_dev:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   postgres_db_dev:
     image: "postgres:latest"
     ports:
-      - "54321:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - postgres_db_network
 
   redis:
     image: redis:alpine
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     ports:
      - 6379:6379
     networks:
