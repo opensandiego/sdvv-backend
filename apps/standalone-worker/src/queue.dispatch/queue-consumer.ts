@@ -58,6 +58,7 @@ export class QueueConsumer {
   async updateTransactionsCurrent() {
     await this.transactionsXLSXService.updateTransactionsCurrent();
     await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+    console.log(`updateTransactionsCurrent completed`);
   }
 
   @Process('update-transactions-past')

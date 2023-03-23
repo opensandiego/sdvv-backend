@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
@@ -9,7 +9,7 @@ import { CandidateElectionInfo } from '../assets/candidate_info';
 @Injectable()
 export class CandidatesInfoUpdateService {
   constructor(
-    private connection: Connection,
+    private dataSource: DataSource,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
@@ -19,7 +19,7 @@ export class CandidatesInfoUpdateService {
     const updatedCandidates: CandidateEntity[] =
       await this.setInfoForCandidates(candidates);
 
-    await this.connection
+    await this.dataSource
       .getRepository(CandidateEntity)
       .save(updatedCandidates);
   }
@@ -57,7 +57,7 @@ export class CandidatesInfoUpdateService {
   }
 
   private async getAllCandidates(): Promise<CandidateEntity[]> {
-    return await this.connection
+    return await this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .getMany();

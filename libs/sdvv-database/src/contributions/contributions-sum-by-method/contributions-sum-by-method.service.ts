@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Brackets, Connection } from 'typeorm';
+import { Brackets, DataSource } from 'typeorm';
 import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class ContributionsSumByMethodService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private RCPTTypes = ['A', 'C'];
   private MonetaryContributions = ['A'];
@@ -25,7 +25,7 @@ export class ContributionsSumByMethodService {
   }
 
   private async getContributionsByCode({ committeeName, formType }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('entity_cd', 'code')
@@ -58,7 +58,7 @@ export class ContributionsSumByMethodService {
   }
 
   // async getContributionSumNonMonetary({ committeeName }) {
-  //   const query = this.connection
+  //   const query = this.dataSource
   //     .getRepository(RCPTEntity)
   //     .createQueryBuilder()
   //     .select('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')
@@ -74,7 +74,7 @@ export class ContributionsSumByMethodService {
   // }
 
   async getContributionsInKindSum({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')
@@ -94,7 +94,7 @@ export class ContributionsSumByMethodService {
   }
 
   async getContributionsIndividualSum({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')
@@ -116,7 +116,7 @@ export class ContributionsSumByMethodService {
   }
 
   async getContributionsOtherSum({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)::int', 'sum')

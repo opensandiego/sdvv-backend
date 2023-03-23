@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { EXPNEntity } from '../tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class ExpensesService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private EXPNTypes = ['E'];
 
   async getTotalSpent({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')
