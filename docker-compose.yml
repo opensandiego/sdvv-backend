@@ -1,5 +1,5 @@
 # This docker-compose.yml is only used to run containers locally for development and testing.
-# To run olny this compose and explude the override run:
+# To run olny this compose file and exclude the override run:
 #  docker compose -f docker-compose.yml up
 # To include the override run:
 #  docker compose up
@@ -91,10 +91,3 @@ services:
 networks:
   postgres_db_network:
     driver: bridge
-
-# https://www.tomray.dev/nestjs-docker-compose-postgres
-
-# when changing docker file run: 
-# docker compose build
-# then
-# docker compose up
