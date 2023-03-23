@@ -1,5 +1,5 @@
 import { CacheModule, Module } from '@nestjs/common';
-import type { ClientOpts as RedisClientOpts } from 'redis';
+// import type { ClientOpts as RedisClientOpts } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { HttpModule } from '@nestjs/axios';
 import { DatabaseModule } from '@app/sdvv-database';
@@ -20,7 +20,10 @@ import { ConfigModule } from '@nestjs/config';
     RCPTModule,
     EXPNModule,
     S496Module,
-    CacheModule.register<RedisClientOpts>({
+    // CacheModule.register<RedisClientOpts>({
+    CacheModule.register({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       store: redisStore,
       url: process.env.REDIS_URL,
     }),

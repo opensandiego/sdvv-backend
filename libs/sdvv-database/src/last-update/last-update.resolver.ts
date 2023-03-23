@@ -8,9 +8,14 @@ export class LastUpdateResolver {
 
   @Query()
   async lastUpdate() {
-    const lastUpdateDateTime = await this.cacheManager.get(
-      'last-updated-date-time',
-    );
-    return { dateTime: lastUpdateDateTime };
+    // const lastUpdateDateTime = await this.cacheManager?.get<string>(
+    //   'last-updated-date-time',
+    // );
+    const lastUpdateDateTime = null;
+    // console.log({ lastUpdateDateTime2 });
+    // const lastUpdateDateTime = 'ABC_123';
+    return {
+      dateTime: lastUpdateDateTime ? lastUpdateDateTime : 'NOT Available',
+    };
   }
 }

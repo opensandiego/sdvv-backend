@@ -1,3 +1,8 @@
+import { DataSource } from 'typeorm';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 function isProduction() {
   return process.env.NODE_ENV === 'production' ? true : false;
 }
@@ -10,7 +15,7 @@ function getTlsOptions() {
     : false;
 }
 
-module.exports = {
+const PostgresDataSource = new DataSource({
   type: `postgres`,
   url: `${process.env.DATABASE_URL}`,
   synchronize: false,
@@ -27,6 +32,14 @@ module.exports = {
   ],
   migrationsTableName: 'migrations_typeorm',
   migrations: ['apps/migration/**/*{.ts,.js}'],
-  cli: { migrationsDir: 'apps/migration' },
+  // cli: { migrationsDir: 'apps/migration' },
   ssl: getTlsOptions(),
-};
+});
+/**
+ * To Generate migrations run a command similar to the following:
+ *   npm run typeorm migration:generate -n ./apps/migration/<< replace with a name for the migration >> -- -d ./orm-data-source.ts
+ * Example:
+ *   npm run typeorm migration:generate -n ./apps/migration/My_Changed_Field -- -d ./orm-data-source.ts
+ */
+
+export default PostgresDataSource;
