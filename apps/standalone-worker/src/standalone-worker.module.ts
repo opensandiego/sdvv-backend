@@ -24,10 +24,17 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
+        // Object.assign(await getConnectionOptions(), {
+        //   autoLoadEntities: true,
+        //   entities: null,
+        //   migrations: null,
+        // }),
+        ({
+          type: 'postgres',
+          url: process.env.DATABASE_URL,
+          synchronize: false,
           autoLoadEntities: true,
-          entities: null,
-          migrations: null,
+          ssl: false,
         }),
     }),
     BullModule.forRoot({

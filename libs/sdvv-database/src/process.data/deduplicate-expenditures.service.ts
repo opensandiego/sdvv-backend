@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, DeleteResult } from 'typeorm';
+import { DataSource, DeleteResult } from 'typeorm';
 import { EXPNEntity } from '../tables-xlsx/expn/expn.entity';
 import { S496Entity } from '../tables-xlsx/s496/s496.entity';
 
@@ -11,7 +11,7 @@ interface PartialTransaction {
 
 @Injectable()
 export class DeduplicateExpendituresService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   public async removeDuplicateIndependentExpenditures(): Promise<number> {
     const filingIds = await this.getS496FilerIds();
@@ -20,7 +20,7 @@ export class DeduplicateExpendituresService {
   }
 
   private async getS496FilerIds(): Promise<string[]> {
-    const query = await this.connection
+    const query = await this.dataSource
       .getRepository(S496Entity)
       .createQueryBuilder()
       .select('DISTINCT filer_id');
@@ -32,7 +32,9 @@ export class DeduplicateExpendituresService {
   private async get460DFilings(
     filingIds: string[],
   ): Promise<PartialTransaction[]> {
-    const query = await this.connection
+    if (filingIds.length < 1) return [];
+
+    const query = await this.dataSource
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('filer_id')
@@ -49,7 +51,7 @@ export class DeduplicateExpendituresService {
   private async removeDuplicates(
     filings: PartialTransaction[],
   ): Promise<number> {
-    const queryRunner = this.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
 
     let transactionsDeleted = 0;
 

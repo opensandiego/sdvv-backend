@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class SharedService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   public async createBulkData(dataTypeArray: any[], Entity) {
-    const queryRunner = this.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
     const maxTransactionsPerInsert = 1000;
 
     try {
@@ -44,7 +44,7 @@ export class SharedService {
     year: string,
     formType: string,
   ) {
-    const queryRunner = this.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
 
     try {
       await queryRunner.manager

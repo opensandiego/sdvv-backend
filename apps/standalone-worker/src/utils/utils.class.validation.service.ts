@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
@@ -11,7 +11,7 @@ export class ClassValidationService {
   ) {}
 
   async getValidatedClasses(objects, dto): Promise<typeof dto[]> {
-    const classes = plainToClass(dto, objects);
+    const classes = plainToInstance(dto, objects);
 
     const errors = await this.validateArray(classes);
 

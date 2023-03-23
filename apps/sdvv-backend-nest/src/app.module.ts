@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import type { ClientOpts as RedisClientOpts } from 'redis';
+// import type { ClientOpts as RedisClientOpts } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { join } from 'path';
 
@@ -25,10 +25,17 @@ import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
+        // Object.assign(await getConnectionOptions(), {
+        //   autoLoadEntities: true,
+        //   entities: null,
+        //   migrations: null,
+        // }),
+        ({
+          type: 'postgres',
+          url: process.env.DATABASE_URL,
+          synchronize: false,
           autoLoadEntities: true,
-          entities: null,
-          migrations: null,
+          ssl: false,
         }),
     }),
     BullModule.forRoot({

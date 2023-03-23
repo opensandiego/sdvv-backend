@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CandidateEntity } from '../candidate/candidates.entity';
 import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.entity';
 
 @Injectable()
 export class CandidateYearService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   async getElectionsByYear(year: string) {
-    return await this.connection
+    return await this.dataSource
       .getRepository(ElectionEntity)
       .createQueryBuilder()
       .select('election_id')
@@ -27,7 +27,7 @@ export class CandidateYearService {
   }
 
   async addInGeneralByYear(filer_ids: string[], year: string) {
-    await this.connection
+    await this.dataSource
       .createQueryBuilder()
       .update(CandidateEntity)
       .set({ in_general_election: true })

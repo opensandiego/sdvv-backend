@@ -128,7 +128,7 @@ export class TransactionsXLSXService {
         await this.populateDatabaseWithXLSXWorksheets(year);
       }
 
-      await this.setLastUpdatedDateTime();
+      // await this.setLastUpdatedDateTime();
 
       this.logger.info('Update Transactions for Current Election Complete', {
         transactionYears: years,
@@ -152,9 +152,19 @@ export class TransactionsXLSXService {
       timeZoneName: 'short',
     }).format(new Date());
 
+    // await this.cacheManager.set('last-updated-date-time', dateTimeNow, 0);
     await this.cacheManager.set('last-updated-date-time', dateTimeNow, {
       ttl: 0,
-    });
+    } as any);
+
+    const lastUpdateDateTime2 = await this.cacheManager?.get(
+      'last-updated-date-time',
+    );
+    console.log({ lastUpdateDateTime2 });
+  }
+
+  public async getLastUpdatedDateTime(): Promise<string> {
+    return await this.cacheManager.get('last-updated-date-time');
   }
 
   public async updateTransactionsPast() {
@@ -221,6 +231,7 @@ export class TransactionsXLSXService {
         this.logger.error('Skipping Transactions for XLSX workbook sheet', {
           transactionYear: year,
           sheetName: sheet.sheetName,
+          error: e,
         });
       }
     }

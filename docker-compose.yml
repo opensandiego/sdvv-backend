@@ -1,42 +1,92 @@
 # This docker-compose.yml is only used to run containers locally for development and testing.
-version: "3"
+# To run olny this compose file and exclude the override run:
+#  docker compose -f docker-compose.yml up
+# To include the override run:
+#  docker compose up
+version: "3.9"
 services:
+  api:
+    extends:
+      file: common-services.yml
+      service: server
+    command: >
+      bash -c "node dist/apps/sdvv-backend-nest/main"
+    depends_on:
+      run_migrations:
+        condition: service_completed_successfully
+    ports:
+      - 3000:3000
+
+  worker:
+    extends:
+      file: common-services.yml
+      service: server
+    environment:
+      PURGE_QUEUE: false
+      CHECK_UPDATE_INTERVAL: true
+      UPDATE_INTERVAL_HOURS: 2
+    command: >
+      bash -c "node dist/apps/standalone-worker/main"
+    depends_on:
+      run_migrations:
+        condition: service_completed_successfully
+
+  initialize_data:
+    extends:
+      file: common-services.yml
+      service: server
+    build: 
+      target: development
+    command: >
+      bash -c "npm run db:initialize:data"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  run_migrations:
+    extends:
+      file: common-services.yml
+      service: server
+    build: 
+      target: development
+    command: >
+      bash -c "npm run db:migration:run"
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   postgres_db_dev:
     image: "postgres:latest"
-    container_name: postgres_dev
     ports:
-      - "54321:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example # not necessary when using POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: example
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - postgres_db_network
-
-  pgadmin:
-    image: dpage/pgadmin4:6.18
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-      - PGADMIN_LISTEN_PORT=5050
-    ports:
-      - "5050:5050"
-    networks:
-      - postgres_db_network
-    volumes:
-      - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
-      # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
-    depends_on:
-      - postgres_db_dev
-    # The password field for connectiong to Local Postgres Server can be left blank
 
   redis:
     image: redis:alpine
-    container_name: redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     ports:
      - 6379:6379
+    networks:
+      - postgres_db_network
 
 networks:
   postgres_db_network:

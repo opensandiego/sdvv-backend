@@ -10,10 +10,12 @@ import { ContributionsModule } from './contributions/contributions.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { IndependentExpendituresModule } from './independent-expenditures/independent-expenditures.module';
 import { LastUpdateModule } from './last-update/last-update.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { EXPNEntity } from '../../tables-xlsx/expn/expn.entity';
 import { S496Entity } from '@app/sdvv-database/tables-xlsx/s496/s496.entity';
 
@@ -14,7 +14,7 @@ export interface IndependentExpenditureCommittee {
 
 @Injectable()
 export class IndependentExpenditureCommitteesService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private EXPNTypes = ['D'];
   private monthDay = '12/31';
@@ -100,7 +100,7 @@ export class IndependentExpenditureCommitteesService {
     supOppCd: string,
     electionDate: string,
   ): Promise<IndependentExpenditureCommittee[]> {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('filer_naml', 'committeeName')
@@ -141,7 +141,7 @@ export class IndependentExpenditureCommitteesService {
     supOppCd: string,
     electionDate: string,
   ): Promise<IndependentExpenditureCommittee[]> {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(S496Entity)
       .createQueryBuilder()
       .select('filer_naml', 'committeeName')

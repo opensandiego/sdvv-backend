@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class ContributionService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private RCPTTypes = ['A', 'C'];
 
   async getContributions({ committeeName, filters, limit = 20 }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .addSelect(`COALESCE(ROUND(amount), 0)::int`, 'amount')
