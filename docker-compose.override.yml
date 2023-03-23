@@ -2,8 +2,8 @@ version: "3.9"
 services:
   angular:
     build:
-      context: https://github.com/opensandiego/sdvv-frontend.git#feat-docker-build
       dockerfile: Dockerfile
+      context: https://github.com/opensandiego/sdvv-frontend.git#feat-docker-build
       args:
         buildtype: "build:api:local"
     ports:

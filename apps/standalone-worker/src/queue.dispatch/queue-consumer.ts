@@ -84,11 +84,41 @@ export class QueueConsumer {
 
   @Process('initialize-data')
   async initializeData() {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.CHECK_UPDATE_INTERVAL === 'true'
+    ) {
+      const lastUpdate =
+        await this.transactionsXLSXService.getLastUpdatedDateTime();
+
+      const envInterval = parseInt(process.env.UPDATE_INTERVAL_HOURS);
+      const interval = envInterval ? envInterval : 12;
+
+      const hours = this.hoursSinceUpdate(lastUpdate);
+      // Skip update if it has been less than 'interval' hours since the last update
+      if (hours < interval && hours > 0) {
+        console.log(`Last update was: ${lastUpdate}`);
+        console.log(
+          `Skipping update. Last update: ${hours.toFixed(2)} hours ago.`,
+        );
+        console.log(
+          `Update only runs in development and if its been more than: ${interval} hours.`,
+        );
+
+        return;
+      }
+    }
+
     await this.updateElections();
     await this.updateCandidatesCurrent();
     await this.updateCandidatesPast();
     await this.updateTransactionsCurrent();
     await this.updateTransactionsPast();
     await this.updateZipCodes();
+  }
+
+  private hoursSinceUpdate(updateDate: string) {
+    if (!updateDate) return 0;
+    return Math.abs(Date.now() - Date.parse(updateDate)) / 36e5;
   }
 }

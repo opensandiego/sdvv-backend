@@ -12,7 +12,7 @@ services:
     command: >
       bash -c "node dist/apps/sdvv-backend-nest/main"
     depends_on:
-      migrations:
+      run_migrations:
         condition: service_completed_successfully
     ports:
       - 3000:3000
@@ -23,10 +23,12 @@ services:
       service: server
     environment:
       PURGE_QUEUE: false
+      CHECK_UPDATE_INTERVAL: true
+      UPDATE_INTERVAL_HOURS: 2
     command: >
       bash -c "node dist/apps/standalone-worker/main"
     depends_on:
-      migrations:
+      run_migrations:
         condition: service_completed_successfully
 
   initialize_data:
@@ -41,7 +43,7 @@ services:
       redis:
         condition: service_healthy
 
-  migrations:
+  run_migrations:
     extends:
       file: common-services.yml
       service: server

@@ -157,6 +157,10 @@ export class TransactionsXLSXService {
     });
   }
 
+  public async getLastUpdatedDateTime(): Promise<string> {
+    return await this.cacheManager.get('last-updated-date-time');
+  }
+
   public async updateTransactionsPast() {
     const pastElections = ElectionYears.filter((election) => !election.current);
 
