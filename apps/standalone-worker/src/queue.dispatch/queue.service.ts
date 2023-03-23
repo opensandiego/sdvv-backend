@@ -12,7 +12,7 @@ export class QueueService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    if (process.env.PURGE_QUEUE.toLocaleLowerCase() === 'true') {
+    if (process.env.PURGE_QUEUE?.toLocaleLowerCase() === 'true') {
       await this.workerProcessUpdateQueue.empty().then(() =>
         this.logger.log({
           level: 'info',
