@@ -153,9 +153,6 @@ export class TransactionsXLSXService {
     }).format(new Date());
 
     await this.cacheManager.set('last-updated-date-time', dateTimeNow, 0);
-    // await this.cacheManager.set('last-updated-date-time', dateTimeNow, {
-    //   ttl: 0,
-    // } as any);
 
     const lastUpdateDateTime2 = await this.cacheManager?.get(
       'last-updated-date-time',
