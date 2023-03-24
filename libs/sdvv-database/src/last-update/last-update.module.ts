@@ -1,18 +1,19 @@
 import { CacheModule, Module } from '@nestjs/common';
-// import type { ClientOpts as RedisClientOpts } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-yet';
+
 import { LastUpdateResolver } from './last-update.resolver';
 
 @Module({
   imports: [
-    // CacheModule.register<RedisClientOpts>({
-    CacheModule.register({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      store: redisStore,
-      url: process.env.REDIS_URL,
-      // In production set cache to 6 hours = 21600 seconds
-      // ttl: process.env.NODE_ENV === 'production' ? 21600 : 10,
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: await redisStore({
+          url: process.env.REDIS_URL,
+          // 6 hours = 21600000 milliseconds
+          // 10 seconds = 10000 milliseconds
+          ttl: process.env.NODE_ENV === 'production' ? 21600000 : 10000,
+        }),
+      }),
     }),
   ],
   providers: [LastUpdateResolver],
