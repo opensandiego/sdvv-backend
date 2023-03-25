@@ -3,11 +3,16 @@ import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { QueueController } from './queue.controller';
 
+const url = new URL(process.env.REDIS_URL);
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     BullModule.forRoot({
-      redis: process.env.REDIS_URL,
+      redis: {
+        host: url.hostname,
+        port: Number(url.port),
+      },
     }),
     BullModule.registerQueue({
       name: 'worker-update-data',

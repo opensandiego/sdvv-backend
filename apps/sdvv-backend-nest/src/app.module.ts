@@ -3,9 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
-
-import { redisStore } from 'cache-manager-redis-yet';
-
+import { redisStore } from 'cache-manager-ioredis-yet';
 import { join } from 'path';
 
 import { AppController } from './app.controller';
@@ -16,6 +14,10 @@ import { DatabaseModule } from '@app/sdvv-database';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
+
+const url = new URL(process.env.REDIS_URL);
+const SIX_HOURS = 21600000; // milliseconds
+const TEN_SECONDS = 10000; // milliseconds
 
 @Module({
   imports: [
@@ -38,10 +40,9 @@ import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
     CacheModule.registerAsync({
       useFactory: async () => ({
         store: await redisStore({
-          url: process.env.REDIS_URL,
-          // 6 hours = 21600000 milliseconds
-          // 10 seconds = 10000 milliseconds
-          ttl: process.env.NODE_ENV === 'production' ? 21600000 : 10000,
+          host: url.hostname,
+          port: Number(url.port),
+          ttl: process.env.NODE_ENV === 'production' ? SIX_HOURS : TEN_SECONDS,
         }),
       }),
     }),
