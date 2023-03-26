@@ -1,4 +1,4 @@
-# This docker-compose.yml is only used to run containers locally for development and testing.
+# This docker-compose.yml is intended for run containers locally for development.
 # To run olny this compose file and exclude the override run:
 #  docker compose -f docker-compose.yml up
 # To include the override run:
@@ -9,11 +9,17 @@ services:
     extends:
       file: common-services.yml
       service: server
-    command: >
-      bash -c "node dist/apps/sdvv-backend-nest/main"
+    build:
+      target: web
     depends_on:
       run_migrations:
         condition: service_completed_successfully
+    healthcheck:
+      test: "${DOCKER_HEALTHCHECK_TEST:-curl localhost:3000/health}"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
     ports:
       - 3000:3000
 
@@ -21,12 +27,12 @@ services:
     extends:
       file: common-services.yml
       service: server
+    build:
+      target: worker
     environment:
       PURGE_QUEUE: false
       CHECK_UPDATE_INTERVAL: true
-      UPDATE_INTERVAL_HOURS: 2
-    command: >
-      bash -c "node dist/apps/standalone-worker/main"
+      UPDATE_INTERVAL_HOURS: 10
     depends_on:
       run_migrations:
         condition: service_completed_successfully
@@ -47,7 +53,7 @@ services:
     extends:
       file: common-services.yml
       service: server
-    build: 
+    build:
       target: development
     command: >
       bash -c "npm run db:migration:run"
