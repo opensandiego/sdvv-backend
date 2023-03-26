@@ -11,7 +11,8 @@ services:
     networks:
       - postgres_db_network
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
   api:
     build:
@@ -29,21 +30,10 @@ services:
     command: >
       bash -c "npm run start:worker:dev"
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:6.20
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #     PGADMIN_LISTEN_PORT: 5050
-  #     PGADMIN_CONFIG_SERVER_MODE: "False"
-  #     MASTER_PASSWORD_REQUIRED: "False"
-  #   ports:
-  #     - "5050:5050"
-  #   networks:
-  #     - postgres_db_network
-  #   volumes:
-  #     - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
-  #     # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
-  #   depends_on:
-  #     - postgres_db_dev
-  #   # The password field for connectiong to Local Postgres Server can be left blank
+# # Uncomment out the service below if needed 
+#   pgadmin:
+#     extends:
+#       file: common-services.yml
+#       service: pgadmin
+#     depends_on:
+#       - postgres_db_dev

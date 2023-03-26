@@ -6,7 +6,24 @@ services:
       target: build
     environment:
       DATABASE_URL: postgres://postgres:example@postgres_db_dev:5432/postgres
-      NODE_ENV: development
       REDIS_URL: redis://redis:6379
     networks:
       - postgres_db_network
+  
+  pgadmin:
+    image: dpage/pgadmin4:6.20
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5050:5050"
+    networks:
+      - postgres_db_network
+    volumes:
+      - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
+      # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
+
+    # The password field for connecting to Local Postgres Server can be left blank

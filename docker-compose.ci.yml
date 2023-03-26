@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  api:
+    profiles:
+      - smoke-test
+    command: >
+      bash -c "node dist/apps/sdvv-backend-nest/main"
+
+  worker:
+    profiles:
+      - initialize-data
+    command: >
+      bash -c "node dist/apps/standalone-worker/main"
+
+  initialize_data:
+    profiles:
+      - initialize-data
+
+  run_migrations:
+    profiles:
+      - migrations
+
+  redis:
+    profiles:
+      - smoke-test
+      - initialize-data
+
+  smoke_tester:
+    build:
+      dockerfile: smoke_tests/Dockerfile.smoketest
+      context: .
+    depends_on:
+      api:
+        condition: service_healthy
+    profiles:
+      - smoke-test
+    networks:
+      - postgres_db_network

@@ -1,4 +1,4 @@
-FROM node:18 As development
+FROM node:18 As build
 
 WORKDIR /usr/src/app
 
@@ -8,20 +8,24 @@ RUN npm ci
 
 COPY --chown=node:node . .
 
-USER node
 
-FROM node:18 As build
+FROM build AS development
 
-WORKDIR /usr/src/app
+ENV NODE_ENV development
 
-COPY --chown=node:node package*.json ./
 
-COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+FROM build AS production
 
-COPY --chown=node:node . .
+ENV NODE_ENV production
 
 RUN npm run build
 
-USER node
 
-CMD [ "node", "dist/apps/sdvv-backend-nest/main.js" ]
+FROM production AS web
+
+CMD [ "npm", "run", "start:prod:web" ]
+
+
+FROM production AS worker
+
+CMD [ "npm", "run", "start:prod:worker" ]
