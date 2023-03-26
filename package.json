@@ -43,6 +43,7 @@
     "@nestjs/platform-express": "^9.3.12",
     "@nestjs/schedule": "^2.2.0",
     "@nestjs/serve-static": "^3.0.1",
+    "@nestjs/terminus": "^9.2.1",
     "@nestjs/typeorm": "^9.0.1",
     "@types/node": "^18.15.5",
     "apollo-server-express": "^3.12.0",
