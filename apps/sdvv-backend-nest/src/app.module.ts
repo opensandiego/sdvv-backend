@@ -14,6 +14,7 @@ import { DatabaseModule } from '@app/sdvv-database';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
+import { HealthModule } from './health/health.module';
 
 const url = new URL(process.env.REDIS_URL);
 const SIX_HOURS = 21600000; // milliseconds
@@ -51,6 +52,7 @@ const TEN_SECONDS = 10000; // milliseconds
     }),
     EfileApiDataModule,
     DatabaseModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, RCPTModule, EXPNModule, S496Module],
