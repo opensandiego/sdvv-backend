@@ -1,6 +1,6 @@
 import { CacheModule, Module } from '@nestjs/common';
-// import type { ClientOpts as RedisClientOpts } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-ioredis-yet';
+
 import { HttpModule } from '@nestjs/axios';
 import { DatabaseModule } from '@app/sdvv-database';
 import { UtilsModule } from '../utils/utils.module';
@@ -11,6 +11,8 @@ import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
 import { ConfigModule } from '@nestjs/config';
 
+const url = new URL(process.env.REDIS_URL);
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -20,12 +22,13 @@ import { ConfigModule } from '@nestjs/config';
     RCPTModule,
     EXPNModule,
     S496Module,
-    // CacheModule.register<RedisClientOpts>({
-    CacheModule.register({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      store: redisStore,
-      url: process.env.REDIS_URL,
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: await redisStore({
+          host: url.hostname,
+          port: Number(url.port),
+        }),
+      }),
     }),
   ],
   providers: [TransactionsXLSXService, TransactionsXLSXDownloadService],
