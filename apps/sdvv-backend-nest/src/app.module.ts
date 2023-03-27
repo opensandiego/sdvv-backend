@@ -1,5 +1,5 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -15,8 +15,8 @@ import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
 import { HealthModule } from './health/health.module';
+import redisConfig from './config/redis.config';
 
-const url = new URL(process.env.REDIS_URL);
 const SIX_HOURS = 21600000; // milliseconds
 const TEN_SECONDS = 10000; // milliseconds
 
@@ -25,6 +25,7 @@ const TEN_SECONDS = 10000; // milliseconds
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+      load: [redisConfig],
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
@@ -39,13 +40,15 @@ const TEN_SECONDS = 10000; // milliseconds
       redis: process.env.REDIS_URL,
     }),
     CacheModule.registerAsync({
-      useFactory: async () => ({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
         store: await redisStore({
-          host: url.hostname,
-          port: Number(url.port),
+          host: configService.get('redis.host'),
+          port: configService.get('redis.port'),
           ttl: process.env.NODE_ENV === 'production' ? SIX_HOURS : TEN_SECONDS,
         }),
       }),
+      inject: [ConfigService],
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'sdvv-backend-nest/public'),
