@@ -1,0 +1,16 @@
+name: Run Pull Request Tests
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  run-build-test:
+    uses: opensandiego/sdvv-backend/.github/workflows/build-test.yml@main
+
+  run-smoke-test:
+    needs: run-build-test
+    uses: opensandiego/sdvv-backend/.github/workflows/smoke-test.yml@main

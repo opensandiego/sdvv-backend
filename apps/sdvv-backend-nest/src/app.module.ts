@@ -1,57 +1,61 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
-// import type { ClientOpts as RedisClientOpts } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-ioredis-yet';
 import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { getConnectionOptions } from 'typeorm';
 import { EfileApiDataModule } from '@app/efile-api-data';
 import { DatabaseModule } from '@app/sdvv-database';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
+import { HealthModule } from './health/health.module';
+import redisConfig from './config/redis.config';
+
+const SIX_HOURS = 21600000; // milliseconds
+const TEN_SECONDS = 10000; // milliseconds
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
+      load: [redisConfig],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        // Object.assign(await getConnectionOptions(), {
-        //   autoLoadEntities: true,
-        //   entities: null,
-        //   migrations: null,
-        // }),
-        ({
-          type: 'postgres',
-          url: process.env.DATABASE_URL,
-          synchronize: false,
-          autoLoadEntities: true,
-          ssl: false,
-        }),
+      useFactory: async () => ({
+        type: 'postgres',
+        url: process.env.DATABASE_URL,
+        synchronize: false,
+        autoLoadEntities: true,
+        ssl: false,
+      }),
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
     }),
-    // CacheModule.register<RedisClientOpts>({
-    //   store: redisStore,
-    //   url: process.env.REDIS_URL,
-    //   // In production set cache to 6 hours = 21600 seconds
-    //   ttl: process.env.NODE_ENV === 'production' ? 21600 : 10,
-    // }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        store: await redisStore({
+          host: configService.get('redis.host'),
+          port: configService.get('redis.port'),
+          ttl: process.env.NODE_ENV === 'production' ? SIX_HOURS : TEN_SECONDS,
+        }),
+      }),
+      inject: [ConfigService],
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'sdvv-backend-nest/public'),
     }),
     EfileApiDataModule,
     DatabaseModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, RCPTModule, EXPNModule, S496Module],

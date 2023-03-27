@@ -1,0 +1,15 @@
+name: Build Test
+
+on:
+  workflow_call:
+
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: docker compose -f docker-compose.yml build api
