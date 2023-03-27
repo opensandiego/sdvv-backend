@@ -9,13 +9,10 @@ import { TransactionsXLSXDownloadService } from './transactions.xlsx.download.se
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
-import { ConfigModule } from '@nestjs/config';
-
-const url = new URL(process.env.REDIS_URL);
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     DatabaseModule,
     UtilsModule,
     HttpModule,
@@ -23,12 +20,14 @@ const url = new URL(process.env.REDIS_URL);
     EXPNModule,
     S496Module,
     CacheModule.registerAsync({
-      useFactory: async () => ({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
         store: await redisStore({
-          host: url.hostname,
-          port: Number(url.port),
+          host: configService.get('redis.host'),
+          port: configService.get('redis.port'),
         }),
       }),
+      inject: [ConfigService],
     }),
   ],
   providers: [TransactionsXLSXService, TransactionsXLSXDownloadService],

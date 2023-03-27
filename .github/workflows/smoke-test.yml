@@ -15,8 +15,8 @@ jobs:
       - name: Build Containers
         run : docker compose -f docker-compose.yml -f docker-compose.ci.yml --profile migrations --profile smoke_tester build 
 
-      - name: Run compose with migrations
+      - name: Setup the database
         run: docker compose -f docker-compose.yml -f docker-compose.ci.yml --profile migrations up --exit-code-from run_migrations
 
-      - name: Run with only smoke test as an exiting container
+      - name: Run smoke test
         run: docker compose -f docker-compose.yml -f docker-compose.ci.yml --profile smoke-test up --exit-code-from smoke_tester

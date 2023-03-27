@@ -18,10 +18,15 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import redisConfig from './config/redis.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [redisConfig],
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
         // Object.assign(await getConnectionOptions(), {
