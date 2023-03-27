@@ -20,6 +20,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
       },
+      cache: 'bounded',
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
