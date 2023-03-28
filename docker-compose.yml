@@ -89,6 +89,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    command: >
+     --requirepass secret 
     ports:
      - 6379:6379
     networks:

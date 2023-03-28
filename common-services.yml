@@ -6,7 +6,7 @@ services:
       target: build
     environment:
       DATABASE_URL: postgres://postgres:example@postgres_db_dev:5432/postgres
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://:secret@redis:6379
     networks:
       - postgres_db_network
   
