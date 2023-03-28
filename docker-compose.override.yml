@@ -30,6 +30,10 @@ services:
     command: >
       bash -c "npm run start:worker:dev"
 
+  initialize_data:
+    volumes:
+      - .:/usr/src/app
+
 # # Uncomment out the service below if needed 
 #   pgadmin:
 #     extends:
