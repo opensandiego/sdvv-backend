@@ -30,7 +30,12 @@ const TEN_SECONDS = 10000; // milliseconds
         url: process.env.DATABASE_URL,
         synchronize: false,
         autoLoadEntities: true,
-        ssl: false,
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : false,
       }),
     }),
     BullModule.forRoot({
