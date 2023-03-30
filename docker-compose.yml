@@ -8,31 +8,15 @@ services:
   api:
     extends:
       file: common-services.yml
-      service: server
-    build:
-      target: web
+      service: api
     depends_on:
       run_migrations:
         condition: service_completed_successfully
-    healthcheck:
-      test: "${DOCKER_HEALTHCHECK_TEST:-curl localhost:3000/health}"
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 10s
-    ports:
-      - 3000:3000
 
   worker:
     extends:
       file: common-services.yml
-      service: server
-    build:
-      target: worker
-    environment:
-      PURGE_QUEUE: false
-      CHECK_UPDATE_INTERVAL: true
-      UPDATE_INTERVAL_HOURS: 10
+      service: worker
     depends_on:
       run_migrations:
         condition: service_completed_successfully
@@ -40,11 +24,7 @@ services:
   initialize_data:
     extends:
       file: common-services.yml
-      service: server
-    build: 
-      target: development
-    command: >
-      bash -c "npm run db:initialize:data"
+      service: initialize_data
     depends_on:
       redis:
         condition: service_healthy
@@ -52,11 +32,7 @@ services:
   run_migrations:
     extends:
       file: common-services.yml
-      service: server
-    build:
-      target: development
-    command: >
-      bash -c "npm run db:migration:run"
+      service: run_migrations
     depends_on:
       postgres_db_dev:
         condition: service_healthy
@@ -64,38 +40,13 @@ services:
         condition: service_healthy
 
   postgres_db_dev:
-    image: "postgres:latest"
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
-      POSTGRES_DB: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    networks:
-      - postgres_db_network
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    build:
+      target: build
 
   redis:
-    image: redis:alpine
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    command: >
-     --requirepass secret 
-    ports:
-     - 6379:6379
-    networks:
-      - postgres_db_network
-
-networks:
-  postgres_db_network:
-    driver: bridge
+    extends:
+      file: common-services.yml
+      service: redis

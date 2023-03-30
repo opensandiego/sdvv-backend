@@ -1,0 +1,12 @@
+
+FROM postgres:15.2 as build
+
+RUN openssl req -x509 -nodes -days 365 \
+    -subj  "/C=CA/ST=QC/O=Company Inc/CN=postgres" \
+     -newkey rsa:2048 -keyout /etc/ssl/private/server.key \
+     -out /etc/ssl/private/server.crt;
+
+RUN gpasswd -a postgres ssl-cert
+
+RUN chown root:ssl-cert /etc/ssl/private/server.key
+RUN chmod 740 /etc/ssl/private/server.key
