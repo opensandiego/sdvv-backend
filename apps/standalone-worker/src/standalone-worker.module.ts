@@ -25,19 +25,18 @@ import { SchedulerModule } from './scheduler/scheduler.module';
       cache: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        ({
-          type: 'postgres',
-          url: process.env.DATABASE_URL,
-          synchronize: false,
-          autoLoadEntities: true,
-          ssl:
+      useFactory: async () => ({
+        type: 'postgres',
+        url: process.env.DATABASE_URL,
+        synchronize: false,
+        autoLoadEntities: true,
+        ssl:
           process.env.NODE_ENV === 'production'
             ? {
                 rejectUnauthorized: false,
               }
             : false,
-        }),
+      }),
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
