@@ -1,5 +1,0 @@
-FROM bash:4.4
-
-COPY ./smoke_tests/script.sh /
-
-CMD ["bash", "/script.sh"]

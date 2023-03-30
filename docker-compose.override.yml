@@ -30,6 +30,10 @@ services:
     command: >
       bash -c "npm run start:worker:dev"
 
+  postgres_db_dev:
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+
   initialize_data:
     volumes:
       - .:/usr/src/app
