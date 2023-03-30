@@ -8,8 +8,6 @@ services:
         buildtype: "build:api:local"
     ports:
       - "4200:80"
-    networks:
-      - postgres_db_network
     depends_on:
       api:
         condition: service_healthy
