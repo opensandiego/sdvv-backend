@@ -6,10 +6,48 @@ services:
       target: build
     environment:
       DATABASE_URL: postgres://postgres:example@postgres_db_dev:5432/postgres
-      REDIS_URL: redis://redis:6379
-    networks:
-      - postgres_db_network
+      REDIS_URL: redis://:secret@redis:6379
   
+  api:
+    extends:
+      service: server
+    build:
+      target: web
+    healthcheck:
+      test: "${DOCKER_HEALTHCHECK_TEST:-curl localhost:3000/health}"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    ports:
+      - 3000:3000
+
+  worker:
+    extends:
+      service: server
+    build:
+      target: worker
+    environment:
+      PURGE_QUEUE: false
+      CHECK_UPDATE_INTERVAL: true
+      UPDATE_INTERVAL_HOURS: 10
+
+  initialize_data:
+    extends:
+      service: server
+    build: 
+      target: development
+    command: >
+      bash -c "npm run db:initialize:data"
+
+  run_migrations:
+    extends:
+      service: server
+    build:
+      target: development
+    command: >
+      bash -c "npm run db:migration:run"
+
   pgadmin:
     image: dpage/pgadmin4:6.20
     environment:
@@ -20,10 +58,43 @@ services:
       MASTER_PASSWORD_REQUIRED: "False"
     ports:
       - "5050:5050"
-    networks:
-      - postgres_db_network
     volumes:
       - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
       # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
 
     # The password field for connecting to Local Postgres Server can be left blank
+
+  postgres_base:
+    build:
+      dockerfile: docker/Dockerfile.database
+      target: build
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:alpine
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: >
+     --requirepass secret 
+    ports:
+     - 6379:6379
+
+  tester:
+    image: bash:4.4
+    command: >
+      bash -c "'true' ; echo $?"

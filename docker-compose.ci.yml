@@ -1,39 +1,57 @@
 version: "3.9"
 
 services:
-  api:
-    profiles:
-      - smoke-test
+  api_smoke_test:
+    extends:
+      file: common-services.yml
+      service: api
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: >
       bash -c "node dist/apps/sdvv-backend-nest/main"
-
-  worker:
     profiles:
-      - initialize-data
-    command: >
-      bash -c "node dist/apps/standalone-worker/main"
-
-  initialize_data:
-    profiles:
-      - initialize-data
+      - smoke-test
 
   run_migrations:
+    extends:
+      file: common-services.yml
+      service: run_migrations
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     profiles:
       - migrations
 
-  redis:
+  postgres_db_dev:
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    command: >
+      -c ssl=on 
+      -c ssl_cert_file=/etc/ssl/private/server.crt 
+      -c ssl_key_file=/etc/ssl/private/server.key
     profiles:
       - smoke-test
-      - initialize-data
+      - migrations
 
-  smoke_tester:
-    build:
-      dockerfile: smoke_tests/Dockerfile.smoketest
-      context: .
+  redis:
+    extends:
+      file: common-services.yml
+      service: redis
+    profiles:
+      - smoke-test
+
+  test_service:
+    extends:
+      file: common-services.yml
+      service: tester
     depends_on:
-      api:
+      api_smoke_test:
         condition: service_healthy
     profiles:
       - smoke-test
-    networks:
-      - postgres_db_network

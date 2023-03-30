@@ -21,11 +21,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     S496Module,
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        store: await redisStore({
-          host: configService.get('redis.host'),
-          port: configService.get('redis.port'),
-        }),
+      useFactory: async () => ({
+        url: process.env.REDIS_URL,
       }),
       inject: [ConfigService],
     }),

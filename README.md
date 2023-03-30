@@ -17,7 +17,7 @@ npm install
 Create a ``.env`` file in the root of your local repository then copy and paste in the following:
 ```
 DATABASE_URL=postgres://postgres:example@localhost:54321/postgres
-REDIS_URL=redis://localhost:6379
+REDIS_URL=redis://:secret@localhost:6379
 ```
 
 - Install the three Docker containers (Postgres, pgAdmin, Redis) using:

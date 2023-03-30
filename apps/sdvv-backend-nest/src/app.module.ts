@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { redisStore } from 'cache-manager-ioredis-yet';
 import { join } from 'path';
 
 import { AppController } from './app.controller';
@@ -15,7 +14,6 @@ import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
 import { HealthModule } from './health/health.module';
-import redisConfig from './config/redis.config';
 
 const SIX_HOURS = 21600000; // milliseconds
 const TEN_SECONDS = 10000; // milliseconds
@@ -25,7 +23,6 @@ const TEN_SECONDS = 10000; // milliseconds
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [redisConfig],
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
@@ -33,7 +30,12 @@ const TEN_SECONDS = 10000; // milliseconds
         url: process.env.DATABASE_URL,
         synchronize: false,
         autoLoadEntities: true,
-        ssl: false,
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : false,
       }),
     }),
     BullModule.forRoot({
@@ -41,12 +43,9 @@ const TEN_SECONDS = 10000; // milliseconds
     }),
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        store: await redisStore({
-          host: configService.get('redis.host'),
-          port: configService.get('redis.port'),
-          ttl: process.env.NODE_ENV === 'production' ? SIX_HOURS : TEN_SECONDS,
-        }),
+      useFactory: async () => ({
+        url: process.env.REDIS_URL,
+        ttl: process.env.NODE_ENV === 'production' ? SIX_HOURS : TEN_SECONDS,
       }),
       inject: [ConfigService],
     }),

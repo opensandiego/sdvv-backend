@@ -14,7 +14,7 @@ export class QueueService implements OnModuleInit {
   async onModuleInit() {
     // The use of a not comparison is to retain existing functionality
     //   when the env. var. does not exist.
-    if (process.env.DISABLE_QUEUE_PURGE.toLocaleLowerCase() !== 'true') {
+    if (process.env.DISABLE_QUEUE_PURGE?.toLocaleLowerCase() !== 'true') {
       await this.workerProcessUpdateQueue.empty().then(() =>
         this.logger.log({
           level: 'info',

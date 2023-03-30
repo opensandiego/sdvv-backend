@@ -7,11 +7,8 @@ import { QueueController } from './queue.controller';
   imports: [
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        redis: {
-          host: configService.get('redis.host'),
-          port: configService.get('redis.port'),
-        },
+      useFactory: async () => ({
+        url: process.env.REDIS_URL,
       }),
       inject: [ConfigService],
     }),
