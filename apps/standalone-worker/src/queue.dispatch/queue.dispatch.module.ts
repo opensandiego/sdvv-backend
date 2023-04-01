@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
+import { TerminusModule } from '@nestjs/terminus';
 import { ZipCodeCSVModule } from '../zip.code.csv/zip.code.csv.module';
 import { TransactionsXLSXModule } from '../transactions.xlsx/transactions.xlsx.module';
 import { ProcessDataModule } from '@app/sdvv-database/process.data/process.data.module';
@@ -10,6 +11,7 @@ import { ShutdownService } from './shutdown.service';
 
 @Module({
   imports: [
+    TerminusModule,
     TransactionsXLSXModule,
     ZipCodeCSVModule,
     ProcessDataModule,

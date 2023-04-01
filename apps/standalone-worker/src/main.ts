@@ -9,8 +9,8 @@ async function bootstrap() {
 
   if (process.env.CI === 'true') {
     console.log('Running in CI context. Shutdown mode active.');
-    app.get(ShutdownService).subscribeToShutdown(() => {
-      return app.close();
+    app.get(ShutdownService).subscribeToShutdown(async () => {
+      return await app.close();
     });
   }
 }

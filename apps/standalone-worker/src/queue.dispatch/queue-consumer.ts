@@ -10,6 +10,7 @@ import { DeduplicateExpendituresService } from '@app/sdvv-database/process.data/
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
 import { ShutdownService } from './shutdown.service';
+import { TypeOrmHealthIndicator } from '@nestjs/terminus';
 
 @Processor('worker-update-data')
 export class QueueConsumer {
@@ -24,8 +25,15 @@ export class QueueConsumer {
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
     private shutdownService: ShutdownService,
+    private typeOrmHealthIndicator: TypeOrmHealthIndicator,
   ) {
     EventEmitter.defaultMaxListeners = 15;
+  }
+
+  @Process('database-health-check')
+  async checkDatabaseConnection() {
+    const status = await this.typeOrmHealthIndicator.pingCheck('database');
+    console.log(status);
   }
 
   @Process('update-elections')

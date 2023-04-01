@@ -17,6 +17,7 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { HealthModule } from 'apps/sdvv-backend-nest/src/health/health.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     EFileApiModule,
     ProcessDataModule,
     SchedulerModule,
+    HealthModule,
   ],
   providers: [StandaloneWorkerService],
   exports: [],
