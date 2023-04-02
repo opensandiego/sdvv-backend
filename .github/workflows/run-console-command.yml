@@ -36,7 +36,7 @@ jobs:
       - name: Build Containers
         run : docker compose -f docker-compose.console.yml --profile add-command --profile process-commands-in-ci build
 
-      - name: Add command to queue
+      - name: Add command ${{ inputs.command }} to queue
         run: docker compose -f docker-compose.console.yml --profile add-command up --exit-code-from test_service
         env:
           CONSOLE_COMMAND: ${{ inputs.command }}
