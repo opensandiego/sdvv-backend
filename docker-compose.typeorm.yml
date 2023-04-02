@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  run_typeorm_command:
+    extends:
+      file: common-services.yml
+      service: server
+    build:
+      target: production
+    environment:
+      PATH_TO_DATA_SOURCE: ./orm-data-source.ts
+      TYPEORM_COMMAND: 
+      DATABASE_URL:
+    command: >
+      bash -c "npm run typeorm $${TYPEORM_COMMAND} -- -d $${PATH_TO_DATA_SOURCE}"
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+
+  postgres_db_dev:
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    command: >
+      -c ssl=on 
+      -c ssl_cert_file=/etc/ssl/private/server.crt 
+      -c ssl_key_file=/etc/ssl/private/server.key
+    profiles:
+      - rum-command-locally
+
+  test_service:
+    extends:
+      file: common-services.yml
+      service: tester
+    depends_on:
+      run_typeorm_command:
+        condition: service_completed_successfully
