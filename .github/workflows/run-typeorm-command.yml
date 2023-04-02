@@ -1,0 +1,40 @@
+name: Run TypeORM Commands
+
+on:
+  workflow_call:
+    inputs:
+      command:
+        required: true
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      command:
+        description: TypeORM Command
+        default: migration:show
+        type: choice
+        options:
+          - schema:log
+          - migration:show
+          - migration:run
+          - migration:revert
+
+jobs:
+  run-typeorm-command:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Containers
+        run : docker compose -f docker-compose.typeorm.yml build
+
+      - name: Run command
+        run: |
+          echo "::add-mask::DATABASE_URL"
+          export DATABASE_URL=$(heroku config:get DATABASE_URL -a $HEROKU_APP_NAME)
+          docker compose -f docker-compose.typeorm.yml up --exit-code-from test_service
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          CONSOLE_COMMAND: ${{ inputs.command }}
