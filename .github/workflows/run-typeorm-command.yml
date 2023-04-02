@@ -37,4 +37,4 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-          CONSOLE_COMMAND: ${{ inputs.command }}
+          TYPEORM_COMMAND: ${{ inputs.command }}
