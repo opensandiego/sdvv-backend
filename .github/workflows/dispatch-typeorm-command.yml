@@ -19,7 +19,7 @@ on:
         type: choice
         options:
           - staging
-          # - production
+          - production
 
 jobs:
   dispatch-typeorm-command:
