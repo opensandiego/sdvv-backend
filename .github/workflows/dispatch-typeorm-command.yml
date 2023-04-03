@@ -27,5 +27,4 @@ jobs:
     with:
       command: ${{ inputs.command }}
       environment: ${{ inputs.environment }}
-    secrets:
-      inherit:
+    secrets: inherit
