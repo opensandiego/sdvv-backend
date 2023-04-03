@@ -28,6 +28,7 @@ on:
 
 jobs:
   run-console-command:
+    name: Run command ${{ inputs.command }}
     runs-on: ubuntu-latest
 
     steps:

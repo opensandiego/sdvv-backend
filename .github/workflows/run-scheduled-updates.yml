@@ -2,32 +2,34 @@ name: Run Scheduled Updates
 
 on:
   schedule:
-  - cron: '27 */1 * * *'
-  - cron: '32 */1 * * *'
-  - cron: '47 */1 * * *'
+  - cron: '27 3 * * *'
+  - cron: '32 4 * * *'
+  - cron: '47 5 * * sun' # weekly update-candidates-current
 
   # Change schedules to these after testing
   # - cron: '27 3 * * *' # daily update-transactions-current
   # - cron: '32 4 * * sat' # weekly update-transactions-past
-  # - cron: '47 5 * * sun' # weekly update-candidates-current
 
 jobs:
   run-update-transactions-current:
-    if: github.event.schedule == '27 */1 * * *'
+    if: github.event.schedule == '27 3 * * *'
+    name: Update Transactions Current
     uses: ./.github/workflows/run-console-command.yml
     secrets: inherit
     with:
       command: update-transactions-current
 
   run-update-transactions-past:
-    if: github.event.schedule == '32 */1 * * *'
+    if: github.event.schedule == '32 4 * * *'
+    name: Update Transactions Past
     uses: ./.github/workflows/run-console-command.yml
     secrets: inherit
     with:
       command: update-transactions-past
 
   run-update-candidates-current:
-    if: github.event.schedule == '47 */1 * * *'
+    if: github.event.schedule == '47 5 * * sun'
+    name: Update Candidates Current 
     uses: ./.github/workflows/run-console-command.yml
     secrets: inherit
     with:
