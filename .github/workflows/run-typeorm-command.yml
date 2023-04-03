@@ -1,4 +1,4 @@
-name: Run TypeORM Commands
+name: Run TypeORM Commands - old
 
 on:
   workflow_call:

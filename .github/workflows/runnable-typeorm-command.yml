@@ -12,8 +12,10 @@ on:
 
 jobs:
   run-typeorm-command:
+    name: Run TypeORM command ${{ inputs.command }}
     runs-on: ubuntu-latest
     environment:  ${{ inputs.environment }}
+
     steps:
       - uses: actions/checkout@v3
 
