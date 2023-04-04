@@ -1,0 +1,20 @@
+name: Deploy release/staging 
+
+on:
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #     - release/staging
+
+  # pull_request:
+  #   types: [ closed ]
+  #   branches:
+  #     - release/staging
+
+jobs:
+  deploy-release-staging:
+    uses: ./.github/workflows/deploy-heroku-runnable.yml
+    with:
+      environment: staging
+    secrets: inherit
