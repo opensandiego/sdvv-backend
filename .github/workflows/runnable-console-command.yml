@@ -1,4 +1,4 @@
-name: Run Console Commands
+name: Run Console Command Workflow
 
 on:
   workflow_call:
@@ -12,12 +12,23 @@ on:
 
 jobs:
   run-console-command:
-    name: Run command ${{ inputs.command }}
+    name: Run command ${{ inputs.command }} on ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    environment:  ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: set App id for staging
+        if: ${{ inputs.environment == 'staging' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        env:
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
+
+      - name: set App id for production
+        if: ${{ inputs.environment == 'production' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        env:
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
 
       - name: Build Containers
         run : docker compose -f docker-compose.console.yml --profile add-command --profile process-commands-in-ci build
@@ -34,4 +45,4 @@ jobs:
           docker compose -f docker-compose.console.yml --profile process-commands-in-ci up --exit-code-from test_service
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          APP_ID: ${{ secrets.HEROKU_APP_ID }}
+          APP_ID: ${{ env.APP_ID }}
