@@ -1,0 +1,46 @@
+name: Deploy Pipeline
+
+concurrency: deployment
+
+on:
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #     - main
+
+  pull_request:
+    types: [ closed ]
+    branches:
+      - main
+
+jobs:
+  run-migrations-staging:
+    uses: ./.github/reusable/runnable-typeorm-command.yml
+    with:
+      command: migration:run
+      environment: staging
+    secrets: inherit
+
+  deploy-release-staging:
+    needs: run-migrations-staging
+    uses: ./.github/reusable/deploy-heroku-runnable.yml
+    with:
+      environment: staging
+    secrets: inherit
+
+  # run-migrations-production:
+  #   needs: deploy-release-staging
+
+  #   uses: ./.github/reusable/runnable-typeorm-command.yml
+  #   with:
+  #     command: migration:run
+  #     environment: production
+  #   secrets: inherit
+
+  # deploy-release-production:
+  #   needs: run-migrations-production
+  #   uses: ./.github/reusable/deploy-heroku-runnable.yml
+  #   with:
+  #     environment: production
+  #   secrets: inherit
