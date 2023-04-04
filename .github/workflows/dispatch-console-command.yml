@@ -30,7 +30,7 @@ on:
 
 jobs:
   dispatch-console-command:
-    uses: ./.github/workflows/runnable-console-command.yml
+    uses: ./.github/reusable/runnable-console-command.yml
     with:
       command: ${{ inputs.command }}
       environment: ${{ inputs.environment }}
