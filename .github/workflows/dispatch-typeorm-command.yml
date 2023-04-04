@@ -23,7 +23,7 @@ on:
 
 jobs:
   dispatch-typeorm-command:
-    uses: ./.github/reusable/runnable-typeorm-command.yml
+    uses: ./.github/workflows/runnable-typeorm-command.yml
     with:
       command: ${{ inputs.command }}
       environment: ${{ inputs.environment }}

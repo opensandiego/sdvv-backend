@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy-release-staging:
-    uses: ./.github/reusable/deploy-heroku-runnable.yml
+    uses: ./.github/workflows/deploy-heroku-runnable.yml
     with:
       environment: staging
     secrets: inherit

@@ -16,7 +16,7 @@ on:
 
 jobs:
   run-migrations-staging:
-    uses: ./.github/reusable/runnable-typeorm-command.yml
+    uses: ./.github/workflows/runnable-typeorm-command.yml
     with:
       command: migration:run
       environment: staging
@@ -24,7 +24,7 @@ jobs:
 
   deploy-release-staging:
     needs: run-migrations-staging
-    uses: ./.github/reusable/deploy-heroku-runnable.yml
+    uses: ./.github/workflows/deploy-heroku-runnable.yml
     with:
       environment: staging
     secrets: inherit
@@ -32,7 +32,7 @@ jobs:
   # run-migrations-production:
   #   needs: deploy-release-staging
 
-  #   uses: ./.github/reusable/runnable-typeorm-command.yml
+  #   uses: ./.github/workflows/runnable-typeorm-command.yml
   #   with:
   #     command: migration:run
   #     environment: production
@@ -40,7 +40,7 @@ jobs:
 
   # deploy-release-production:
   #   needs: run-migrations-production
-  #   uses: ./.github/reusable/deploy-heroku-runnable.yml
+  #   uses: ./.github/workflows/deploy-heroku-runnable.yml
   #   with:
   #     environment: production
   #   secrets: inherit
