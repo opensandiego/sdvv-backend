@@ -2,35 +2,67 @@ name: Run Scheduled Updates
 
 on:
   schedule:
-  - cron: '27 3 * * *'
-  - cron: '32 4 * * *'
-  - cron: '47 5 * * sun' # weekly update-candidates-current
+  # Staging Schedule
+  - cron: '10 3 * * *'
+  - cron: '25 3 * * *' # change last * to sat after testing
+  - cron: '40 3 * * sun'
 
-  # Change schedules to these after testing
-  # - cron: '27 3 * * *' # daily update-transactions-current
-  # - cron: '32 4 * * sat' # weekly update-transactions-past
+  # Production Schedule
+  - cron: '10 4 * * *'
+  - cron: '25 4 * * *' # change last * to sat after testing
+  - cron: '40 4 * * *' # change last * to sun after testing
 
 jobs:
-  run-update-transactions-current:
-    if: github.event.schedule == '27 3 * * *'
-    name: Update Transactions Current
-    uses: ./.github/workflows/run-console-command.yml
+  run-update-transactions-current-staging:
+    if: github.event.schedule == '10 3 * * *'
+    name: Update Transactions Current on Staging
+    uses: ./.github/workflows/runnable-console-command.yml
     secrets: inherit
     with:
       command: update-transactions-current
+      environment: staging
 
-  run-update-transactions-past:
-    if: github.event.schedule == '32 4 * * *'
-    name: Update Transactions Past
-    uses: ./.github/workflows/run-console-command.yml
+  run-update-transactions-past-staging:
+    if: github.event.schedule == '25 3 * * *'
+    name: Update Transactions Past on Staging
+    uses: ./.github/workflows/runnable-console-command.yml
     secrets: inherit
     with:
       command: update-transactions-past
+      environment: staging
 
-  run-update-candidates-current:
-    if: github.event.schedule == '47 5 * * sun'
-    name: Update Candidates Current 
-    uses: ./.github/workflows/run-console-command.yml
+  run-update-candidates-current-staging:
+    if: github.event.schedule == '40 3 * * sun'
+    name: Update Candidates Current on Staging
+    uses: ./.github/workflows/runnable-console-command.yml
     secrets: inherit
     with:
       command: update-candidates-current
+      environment: staging
+
+  run-update-transactions-current-production:
+    if: github.event.schedule == '10 4 * * *'
+    name: Update Transactions Current on Production
+    uses: ./.github/workflows/runnable-console-command.yml
+    secrets: inherit
+    with:
+      command: update-transactions-current
+      environment: production
+
+  run-update-transactions-past-production:
+    if: github.event.schedule == '25 4 * * *'
+    name: Update Transactions Past on Production
+    uses: ./.github/workflows/runnable-console-command.yml
+    secrets: inherit
+    with:
+      command: update-transactions-past
+      environment: production
+
+  run-update-candidates-current-production:
+    if: github.event.schedule == '40 4 * * *'
+    name: Update Candidates Current on Production
+    uses: ./.github/workflows/runnable-console-command.yml
+    secrets: inherit
+    with:
+      command: update-candidates-current
+      environment: production
