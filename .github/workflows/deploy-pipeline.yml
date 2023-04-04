@@ -1,6 +1,8 @@
 name: Deploy Pipeline
 
-concurrency: deployment
+concurrency: 
+  group: deployment
+  cancel-in-progress: true
 
 on:
   workflow_dispatch:
