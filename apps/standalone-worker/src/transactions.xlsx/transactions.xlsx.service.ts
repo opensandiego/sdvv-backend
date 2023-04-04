@@ -154,10 +154,10 @@ export class TransactionsXLSXService {
 
     await this.cacheManager.set('last-updated-date-time', dateTimeNow, 0);
 
-    const lastUpdateDateTime2 = await this.cacheManager?.get(
+    const lastUpdateDateTime = await this.cacheManager?.get(
       'last-updated-date-time',
     );
-    console.log({ lastUpdateDateTime2 });
+    console.log({ lastUpdateDateTime });
   }
 
   public async getLastUpdatedDateTime(): Promise<string> {

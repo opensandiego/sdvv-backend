@@ -8,6 +8,10 @@ export class QueueController {
     @InjectQueue('worker-update-data') private readonly workerQueueAdd: Queue,
   ) {}
 
+  async checkDatabaseConnection() {
+    await this.workerQueueAdd.add('database-health-check');
+  }
+
   async updateElections() {
     await this.workerQueueAdd.add('update-elections');
   }

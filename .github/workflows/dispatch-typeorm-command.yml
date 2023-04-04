@@ -1,0 +1,30 @@
+name: Dispatch TypeORM Command
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: TypeORM Command
+        default: migration:show
+        type: choice
+        options:
+          - schema:log
+          - migration:show
+          - migration:run
+          - migration:revert
+
+      environment:
+        description: Environment
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  dispatch-typeorm-command:
+    uses: ./.github/workflows/runnable-typeorm-command.yml
+    with:
+      command: ${{ inputs.command }}
+      environment: ${{ inputs.environment }}
+    secrets: inherit
