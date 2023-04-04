@@ -11,7 +11,11 @@ jobs:
   deploy-to-heroku:
     name: Deploy to  ${{ inputs.environment }}
     runs-on: ubuntu-latest
-    environment:  ${{ inputs.environment }}
+    environment:
+      name: ${{ inputs.environment }}
+      url: "https://${HEROKU_APP_ID}.herokuapp.com"
+    env:
+      HEROKU_APP_ID: ${{ secrets.HEROKU_APP_ID }}
 
     steps:
       - uses: actions/checkout@v3
