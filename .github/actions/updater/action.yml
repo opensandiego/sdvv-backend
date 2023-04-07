@@ -19,29 +19,32 @@ inputs:
 
 runs:
   using: "composite"
-  name: Run command/action ${{ inputs.command }} on ${{ inputs.environment }}
 
   steps:
     - name: set App id for staging
       if: ${{ inputs.environment == 'staging' }} 
       run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+      shell: bash
       env:
         APP_ID: ${{ inputs.STAGING_HEROKU_APP_ID }}
 
     - name: set App id for production
       if: ${{ inputs.environment == 'production' }} 
       run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+      shell: bash
       env:
         APP_ID: ${{ inputs.PRODUCTION_HEROKU_APP_ID }}
 
     - name: Build Containers
       run : docker compose -f docker-compose.updater.yml --profile process-commands-in-ci build
+      shell: bash
 
     - name: Run command ${{ inputs.command }}
       run: |
         echo "::add-mask::DATABASE_URL"
         export DATABASE_URL=$(heroku config:get DATABASE_URL -a $APP_ID)
         docker compose -f docker-compose.updater.yml --profile process-commands-in-ci up --exit-code-from test_service
+      shell: bash
       env:
         CONSOLE_COMMAND: ${{ inputs.command }}
         HEROKU_API_KEY: ${{ inputs.HEROKU_API_KEY }}
