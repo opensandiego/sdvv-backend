@@ -32,6 +32,12 @@ services:
       CHECK_UPDATE_INTERVAL: true
       UPDATE_INTERVAL_HOURS: 10
 
+  updater:
+    extends:
+      service: server
+    build:
+      target: updater
+
   initialize_data:
     extends:
       service: server

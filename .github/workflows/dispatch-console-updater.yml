@@ -1,0 +1,37 @@
+name: Dispatch Updater
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: Updater Command to run
+        default: database-health-check
+        type: choice
+        options:
+          - database-health-check
+          - update-elections
+          - update-candidates-current
+          - update-candidates-past
+          - update-candidates-info
+          - update-transactions-current
+          - update-transactions-past
+          # - zip-codes
+          # - jurisdiction-zip-codes
+          - update-zip-codes
+          - initialize-data
+
+      environment:
+        description: Environment
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  dispatch-updater:
+    uses: ./.github/workflows/runnable-console-updater.yml
+    with:
+      command: ${{ inputs.command }}
+      environment: ${{ inputs.environment }}
+    secrets: inherit
