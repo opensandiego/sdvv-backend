@@ -1,0 +1,48 @@
+name: Run Updater Workflow
+
+inputs:
+  command:
+    required: true
+    type: string
+  environment:
+    required: true
+    type: string
+  STAGING_HEROKU_APP_ID:
+    required: false
+    type: string
+  PRODUCTION_HEROKU_APP_ID:
+    required: false
+    type: string
+  HEROKU_API_KEY:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  name: Run command/action ${{ inputs.command }} on ${{ inputs.environment }}
+
+  steps:
+    - name: set App id for staging
+      if: ${{ inputs.environment == 'staging' }} 
+      run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+      env:
+        APP_ID: ${{ inputs.STAGING_HEROKU_APP_ID }}
+
+    - name: set App id for production
+      if: ${{ inputs.environment == 'production' }} 
+      run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+      env:
+        APP_ID: ${{ inputs.PRODUCTION_HEROKU_APP_ID }}
+
+    - name: Build Containers
+      run : docker compose -f docker-compose.updater.yml --profile process-commands-in-ci build
+
+    - name: Run command ${{ inputs.command }}
+      run: |
+        echo "::add-mask::DATABASE_URL"
+        export DATABASE_URL=$(heroku config:get DATABASE_URL -a $APP_ID)
+        docker compose -f docker-compose.updater.yml --profile process-commands-in-ci up --exit-code-from test_service
+      env:
+        CONSOLE_COMMAND: ${{ inputs.command }}
+        HEROKU_API_KEY: ${{ inputs.HEROKU_API_KEY }}
+        APP_ID: ${{ env.APP_ID }}
