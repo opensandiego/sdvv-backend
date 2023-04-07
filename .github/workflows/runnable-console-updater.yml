@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - id: updater
-        uses: ./.github/actions/updater
+        uses: opensandiego/sdvv-backend/.github/actions/updater@main
         with:
           command: ${{ inputs.command }}
           environment: ${{ inputs.environment }}
