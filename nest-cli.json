@@ -46,6 +46,15 @@
         "tsConfigPath": "libs/sdvv-database/tsconfig.lib.json"
       }
     },
+    "update-command": {
+      "type": "application",
+      "root": "apps/update-command",
+      "entryFile": "main",
+      "sourceRoot": "apps/update-command/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/update-command/tsconfig.app.json"
+      }
+    },
     "efile-api-data": {
       "type": "library",
       "root": "libs/efile-api-data",
