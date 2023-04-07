@@ -24,6 +24,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod:web": "node dist/apps/sdvv-backend-nest/main",
     "start:prod:worker": "node dist/apps/standalone-worker/main",
+    "start:prod:updater": "node dist/apps/update-command/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  updater:
+    extends:
+      file: common-services.yml
+      service: updater
+    build:
+      target: production
+    environment:
+      CI: true
+      COMMAND: ${CONSOLE_COMMAND}
+    command: >
+      bash -c "node dist/apps/update-command/main"
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+    profiles:
+      - process-commands
+
+  updater-ci:
+    extends:
+      service: updater
+    environment:
+      DATABASE_URL:
+    profiles:
+      - process-commands-in-ci
+
+  postgres_db_dev:
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    command: >
+      -c ssl=on 
+      -c ssl_cert_file=/etc/ssl/private/server.crt 
+      -c ssl_key_file=/etc/ssl/private/server.key
+    profiles:
+      - process-commands
+
+  test_service:
+    extends:
+      file: common-services.yml
+      service: tester
+    depends_on:
+      updater:
+        condition: service_completed_successfully
+      updater-ci:
+        condition: service_completed_successfully
+    profiles:
+      - process-commands
+      - process-commands-in-ci
