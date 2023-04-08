@@ -28,4 +28,4 @@ runs:
       env:
         TYPEORM_COMMAND: ${{ inputs.command }}
         HEROKU_API_KEY: ${{ inputs.HEROKU_API_KEY }}
-        APP_ID: ${{ inputs.HEROKU_APP_ID }}
+        APP_ID: ${{ inputs.APP_ID }}
