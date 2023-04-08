@@ -29,12 +29,6 @@ on:
           - production
 
 jobs:
-  # dispatch-updater:
-  #   uses: ./.github/workflows/runnable-console-updater.yml
-  #   with:
-  #     command: ${{ inputs.command }}
-  #     environment: ${{ inputs.environment }}
-  #   secrets: inherit
   run-updater-action:
     name: Run command ${{ inputs.command }} on ${{ inputs.environment }}
     runs-on: ubuntu-latest
