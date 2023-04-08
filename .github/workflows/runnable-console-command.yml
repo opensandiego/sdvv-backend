@@ -1,4 +1,5 @@
 name: Run Console Command Workflow
+# remove this file after migrating and testing schedule jobs to actions/updater
 
 on:
   workflow_call:
