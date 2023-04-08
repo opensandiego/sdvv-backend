@@ -1,0 +1,31 @@
+name: TypeORM Action
+
+inputs:
+  command:
+    required: true
+    type: string
+  APP_ID:
+    required: true
+    type: string
+  HEROKU_API_KEY:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Build Containers
+      run : docker compose -f docker-compose.typeorm.yml build
+      shell: bash
+
+    - name: Run command ${{ inputs.command }}
+      run: |
+        echo "::add-mask::DATABASE_URL"
+        export DATABASE_URL=$(heroku config:get DATABASE_URL -a $APP_ID)
+        docker compose -f docker-compose.typeorm.yml up --exit-code-from test_service
+      shell: bash
+      env:
+        TYPEORM_COMMAND: ${{ inputs.command }}
+        HEROKU_API_KEY: ${{ inputs.HEROKU_API_KEY }}
+        APP_ID: ${{ inputs.HEROKU_APP_ID }}

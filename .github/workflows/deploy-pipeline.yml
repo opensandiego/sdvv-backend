@@ -17,31 +17,49 @@ on:
       - main
 
 jobs:
-  run-migrations-staging:
-    uses: ./.github/workflows/runnable-typeorm-command.yml
-    with:
-      command: migration:run
-      environment: staging
-    secrets: inherit
+  migrate-deploy-staging:
+    name: Run Migration and Deploy to staging
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: "https://${HEROKU_APP_ID}.herokuapp.com"
+    steps:
+      - uses: actions/checkout@v3
 
-  deploy-release-staging:
-    needs: run-migrations-staging
-    uses: ./.github/workflows/deploy-heroku-runnable.yml
-    with:
-      environment: staging
-    secrets: inherit
+      - id: typeorm
+        # uses: opensandiego/sdvv-backend/.github/actions/typeorm@main
+        uses: ./.github/actions/typeorm@main
+        with:
+          command: migration:run
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ secrets.HEROKU_APP_ID }}
 
-  run-migrations-production:
-    needs: deploy-release-staging
-    uses: ./.github/workflows/runnable-typeorm-command.yml
-    with:
-      command: migration:run
-      environment: production
-    secrets: inherit
+      - uses: akhileshns/heroku-deploy@v3.12.13
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_ID }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
 
-  deploy-release-production:
-    needs: run-migrations-production
-    uses: ./.github/workflows/deploy-heroku-runnable.yml
-    with:
-      environment: production
-    secrets: inherit
+  migrate-deploy-production:
+    needs: migrate-deploy-staging
+    name: Run Migration and Deploy to production
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: "https://${HEROKU_APP_ID}.herokuapp.com"
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: typeorm
+        # uses: opensandiego/sdvv-backend/.github/actions/typeorm@main
+        uses: ./.github/actions/typeorm@main
+        with:
+          command: migration:run
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ secrets.HEROKU_APP_ID }}
+
+      - uses: akhileshns/heroku-deploy@v3.12.13
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_ID }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
