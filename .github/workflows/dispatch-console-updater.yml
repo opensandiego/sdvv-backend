@@ -29,9 +29,24 @@ on:
           - production
 
 jobs:
-  dispatch-updater:
-    uses: ./.github/workflows/runnable-console-updater.yml
-    with:
-      command: ${{ inputs.command }}
-      environment: ${{ inputs.environment }}
-    secrets: inherit
+  # dispatch-updater:
+  #   uses: ./.github/workflows/runnable-console-updater.yml
+  #   with:
+  #     command: ${{ inputs.command }}
+  #     environment: ${{ inputs.environment }}
+  #   secrets: inherit
+  run-updater-action:
+    name: Run command ${{ inputs.command }} on ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: updater
+        uses: opensandiego/sdvv-backend/.github/actions/updater@main
+        with:
+          command: ${{ inputs.command }}
+          environment: ${{ inputs.environment }}
+          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
+          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
