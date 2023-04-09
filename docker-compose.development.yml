@@ -1,0 +1,72 @@
+# This docker-compose.development.yml is intended to run containers 
+# for local development.
+
+# To run use:
+#  docker compose -f docker-compose.development.yml build
+# Then:
+#  docker compose -f docker-compose.development.yml up
+
+version: "3.9"
+services:
+  angular:
+    build:
+      dockerfile: Dockerfile
+      context: https://github.com/opensandiego/sdvv-frontend.git#feat-docker-build
+      args:
+        buildtype: "build:api:local"
+    ports:
+      - "4200:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  api:
+    extends:
+      file: common-services.yml
+      service: api
+    build:
+      target: development
+    depends_on:
+      run_migrations:
+        condition: service_completed_successfully
+    volumes:
+      - .:/usr/src/app
+    command: >
+      bash -c "npm run start:web:dev"
+
+# This runs every time docker compose up is run
+# This takes a few minutes to complete
+  initialize_data:
+    extends:
+      file: common-services.yml
+      service: initialize_data
+    depends_on:
+      run_migrations:
+        condition: service_completed_successfully
+    volumes:
+      - .:/usr/src/app
+
+  run_migrations:
+    extends:
+      file: common-services.yml
+      service: run_migrations
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+
+  postgres_db_dev:
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    build:
+      target: build
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+# # Uncomment out the service below to browse the database with pgadmin
+#   pgadmin:
+#     extends:
+#       file: common-services.yml
+#       service: pgadmin
+#     depends_on:
+#       - postgres_db_dev
