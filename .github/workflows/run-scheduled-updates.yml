@@ -4,11 +4,9 @@ on:
   schedule:
   # Staging Schedule
   # - cron: '10 3 * * *'
-  # - cron: '25 3 * * *' # change last * to sat after testing
-  # - cron: '40 3 * * sun'
   - cron: '10 * * * *'
-  - cron: '25 * * * *' # change last * to sat after testing
-  - cron: '40 * * * sun'
+  - cron: '25 3 * * *' # change last * to sat after testing
+  - cron: '40 3 * * sun'
 
   # Production Schedule
   - cron: '10 4 * * *'
@@ -17,100 +15,81 @@ on:
 
 jobs:
   run-updater-transactions-current-staging:
+    # if: github.event.schedule == '10 3 * * *'
     if: github.event.schedule == '10 * * * *'
     name: Update Transactions Current on Staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: opensandiego/sdvv-backend/.github/actions/updater@main
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-current
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-  # run-update-transactions-current-staging:
-  #   if: github.event.schedule == '10 3 * * *'
-  #   name: Update Transactions Current on Staging
-  #   uses: ./.github/workflows/runnable-console-command.yml
-  #   secrets: inherit
-  #   with:
-  #     command: update-transactions-current
-  #     environment: staging
-
   run-updater-transactions-past-staging:
-    if: github.event.schedule == '25 * * * *'
+    if: github.event.schedule == '25 3 * * *'
     name: Update Transactions Past on Staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: opensandiego/sdvv-backend/.github/actions/updater@main
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-past
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-  # run-update-transactions-past-staging:
-  #   if: github.event.schedule == '25 3 * * *'
-  #   name: Update Transactions Past on Staging
-  #   uses: ./.github/workflows/runnable-console-command.yml
-  #   secrets: inherit
-  #   with:
-  #     command: update-transactions-past
-  #     environment: staging
-
   run-updater-candidates-current-staging:
-    if: github.event.schedule == '40 * * * sun'
+    if: github.event.schedule == '40 3 * * sun'
     name: Update Candidates Current on Staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: opensandiego/sdvv-backend/.github/actions/updater@main
+
+      - uses: ./.github/actions/updater
         with:
           command: update-candidates-current
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-  # run-update-candidates-current-staging:
-  #   if: github.event.schedule == '40 3 * * sun'
-  #   name: Update Candidates Current on Staging
-  #   uses: ./.github/workflows/runnable-console-command.yml
-  #   secrets: inherit
-  #   with:
-  #     command: update-candidates-current
-  #     environment: staging
 
   run-update-transactions-current-production:
     if: github.event.schedule == '10 4 * * *'
     name: Update Transactions Current on Production
-    uses: ./.github/workflows/runnable-console-command.yml
-    secrets: inherit
-    with:
-      command: update-transactions-current
-      environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/updater
+        with:
+          command: update-transactions-current
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-update-transactions-past-production:
     if: github.event.schedule == '25 4 * * *'
     name: Update Transactions Past on Production
-    uses: ./.github/workflows/runnable-console-command.yml
-    secrets: inherit
-    with:
-      command: update-transactions-past
-      environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/updater
+        with:
+          command: update-transactions-past
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-update-candidates-current-production:
     if: github.event.schedule == '40 4 * * *'
     name: Update Candidates Current on Production
-    uses: ./.github/workflows/runnable-console-command.yml
-    secrets: inherit
-    with:
-      command: update-candidates-current
-      environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/updater
+        with:
+          command: update-candidates-current
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
