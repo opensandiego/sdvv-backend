@@ -8,8 +8,7 @@ services:
     depends_on:
       postgres_db_dev:
         condition: service_healthy
-      redis:
-        condition: service_healthy
+      # should this depentd on: run_migrations?
     command: >
       bash -c "node dist/apps/sdvv-backend-nest/main"
     profiles:
@@ -21,8 +20,6 @@ services:
       service: run_migrations
     depends_on:
       postgres_db_dev:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     profiles:
       - migrations
@@ -38,13 +35,6 @@ services:
     profiles:
       - smoke-test
       - migrations
-
-  redis:
-    extends:
-      file: common-services.yml
-      service: redis
-    profiles:
-      - smoke-test
 
   test_service:
     extends:

@@ -1,8 +1,11 @@
-# This docker-compose.yml is intended for run containers locally for development.
-# To run olny this compose file and exclude the override run:
-#  docker compose -f docker-compose.yml up
-# To include the override run:
+# This docker-compose.yml is intended to run containers as a simulated 
+# production environment.
+
+# To run use:
+#  docker compose build
+# Then:
 #  docker compose up
+
 version: "3.9"
 services:
   api:
@@ -13,40 +16,29 @@ services:
       run_migrations:
         condition: service_completed_successfully
 
-  worker:
-    extends:
-      file: common-services.yml
-      service: worker
-    depends_on:
-      run_migrations:
-        condition: service_completed_successfully
-
+# This runs every time docker compose up is run
+# This takes a few minutes to complete
   initialize_data:
     extends:
       file: common-services.yml
       service: initialize_data
+    build:
+      target: production
     depends_on:
-      redis:
-        condition: service_healthy
+      run_migrations:
+        condition: service_completed_successfully
 
   run_migrations:
     extends:
       file: common-services.yml
       service: run_migrations
+    build:
+      target: production
     depends_on:
       postgres_db_dev:
-        condition: service_healthy
-      redis:
         condition: service_healthy
 
   postgres_db_dev:
     extends:
       file: common-services.yml
-      service: postgres_base
-    build:
-      target: build
-
-  redis:
-    extends:
-      file: common-services.yml
-      service: redis
+      service: postgres_ssl
