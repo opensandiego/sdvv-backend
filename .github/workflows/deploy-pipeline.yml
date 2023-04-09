@@ -27,7 +27,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - id: typeorm
-        # uses: opensandiego/sdvv-backend/.github/actions/typeorm@main
         uses: ./.github/actions/typeorm
         with:
           command: migration:run
@@ -51,8 +50,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - id: typeorm
-        # uses: opensandiego/sdvv-backend/.github/actions/typeorm@main
-        uses: ./.github/actions/typeorm@main
+        uses: ./.github/actions/typeorm
         with:
           command: migration:run
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
