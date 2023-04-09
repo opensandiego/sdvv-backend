@@ -28,15 +28,6 @@
         "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
       }
     },
-    "standalone-worker": {
-      "type": "application",
-      "root": "apps/standalone-worker",
-      "entryFile": "main",
-      "sourceRoot": "apps/standalone-worker/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/standalone-worker/tsconfig.app.json"
-      }
-    },
     "sdvv-database": {
       "type": "library",
       "root": "libs/sdvv-database",

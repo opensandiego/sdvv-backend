@@ -26,11 +26,6 @@ FROM production AS web
 CMD [ "npm", "run", "start:prod:web" ]
 
 
-FROM production AS worker
-
-CMD [ "npm", "run", "start:prod:worker" ]
-
-
 FROM production AS updater
 
 CMD [ "npm", "run", "start:prod:updater" ]
