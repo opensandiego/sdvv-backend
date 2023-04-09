@@ -1,4 +1,4 @@
-name: Run Scheduled Updates 
+name: Scheduled Updates 
 
 on:
   schedule:

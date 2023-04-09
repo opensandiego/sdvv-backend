@@ -1,4 +1,4 @@
-name: Deploy Pipeline
+name: Migrate and Deploy
 
 concurrency: 
   group: deployment
