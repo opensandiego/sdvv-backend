@@ -36,11 +36,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: set App id for staging
+        if: ${{ inputs.environment == 'staging' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
+
+      - name: set App id for production
+        if: ${{ inputs.environment == 'production' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+
       - id: updater
-        uses: opensandiego/sdvv-backend/.github/actions/updater@main
+        uses: ./.github/actions/updater
         with:
           command: ${{ inputs.command }}
-          environment: ${{ inputs.environment }}
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ env.APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

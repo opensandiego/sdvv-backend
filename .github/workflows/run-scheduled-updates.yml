@@ -21,13 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-current
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-updater-transactions-past-staging:
@@ -36,13 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-past
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-updater-candidates-current-staging:
@@ -51,13 +47,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-candidates-current
-          environment: staging
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
 
@@ -67,13 +61,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-current
-          environment: production
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-update-transactions-past-production:
@@ -82,13 +74,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-transactions-past
-          environment: production
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   run-update-candidates-current-production:
@@ -97,11 +87,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: updater
-        uses: ./.github/actions/updater
+
+      - uses: ./.github/actions/updater
         with:
           command: update-candidates-current
-          environment: production
-          STAGING_HEROKU_APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
-          PRODUCTION_HEROKU_APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
