@@ -17,6 +17,7 @@ services:
         condition: service_healthy
     profiles:
       - process-commands
+      - process-commands-in-ci # added to test: service updater is required by test_service but is disabled. Can be enabled by profiles [process-commands]
 
   updater-ci:
     extends:
