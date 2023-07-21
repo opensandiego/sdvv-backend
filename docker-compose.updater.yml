@@ -37,6 +37,7 @@ services:
       -c ssl_key_file=/etc/ssl/private/server.key
     profiles:
       - process-commands
+      - process-commands-in-ci # added to test: service postgres_db_dev is required by updater-ci but is disabled. Can be enabled by profiles [process-commands]
 
   test_service:
     extends:
