@@ -23,7 +23,7 @@ runs:
       run: |
         echo "::add-mask::DATABASE_URL"
         export DATABASE_URL=$(heroku config:get DATABASE_URL -a $APP_ID)
-        docker compose -f docker-compose.updater.yml --profile process-commands-in-ci up --exit-code-from test_service
+        docker compose -f docker-compose.updater.yml --profile process-commands-in-ci up --exit-code-from test_service_ci
       shell: bash
       env:
         CONSOLE_COMMAND: ${{ inputs.command }}

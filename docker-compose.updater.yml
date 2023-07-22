@@ -17,13 +17,19 @@ services:
         condition: service_healthy
     profiles:
       - process-commands
-      - process-commands-in-ci # added to test: service updater is required by test_service but is disabled. Can be enabled by profiles [process-commands]
 
   updater-ci:
     extends:
+      file: common-services.yml
       service: updater
+    build:
+      target: production
     environment:
+      CI: true
+      COMMAND: ${CONSOLE_COMMAND}
       DATABASE_URL:
+    command: >
+      bash -c "node dist/apps/update-command/main"
     profiles:
       - process-commands-in-ci
 
@@ -37,7 +43,6 @@ services:
       -c ssl_key_file=/etc/ssl/private/server.key
     profiles:
       - process-commands
-      - process-commands-in-ci # added to test: service postgres_db_dev is required by updater-ci but is disabled. Can be enabled by profiles [process-commands]
 
   test_service:
     extends:
@@ -46,8 +51,15 @@ services:
     depends_on:
       updater:
         condition: service_completed_successfully
+    profiles:
+      - process-commands
+
+  test_service_ci:
+    extends:
+      file: common-services.yml
+      service: tester
+    depends_on:
       updater-ci:
         condition: service_completed_successfully
     profiles:
-      - process-commands
       - process-commands-in-ci
