@@ -25,10 +25,10 @@ REDIS_URL=redis://:secret@localhost:6379
 docker compose up -d
 ```
 
-- Create the database tables using:
+<!-- - Create the database tables using:
 ``` 
 npm run db:migration:run
-```
+``` -->
 
 ## Load the data into the database
 
@@ -39,10 +39,10 @@ npm run start:worker:dev
 
 - Run the console command to add the database initialization tasks to the queue. This command completes immediately. The console running the worker process will update as the queue is processed.
 ```
-npm run db:initialize:data
+npm run initialize:data
 ```
 
-The worker process will fetch and add the data to the database. This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
+This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
 
 
 ## Run the web part of the backend
