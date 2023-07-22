@@ -1,15 +1,16 @@
 name: Updater Action
+description: Builds containers and runs command in docker-compose.updater.yml
 
 inputs:
   command:
+    description: Command to run 
     required: true
-    type: string
   APP_ID:
+    description: Heroku APP_ID used with API_KEY
     required: true
-    type: string
   HEROKU_API_KEY:
+    description: API key for communicating with Heroku
     required: true
-    type: string
 
 runs:
   using: "composite"
