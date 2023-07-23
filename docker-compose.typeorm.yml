@@ -13,9 +13,9 @@ services:
       DATABASE_URL:
     command: >
       bash -c "npm run typeorm $${TYPEORM_COMMAND} -- -d $${PATH_TO_DATA_SOURCE}"
-    depends_on:
-      postgres_db_dev:
-        condition: service_healthy
+    # depends_on:
+    #   postgres_db_dev:
+    #     condition: service_healthy
 
   postgres_db_dev:
     extends:
