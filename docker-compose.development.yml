@@ -7,11 +7,13 @@
 #  docker compose -f docker-compose.development.yml up
 
 version: "3.9"
+name: sdvv-backend-develop
+
 services:
   angular:
     build:
       dockerfile: Dockerfile
-      context: https://github.com/opensandiego/sdvv-frontend.git#feat-docker-build
+      context: https://github.com/opensandiego/sdvv-frontend.git#main
       args:
         buildtype: "build:api:local"
     ports:
