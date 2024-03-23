@@ -62,8 +62,15 @@ export class CandidatesUpdateService {
         (candidate) => candidate.jurisdiction_code.toUpperCase() === 'CIT',
       );
 
-      if (filteredClasses.length > 0) {
-        await this.candidateAddService.addCandidate(filteredClasses);
+      // Remove classes with duplicate "filer_id" fields
+      const uniqueClasses = [
+        ...new Map(
+          filteredClasses.map((item) => [item['filer_id'], item]),
+        ).values(),
+      ];
+
+      if (uniqueClasses.length > 0) {
+        await this.candidateAddService.addCandidate(uniqueClasses);
       }
 
       const generalClasses = await this.getCandidatesClasses(
