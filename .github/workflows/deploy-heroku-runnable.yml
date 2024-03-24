@@ -18,7 +18,7 @@ jobs:
       HEROKU_APP_ID: ${{ secrets.HEROKU_APP_ID }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: akhileshns/heroku-deploy@v3.12.13
         with:

@@ -24,7 +24,7 @@ jobs:
       name: staging
       url: "https://${HEROKU_APP_ID}.herokuapp.com"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - id: typeorm
         uses: ./.github/actions/typeorm
@@ -47,7 +47,7 @@ jobs:
       name: production
       url: "https://${HEROKU_APP_ID}.herokuapp.com"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - id: typeorm
         uses: ./.github/actions/typeorm

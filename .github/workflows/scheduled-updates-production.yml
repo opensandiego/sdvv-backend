@@ -12,7 +12,7 @@ jobs:
     name: Current Transactions Update
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/actions/updater
         with:
@@ -25,7 +25,7 @@ jobs:
     name: Past Transactions Update
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/actions/updater
         with:
@@ -38,7 +38,7 @@ jobs:
     name: Current Candidates Update
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: ./.github/actions/updater
         with:
