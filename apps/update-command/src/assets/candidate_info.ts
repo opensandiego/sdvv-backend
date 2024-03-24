@@ -12,6 +12,11 @@
 
 export interface CandidateInfo {
   year: string;
+
+  /**
+   * part of the candidateId is the filer_id field of the elections page
+   * https://efile.sandiego.gov/public/search/campaign/by-election
+   */
   candidateId: string;
   optionalName: string;
   inPrimary: boolean;
@@ -66,7 +71,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
   //   optionalName: 'Orozco, Maria',
   //   inPrimary: true,
   //   description: '',
-  //   imageFileName: '',
+  //   imageFileName: null,
   //   website: '',
   // },
   {
@@ -89,7 +94,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
   },
   {
     year: '2024',
-    candidateId: 'fb4f7afc-7ed4-45cb-b7ca-e5cb3e678f7|2024',
+    candidateId: 'fb4f7afc-7ed4-45cb-b7ca-e5cb3e678f70|2024',
     optionalName: 'Cusack, Coleen',
     inPrimary: true,
     description: '',
@@ -125,7 +130,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
   },
   {
     year: '2024',
-    candidateId: '7b00a31e-4989-348f-569a-bb4871ceddf9|2024',
+    candidateId: '06de624b-2aaf-4f60-8afe-ff8fda989f10|2024',
     optionalName: 'Rebecca Warren-Darby, Chida',
     inPrimary: true,
     description: '',
@@ -134,12 +139,22 @@ export const CandidateElectionInfo: CandidateInfo[] = [
   },
   {
     year: '2024',
-    candidateId: 'f64c8429-d09e-a581-bc90-22d0568a368e|2024',
+    candidateId: '75f6cced-89e2-4ca9-b2cc-10f457cfabf7|2024',
     optionalName: 'Foster III, Henry',
     inPrimary: true,
     description: '',
     imageFileName: 'henry_foster_5532.png',
     website: 'https://www.henryfoster4sd.com/',
+  },
+  {
+    year: '2024',
+    candidateId: 'a01b8ad5-642f-4be7-b72e-b633c368d506|2024',
+    optionalName: 'Harris, Shane',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+    committeeNameOverride: 'Shane Harris - City Council 2024',
   },
   {
     year: '2024',
@@ -340,7 +355,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Christina Nichols',
     inPrimary: false,
     description: '',
-    imageFileName: '',
+    imageFileName: null,
     website: null,
   },
   {
@@ -349,7 +364,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Nicole Crosby',
     inPrimary: false,
     description: '',
-    imageFileName: '',
+    imageFileName: null,
     website: null,
   },
 
