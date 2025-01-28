@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-to-heroku:
     name: Deploy to  ${{ inputs.environment }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment:
       name: ${{ inputs.environment }}
       url: "https://${HEROKU_APP_ID}.herokuapp.com"
