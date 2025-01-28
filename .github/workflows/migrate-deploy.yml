@@ -19,7 +19,7 @@ on:
 jobs:
   migrate-deploy-staging:
     name: Run Migration and Deploy to staging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment:
       name: staging
       url: "https://${HEROKU_APP_ID}.herokuapp.com"
@@ -42,7 +42,7 @@ jobs:
   migrate-deploy-production:
     needs: migrate-deploy-staging
     name: Run Migration and Deploy to production
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment:
       name: production
       url: "https://${HEROKU_APP_ID}.herokuapp.com"

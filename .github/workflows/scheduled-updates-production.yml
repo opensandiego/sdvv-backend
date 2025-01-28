@@ -10,7 +10,7 @@ jobs:
   update-transactions-current-production:
     if: github.event.schedule == '10 4 * * *'
     name: Current Transactions Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +23,7 @@ jobs:
   update-transactions-past-production:
     if: github.event.schedule == '25 4 * * sat'
     name: Past Transactions Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -36,7 +36,7 @@ jobs:
   update-candidates-current-production:
     if: github.event.schedule == '40 4 * * sun'
     name: Current Candidates Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 

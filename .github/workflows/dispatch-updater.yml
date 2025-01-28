@@ -31,7 +31,7 @@ on:
 jobs:
   run-updater-action:
     name: Run command ${{ inputs.command }} on ${{ inputs.environment }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4

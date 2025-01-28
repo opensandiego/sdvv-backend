@@ -23,7 +23,7 @@ on:
 
 jobs:
   dispatch-typeorm-command:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: set App id for staging
         if: ${{ inputs.environment == 'staging' }} 

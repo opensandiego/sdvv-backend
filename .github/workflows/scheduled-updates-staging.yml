@@ -10,7 +10,7 @@ jobs:
   update-transactions-current-staging:
     if: github.event.schedule == '10 3 * * *'
     name: Current Transactions Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -23,7 +23,7 @@ jobs:
   update-transactions-past-staging:
     if: github.event.schedule == '25 3 * * sat'
     name: Past Transactions Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -36,7 +36,7 @@ jobs:
   update-candidates-current-staging:
     if: github.event.schedule == '40 3 * * sun'
     name: Current Candidates Update
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
