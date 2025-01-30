@@ -5,6 +5,10 @@ interface ElectionYear {
 
 export const ElectionYears: ElectionYear[] = [
   {
+    year: 2026,
+    current: false,
+  },
+  {
     year: 2024,
     current: true,
   },
