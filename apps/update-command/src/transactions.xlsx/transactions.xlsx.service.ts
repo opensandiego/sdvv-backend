@@ -21,100 +21,102 @@ export class TransactionsXLSXService {
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
-  private sheetCAL = [
-    {
-      // Schedule A "Monetary Contributions" of Form 460
-      sheetName: 'F460-A-Contribs',
-      formType: 'A',
-      serviceType: this.rcptService,
-    },
-    {
-      // Schedule C "Non-Monetary Contributions" of Form 460
-      sheetName: 'F460-C-Contribs',
-      formType: 'C',
-      serviceType: this.rcptService,
-    },
-    {
-      // Schedule I "Miscellaneous Increases in Cash" of Form 460
-      sheetName: 'F460-I-MiscCashIncs',
-      formType: 'I',
-      serviceType: this.rcptService,
-    },
-    {
-      // Part 3 of Form 496
-      sheetName: 'F496-P3-Contribs',
-      formType: 'F496P3',
-      serviceType: this.rcptService,
-    },
-    {
-      // Schedule D "Summary of Expenditures Supporting/Opposing Other Candidates, Measures, and Committees" of Form 460
-      sheetName: 'F460-D-ContribIndepExpn',
-      formType: 'D',
-      serviceType: this.expnService,
-    },
-    {
-      // Schedule E "Payments Made" of Form 460
-      sheetName: 'F460-E-Expenditures',
-      formType: 'E',
-      serviceType: this.expnService,
-    },
-    {
-      // Schedule G "Payments Made by an Agent or Independent Contractor" of Form 460
-      sheetName: 'F460-G-AgentPayments',
-      formType: 'G',
-      serviceType: this.expnService,
-    },
-    // {
-    //  // Schedule F "Accrued Expenses (Unpaid Bills)" of Form 460
-    //   sheetName: 'F460-F-UnpaidBills',
-    //   formType: 'F',
-    //   serviceType: this.,
-    // },
-    // {
-    //  // Schedule B1 "Loans Received" of Form 460
-    //   sheetName: 'F460-B1-Loans',
-    //   formType: 'B1',
-    //   serviceType: this.,
-    // },
-    // {
-    //  // Schedule B2 "Loans Guarantors" of Form 460
-    //   sheetName: 'F460-B2-LoanGuarantees',
-    //   formType: '',
-    //   serviceType: this.,
-    // },
-    // {
-    //  // Schedule H "Loans Made to Others" of Form 460
-    //   sheetName: 'F460-H-LoansMade',
-    //   formType: '',
-    //   serviceType: this.,
-    // },
-    // {
-    //  // Summary page of Form 460 and on the summary sheets of Form 460 schedules
-    //   sheetName: 'F460-Summary',
-    //   formType: '', // Multiple
-    //   serviceType: this.,
-    // },
-    {
-      // Form 496, Parts 1 and 2
-      // 496 24-Hour/10-Day Independent Expenditure Report
-      sheetName: 'S496',
-      formType: 'F496',
-      serviceType: this.s496Service,
-    },
-    // {
-    // // Form 497, Parts 1 and 2
-    // 497 24-hour/10-day Contribution Report
-    //   sheetName: 'S497',
-    //   formType: 'F497P1', // also F497P2
-    //   serviceType: this.,
-    // },
-    // {
-    // // "TEXT" records on Forms 460, 496, and 497
-    //   sheetName: 'TEXT',
-    //   formType: '', // Multiple
-    //   serviceType: this.,
-    // },
-  ];
+  private getSheetCAL() {
+    return [
+      {
+        // Schedule A "Monetary Contributions" of Form 460
+        sheetName: 'F460-A-Contribs',
+        formType: 'A',
+        serviceType: this.rcptService,
+      },
+      {
+        // Schedule C "Non-Monetary Contributions" of Form 460
+        sheetName: 'F460-C-Contribs',
+        formType: 'C',
+        serviceType: this.rcptService,
+      },
+      {
+        // Schedule I "Miscellaneous Increases in Cash" of Form 460
+        sheetName: 'F460-I-MiscCashIncs',
+        formType: 'I',
+        serviceType: this.rcptService,
+      },
+      {
+        // Part 3 of Form 496
+        sheetName: 'F496-P3-Contribs',
+        formType: 'F496P3',
+        serviceType: this.rcptService,
+      },
+      {
+        // Schedule D "Summary of Expenditures Supporting/Opposing Other Candidates, Measures, and Committees" of Form 460
+        sheetName: 'F460-D-ContribIndepExpn',
+        formType: 'D',
+        serviceType: this.expnService,
+      },
+      {
+        // Schedule E "Payments Made" of Form 460
+        sheetName: 'F460-E-Expenditures',
+        formType: 'E',
+        serviceType: this.expnService,
+      },
+      {
+        // Schedule G "Payments Made by an Agent or Independent Contractor" of Form 460
+        sheetName: 'F460-G-AgentPayments',
+        formType: 'G',
+        serviceType: this.expnService,
+      },
+      // {
+      //  // Schedule F "Accrued Expenses (Unpaid Bills)" of Form 460
+      //   sheetName: 'F460-F-UnpaidBills',
+      //   formType: 'F',
+      //   serviceType: this.,
+      // },
+      // {
+      //  // Schedule B1 "Loans Received" of Form 460
+      //   sheetName: 'F460-B1-Loans',
+      //   formType: 'B1',
+      //   serviceType: this.,
+      // },
+      // {
+      //  // Schedule B2 "Loans Guarantors" of Form 460
+      //   sheetName: 'F460-B2-LoanGuarantees',
+      //   formType: '',
+      //   serviceType: this.,
+      // },
+      // {
+      //  // Schedule H "Loans Made to Others" of Form 460
+      //   sheetName: 'F460-H-LoansMade',
+      //   formType: '',
+      //   serviceType: this.,
+      // },
+      // {
+      //  // Summary page of Form 460 and on the summary sheets of Form 460 schedules
+      //   sheetName: 'F460-Summary',
+      //   formType: '', // Multiple
+      //   serviceType: this.,
+      // },
+      {
+        // Form 496, Parts 1 and 2
+        // 496 24-Hour/10-Day Independent Expenditure Report
+        sheetName: 'S496',
+        formType: 'F496',
+        serviceType: this.s496Service,
+      },
+      // {
+      // // Form 497, Parts 1 and 2
+      // 497 24-hour/10-day Contribution Report
+      //   sheetName: 'S497',
+      //   formType: 'F497P1', // also F497P2
+      //   serviceType: this.,
+      // },
+      // {
+      // // "TEXT" records on Forms 460, 496, and 497
+      //   sheetName: 'TEXT',
+      //   formType: '', // Multiple
+      //   serviceType: this.,
+      // },
+    ];
+  }
 
   public async updateTransactionsCurrent() {
     const currentElection = ElectionYears.find((election) => election.current);
@@ -192,7 +194,9 @@ export class TransactionsXLSXService {
       this.transactionsXLSXDownloadService.getWorkbookFileData(year, true),
     );
 
-    for await (const sheet of this.sheetCAL) {
+    const sheetCAL = this.getSheetCAL();
+
+    for await (const sheet of sheetCAL) {
       try {
         await this.processWorkbookSheet(workbookFileData, sheet, year);
         if (global.gc) {
