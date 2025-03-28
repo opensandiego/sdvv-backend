@@ -1,5 +1,5 @@
 
-FROM postgres:15.2 as build
+FROM postgres:15.2 AS build
 
 RUN openssl req -x509 -nodes -days 365 \
     -subj  "/C=CA/ST=QC/O=Company Inc/CN=postgres" \

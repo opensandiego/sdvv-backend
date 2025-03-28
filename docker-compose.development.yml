@@ -6,7 +6,6 @@
 # Then:
 #  docker compose -f docker-compose.development.yml up
 
-version: "3.9"
 name: sdvv-backend-develop
 
 services:

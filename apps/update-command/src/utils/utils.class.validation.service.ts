@@ -22,6 +22,8 @@ export class ClassValidationService {
         errorCount: errors.length,
       });
 
+      console.error(JSON.stringify(errors.slice(0, 2), undefined, 2));
+
       throw 'Class validation failed';
     }
 

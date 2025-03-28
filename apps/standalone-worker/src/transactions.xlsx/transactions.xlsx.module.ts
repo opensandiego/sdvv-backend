@@ -1,5 +1,6 @@
-import { CacheModule, Module } from '@nestjs/common';
-import { redisStore } from 'cache-manager-ioredis-yet';
+import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
+// import { redisStore } from 'cache-manager-ioredis-yet';
 
 import { HttpModule } from '@nestjs/axios';
 import { DatabaseModule } from '@app/sdvv-database';
