@@ -3,10 +3,7 @@ import { IsDefined, IsEmpty, IsNotEmpty, IsNumber } from 'class-validator';
 import { CommonDto } from './common.dto';
 import { EXPNDto } from './expn.dto';
 
-export class CreateF460DContribIndepExpnDto extends IntersectionType(
-  CommonDto,
-  EXPNDto,
-) {
+class F460DContribIndepExpn {
   @IsDefined()
   cmtte_type: string;
 
@@ -31,3 +28,9 @@ export class CreateF460DContribIndepExpnDto extends IntersectionType(
   @IsDefined()
   amount: number;
 }
+
+export class CreateF460DContribIndepExpnDto extends IntersectionType(
+  CommonDto,
+  EXPNDto,
+  F460DContribIndepExpn,
+) {}
