@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "San Diego Voters Voice backend and data store",
   "engines": {
-    "node": "20.x"
+    "npm": ">=10.0.0",
+    "node": ">=20.0.0"
   },
   "author": "Open San Diego",
   "private": true,
@@ -17,6 +18,7 @@
     "initialize:data": "export COMMAND=initialize-data && node dist/apps/update-command/main",
     "db:migration:run": "npm run typeorm migration:run -- -d ./orm-data-source.ts",
     "db:migration:revert": "npm run typeorm migration:revert -- -d ./orm-data-source.ts",
+    "db:migration:show": "npm run typeorm migration:show -- -d ./orm-data-source.ts",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:web:dev": "nest start sdvv-backend-nest --watch",
