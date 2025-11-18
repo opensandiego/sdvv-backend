@@ -59,7 +59,7 @@
     "class-validator": "^0.14.1",
     "cross-fetch": "^4.1.0",
     "currency.js": "^2.0.4",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.6.1",
     "expose-gc": "^1.0.0",
     "graphql": "^16.10.0",
     "nest-winston": "^1.10.2",
