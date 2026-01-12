@@ -10,6 +10,24 @@
  * https://www.sandiego.gov/city-clerk/elections/city/past/races
  */
 
+/**
+ * Candidate Info update steps
+ * + Look up the city elections page for candidates and create an object
+ * for each and fill in the optionalName field. Note that the city data
+ * may not be up to date and candidates may have filed a Candidate Intention
+ * Statement (Form 501) since the city last updated the page.
+ * + Go to the election page on eFile and view the page source. Expand the
+ * item for the election and inspect the json file received.
+ * + For each candidate in the json copy the filer_id to the candidateId
+ * field in the respective object in the CandidateElectionInfo list.
+ * + Add the year to the candidateId fields.
+ * + When adding images resize them to 300 x 300 pixels and add a random 4
+ * digit number to the end of their file name.
+ * + run: num run build before the docker container with the api is built. It
+ * may be necessary to delete the container from the stack in Docker Desktop
+ * before running docker compose up.
+ */
+
 export interface CandidateInfo {
   year: string;
 
@@ -19,6 +37,15 @@ export interface CandidateInfo {
    */
   candidateId: string;
   optionalName: string;
+
+  /**
+   * If a candidate files a Candidate Intention Statement (Form 501)
+   * they should have an entry in CandidateElectionInfo. If the candidate
+   * meets the nomination requirements for the primary then set inPrimary
+   * to true. Prior to the nomination deadline all candidates can have
+   * inPrimary set to true then after the deadline those who where not
+   * nominated should have inPrimary set to false.
+   */
   inPrimary: boolean;
   description: string;
   imageFileName: string;
@@ -47,6 +74,256 @@ export interface CandidateInfo {
 */
 
 export const CandidateElectionInfo: CandidateInfo[] = [
+  // 2026 - Council District 2
+  {
+    year: '2026',
+    candidateId: '3f8ae407-1d1b-450c-90e6-a3ee8dafc7ab|2026',
+    optionalName: 'Coyne, Joshua',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'joshua_coyne_6229.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'a81b1432-e927-4695-b0f9-761814fd6d3d|2026',
+    optionalName: 'Crosby, Nicole',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'nicole_crosby_1370.png',
+    website: null,
+  },
+  {
+    year: '2026',
+    candidateId: 'abcbef93-0b11-4e35-99c2-09a5e5ad7771|2026',
+    optionalName: 'Havlik, Mandy',
+    inPrimary: true,
+    description: 'Community Volunteer',
+    imageFileName: 'mandy_havlik_3216.png',
+    website: 'https://mandyhavlik.com/',
+  },
+  {
+    year: '2026',
+    candidateId: '344992f1-0883-4af0-8030-ab291cb8397c|2026',
+    optionalName: 'Kay, Sandra',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '12bec5c1-9fe5-4d30-9621-9039258ded42|2026',
+    optionalName: 'Lukacs, Linda A.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'linda_lukacs_2795.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '0cad9b72-64c1-488b-bcb6-a123fe83dcaa|2026',
+    optionalName: 'Mitchell, Jacob J.',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '2f4a0302-2d1b-4952-a895-a069a2304ed9|2026',
+    optionalName: 'Quillin, Nicole A.',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '433580de-b7af-4941-b932-86cfa0ce1811|2026',
+    optionalName: 'Rickey, Michael',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '8c775c40-41b1-670d-029d-4ccd370d7aec|2026',
+    optionalName: 'Smiechowski, Dan',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'daniel_smiechowski_3042.png',
+    website: '',
+  },
+
+  // 2026 - Council District 4
+  {
+    year: '2026',
+    candidateId: 'cce3d23b-5fba-4df2-93dd-fbdcc3e455ed|2026',
+    optionalName: 'Abraham, Martha',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'martha_abraham_7688.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '5cc9e974-f333-e1ea-99db-3799cb937d8b|2026',
+    optionalName: 'Gordon, Mathew',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'mathew_gordon_7688.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '5c1d693a-0880-4d9e-9073-8a38fe22e907|2026',
+    optionalName: 'Williams III, Roosevelt',
+    inPrimary: false,
+    description: '',
+    imageFileName: 'roosevelt_williams_III_1138.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '3d1760d4-3fcf-e717-521a-6fc0b1a1433b|2026',
+    optionalName: 'Dang, Johnny Lee',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'johnny_lee_dang_6030.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '75f6cced-89e2-4ca9-b2cc-10f457cfabf7|2026',
+    optionalName: 'Foster III, Henry L.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'henry_foster_5532.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'a71ff813-65a6-4d68-8774-ab356f0f9273|2026',
+    optionalName: 'Gadson, Mykel',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'b192068d-8937-a263-0803-0c1282d559e7|2026',
+    optionalName: 'Suseberry, Tylisa D.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'tylisa_suseberry_9754.png',
+    website: '',
+  },
+  // 2026 - Council District 6
+  {
+    year: '2026',
+    candidateId: '1b777142-886d-45f2-afaa-4633c6487eb3|2026',
+    optionalName: 'Cruz, Isaiah',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '3ae9be22-53e7-437a-39e2-a72412c614f7|2026',
+    optionalName: 'Glasson, Jane L.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'jane_glasson_7726.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'fe7d8f9d-9a13-4942-ba28-e8d690ae9136|2026',
+    optionalName: 'Lee, Kent F.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'kent_lee_5838.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '5cd9e443-30f4-4f52-aea2-f430bb44f8d9|2026',
+    optionalName: 'Powell, Mark',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  // 2026 - Council District 8
+  {
+    year: '2026',
+    candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2026',
+    optionalName: 'Martinez, Antonio',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'antonio_martinez_5314.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'a93b24ca-c805-4d5c-a490-cd8eb5b7b243|2026',
+    optionalName: 'Mayoral Munoz, Francisco A.',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '1a5fddf2-6e48-4533-aecd-ec6d909f4ea0|2026',
+    optionalName: 'Molina, Venus',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'venus_molina_0716.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '013b9958-5144-46c8-8b3b-67dab902b6b4|2026',
+    optionalName: 'Ochoa, Mike', // a.k.a Miguel M Ochoa
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'bcaa9098-3bf4-479c-9f80-5201b4167c6a|2026',
+    optionalName: 'Peraza, Kenia A.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'kenia_peraza_8953.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'a6366ab5-330d-4bbe-963d-4be736b30740|2026',
+    optionalName: 'Perez, Rafael A.',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'rafael_perez_4423.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: 'ffe8ebab-7a28-4781-b8ba-40477f5776d8|2026',
+    optionalName: 'Ramirez, Gerardo',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'gerardo_ramirez_0275.png',
+    website: '',
+  },
+
+  // 2024
   {
     year: '2024',
     candidateId: '8c775c40-41b1-670d-029d-4ccd370d7aec|2024',
@@ -327,7 +604,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Lee, Kent',
     inPrimary: true,
     description: 'Nonprofit Executive Director',
-    imageFileName: 'kent_lee_8092.png',
+    imageFileName: 'kent_lee_5838.png',
     website: 'https://www.kentleeforsd.com/',
   },
   {
