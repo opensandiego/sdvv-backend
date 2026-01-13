@@ -184,6 +184,8 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'roosevelt_williams_III_1138.png',
     website: '',
+    committeeNameOverride:
+      'Friends of Roosevelt Williams III for City Council 2026',
   },
   {
     year: '2026',
@@ -193,6 +195,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'johnny_lee_dang_6030.png',
     website: '',
+    committeeNameOverride: 'Dang for San Diego City Council District 5 2026',
   },
   {
     year: '2026',
@@ -386,6 +389,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'ellis_california_jones_2753.png',
     website: 'https://jones3fordistrict3.com/',
+    committeeNameOverride: 'Ellis California Jones for City Council 2024',
   },
   {
     year: '2024',
@@ -643,6 +647,16 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: null,
     website: null,
+  },
+  {
+    year: '2022',
+    candidateId: '64e34a9b-4ded-490e-a086-02040d36916f|2022',
+    optionalName: 'Mazares III, Joseph V',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+    committeeNameOverride: 'Joseph Mazares III',
   },
 
   {
@@ -1167,6 +1181,16 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: 'Community Advocate',
     imageFileName: null,
     website: '',
+  },
+  {
+    year: '2018',
+    candidateId: '3797fb2b-a0f5-3e4b-d0f2-510de0dcb48a|2018',
+    optionalName: 'Bautista-Ramirez, Rafael',
+    inPrimary: true,
+    description: '',
+    imageFileName: null,
+    website: '',
+    committeeNameOverride: 'Rafael Bautista Pending Committee',
   },
 
   // From 2016 Voter Pamphlet below
