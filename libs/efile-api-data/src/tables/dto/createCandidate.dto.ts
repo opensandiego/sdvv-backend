@@ -1,11 +1,11 @@
 import { Expose } from 'class-transformer';
-import { IsUUID } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateCandidateDto {
-  @IsUUID()
+  @IsString() // Was IsUUID
   filer_id: string;
 
-  @IsUUID()
+  @IsString() // Was IsUUID
   office_id: string;
 
   first_name: string;
@@ -22,7 +22,7 @@ export class CreateCandidateDto {
 
   office_code: string;
 
-  @IsUUID()
+  @IsString() // Was IsUUID
   jurisdiction_id: string;
 
   district: string;

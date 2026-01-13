@@ -1,0 +1,32 @@
+name: Updater Action
+description: Builds containers and runs command in docker-compose.updater.yml
+
+inputs:
+  command:
+    description: Command to run 
+    required: true
+  APP_ID:
+    description: Heroku APP_ID used with API_KEY
+    required: true
+  HEROKU_API_KEY:
+    description: API key for communicating with Heroku
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Build Containers
+      run : docker compose -f docker-compose.updater.yml --profile process-commands-in-ci build
+      shell: bash
+
+    - name: Run command ${{ inputs.command }}
+      run: |
+        echo "::add-mask::DATABASE_URL"
+        export DATABASE_URL=$(heroku config:get DATABASE_URL -a $APP_ID)
+        docker compose -f docker-compose.updater.yml --profile process-commands-in-ci up --exit-code-from test_service_ci
+      shell: bash
+      env:
+        CONSOLE_COMMAND: ${{ inputs.command }}
+        HEROKU_API_KEY: ${{ inputs.HEROKU_API_KEY }}
+        APP_ID: ${{ inputs.APP_ID }}

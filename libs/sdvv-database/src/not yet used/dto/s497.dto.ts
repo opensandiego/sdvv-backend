@@ -123,7 +123,7 @@ export class S497Dto {
   juris_cd: string;
 
   @IsString()
-  @MaxLength(40)
+  @MaxLength(80)
   juris_dscr: string;
 
   @IsString()

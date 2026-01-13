@@ -3,6 +3,7 @@ interface ElectionYear {
   current: boolean;
 }
 
+/** @deprecated use apps/update-command/src/assets/elections.ts */
 export const ElectionYears: ElectionYear[] = [
   {
     year: 2022,

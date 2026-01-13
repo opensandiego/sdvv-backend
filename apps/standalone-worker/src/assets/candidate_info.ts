@@ -41,6 +41,7 @@ export interface CandidateInfo {
 },
 */
 
+/** @deprecated use apps/update-command/src/assets/candidate_info.ts */
 export const CandidateElectionInfo: CandidateInfo[] = [
   {
     year: '2022',

@@ -23,8 +23,26 @@ on:
 
 jobs:
   dispatch-typeorm-command:
-    uses: ./.github/workflows/runnable-typeorm-command.yml
-    with:
-      command: ${{ inputs.command }}
-      environment: ${{ inputs.environment }}
-    secrets: inherit
+    runs-on: ubuntu-22.04
+    steps:
+      - name: set App id for staging
+        if: ${{ inputs.environment == 'staging' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
+
+      - name: set App id for production
+        if: ${{ inputs.environment == 'production' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+
+      - uses: actions/checkout@v4
+      - id: typeorm
+        uses: ./.github/actions/typeorm
+        with:
+          command: ${{ inputs.command }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ env.APP_ID }}

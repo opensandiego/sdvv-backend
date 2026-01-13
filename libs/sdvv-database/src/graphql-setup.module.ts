@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ElectionYearsModule } from './election-years/election-years.module';
 import { OfficesModule } from './offices/offices.module';
 import { CandidateModule } from './candidate/candidate.module';
