@@ -1,0 +1,48 @@
+name: Dispatch TypeORM Command
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: TypeORM Command
+        default: migration:show
+        type: choice
+        options:
+          - schema:log
+          - migration:show
+          - migration:run
+          - migration:revert
+
+      environment:
+        description: Environment
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  dispatch-typeorm-command:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: set App id for staging
+        if: ${{ inputs.environment == 'staging' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.STAGING_HEROKU_APP_ID }}
+
+      - name: set App id for production
+        if: ${{ inputs.environment == 'production' }} 
+        run: echo "APP_ID=$(echo $APP_ID)" >> $GITHUB_ENV
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.PRODUCTION_HEROKU_APP_ID }}
+
+      - uses: actions/checkout@v4
+      - id: typeorm
+        uses: ./.github/actions/typeorm
+        with:
+          command: ${{ inputs.command }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ env.APP_ID }}

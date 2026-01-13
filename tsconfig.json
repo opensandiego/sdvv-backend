@@ -6,11 +6,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "paths": {
       "@app/sdvv-database": [

@@ -1,13 +1,4 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Campaign Finance Transparency Dashboard - backend
 
 ## Installation
 - Install Docker https://docs.docker.com/get-docker/
@@ -26,18 +17,18 @@ npm install
 Create a ``.env`` file in the root of your local repository then copy and paste in the following:
 ```
 DATABASE_URL=postgres://postgres:example@localhost:54321/postgres
-REDIS_URL=redis://localhost:6379
+REDIS_URL=redis://:secret@localhost:6379
 ```
 
 - Install the three Docker containers (Postgres, pgAdmin, Redis) using:
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
-- Create the database tables using:
+<!-- - Create the database tables using:
 ``` 
 npm run db:migration:run
-```
+``` -->
 
 ## Load the data into the database
 
@@ -48,10 +39,10 @@ npm run start:worker:dev
 
 - Run the console command to add the database initialization tasks to the queue. This command completes immediately. The console running the worker process will update as the queue is processed.
 ```
-npm run db:initialize:data
+npm run initialize:data
 ```
 
-The worker process will fetch and add the data to the database. This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
+This may take a few minutes. When you see 'Populating Database with Zip Codes by jurisdiction Complete' in the worker console then the update has been complete. The worker process can be stopped after the update is complete.
 
 
 ## Run the web part of the backend

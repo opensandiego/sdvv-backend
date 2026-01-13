@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class ContributionsDetailsService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private RCPTTypes = ['A', 'C'];
 
@@ -13,7 +13,7 @@ export class ContributionsDetailsService {
       ? committeeName
       : [committeeName];
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')
@@ -29,7 +29,7 @@ export class ContributionsDetailsService {
   }
 
   async getContributionAverage({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(AVG(amount)), 0)', 'average')
@@ -43,7 +43,7 @@ export class ContributionsDetailsService {
   }
 
   async getContributorCount({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('COUNT(DISTINCT(ctrib_naml || ctrib_namf))', 'count')

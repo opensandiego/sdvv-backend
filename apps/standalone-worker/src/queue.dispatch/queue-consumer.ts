@@ -1,4 +1,4 @@
-import { Process, Processor } from '@nestjs/bull';
+import { OnGlobalQueueDrained, Process, Processor } from '@nestjs/bull';
 import { EventEmitter } from 'events';
 import { ElectionsUpdateService } from '../efile.api/elections.update.service';
 import { CandidatesUpdateService } from '../efile.api/candidates.update.service';
@@ -9,6 +9,8 @@ import { TransactionsXLSXService } from '../transactions.xlsx/transactions.xlsx.
 import { DeduplicateExpendituresService } from '@app/sdvv-database/process.data/deduplicate-expenditures.service';
 import { ZipCodeCSVService } from '../zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from '../zip.code.csv/jurisdiction.zip.codes.service';
+import { ShutdownService } from './shutdown.service';
+import { TypeOrmHealthIndicator } from '@nestjs/terminus';
 
 @Processor('worker-update-data')
 export class QueueConsumer {
@@ -22,8 +24,16 @@ export class QueueConsumer {
     private deduplicateExpendituresService: DeduplicateExpendituresService,
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
+    private shutdownService: ShutdownService,
+    private typeOrmHealthIndicator: TypeOrmHealthIndicator,
   ) {
     EventEmitter.defaultMaxListeners = 15;
+  }
+
+  @Process('database-health-check')
+  async checkDatabaseConnection() {
+    const status = await this.typeOrmHealthIndicator.pingCheck('database');
+    console.log(status);
   }
 
   @Process('update-elections')
@@ -36,6 +46,7 @@ export class QueueConsumer {
     await this.updateCommitteesService.updateCommittees();
     await this.candidatesUpdateService.updateCandidatesCurrent();
     await this.candidateCommitteeService.addCandidateCommittees();
+    await this.candidatesInfoUpdateService.updateCandidatesInfo();
   }
 
   @Process('update-candidates-past')
@@ -43,6 +54,7 @@ export class QueueConsumer {
     await this.updateCommitteesService.updateCommittees();
     await this.candidatesUpdateService.updateCandidatesPast();
     await this.candidateCommitteeService.addCandidateCommittees();
+    await this.candidatesInfoUpdateService.updateCandidatesInfo();
   }
 
   @Process('update-candidates-info')
@@ -56,6 +68,7 @@ export class QueueConsumer {
   async updateTransactionsCurrent() {
     await this.transactionsXLSXService.updateTransactionsCurrent();
     await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+    console.log(`updateTransactionsCurrent completed`);
   }
 
   @Process('update-transactions-past')
@@ -82,11 +95,50 @@ export class QueueConsumer {
 
   @Process('initialize-data')
   async initializeData() {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.CHECK_UPDATE_INTERVAL === 'true'
+    ) {
+      const lastUpdate =
+        await this.transactionsXLSXService.getLastUpdatedDateTime();
+
+      const envInterval = parseInt(process.env.UPDATE_INTERVAL_HOURS);
+      const interval = envInterval ? envInterval : 12;
+
+      const hours = this.hoursSinceUpdate(lastUpdate);
+      // Skip update if it has been less than 'interval' hours since the last update
+      if (hours < interval && hours > 0) {
+        console.log(`Last update was: ${lastUpdate}`);
+        console.log(
+          `Skipping update. Last update: ${hours.toFixed(2)} hours ago.`,
+        );
+        console.log(
+          `Update only runs in development and if its been more than: ${interval} hours.`,
+        );
+
+        return;
+      }
+    }
+
     await this.updateElections();
     await this.updateCandidatesCurrent();
     await this.updateCandidatesPast();
     await this.updateTransactionsCurrent();
     await this.updateTransactionsPast();
     await this.updateZipCodes();
+  }
+
+  private hoursSinceUpdate(updateDate: string) {
+    if (!updateDate) return 0;
+    return Math.abs(Date.now() - Date.parse(updateDate)) / 36e5;
+  }
+
+  @OnGlobalQueueDrained()
+  onQueueDrained() {
+    if (process.env.CI === 'true') {
+      console.log(`onQueueDrained called in CI context`);
+      console.log('Calling ShutdownService.shutdown()');
+      this.shutdownService.shutdown();
+    }
   }
 }

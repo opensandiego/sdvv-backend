@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { ExpensesService } from '../expenses.service';
 import { EXPNEntity } from '@app/sdvv-database/tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class ExpensesGroupByService {
   constructor(
-    private connection: Connection,
+    private dataSource: DataSource,
     private expensesService: ExpensesService,
   ) {}
 
@@ -21,7 +21,7 @@ export class ExpensesGroupByService {
       return [];
     }
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('expn_code', 'code')

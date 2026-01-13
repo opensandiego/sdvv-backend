@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { ElectionEntity } from '@app/efile-api-data/tables/entity/elections.entity';
 
 @Injectable()
 export class ElectionService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   async getElections({ electionYear }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(ElectionEntity)
       .createQueryBuilder()
       .select('election_id')

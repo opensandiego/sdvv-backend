@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { JurisdictionEntity } from '@app/sdvv-database/jurisdictions/jurisdictions.entity';
 import { ZipCodeEntity } from '@app/sdvv-database/zipCodes/zipCodes.entity';
 
@@ -9,10 +9,10 @@ import { ZipCodeEntity } from '@app/sdvv-database/zipCodes/zipCodes.entity';
  */
 @Injectable()
 export class ZipCodeService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   async getDistrictZipCodes(district: string) {
-    const results = await this.connection
+    const results = await this.dataSource
       .getRepository(JurisdictionEntity)
       .createQueryBuilder()
       .select('*')
@@ -25,7 +25,7 @@ export class ZipCodeService {
   }
 
   async getCityZipCodes() {
-    const results = await this.connection
+    const results = await this.dataSource
       .getRepository(JurisdictionEntity)
       .createQueryBuilder()
       .select('*')
@@ -36,7 +36,7 @@ export class ZipCodeService {
   }
 
   async getCountyZipCodes(countyName = 'San Diego County') {
-    const results = await this.connection
+    const results = await this.dataSource
       .getRepository(ZipCodeEntity)
       .createQueryBuilder()
       .select('zip')
@@ -47,7 +47,7 @@ export class ZipCodeService {
   }
 
   async getStateZipCodes(stateAbbreviation = 'CA') {
-    const results = await this.connection
+    const results = await this.dataSource
       .getRepository(ZipCodeEntity)
       .createQueryBuilder()
       .select('zip')

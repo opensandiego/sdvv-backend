@@ -1,13 +1,13 @@
-import { Matches, IsEnum, IsBoolean, IsUUID } from 'class-validator';
+import { Matches, IsBoolean, IsIn, IsString } from 'class-validator';
 
 export class CreateElectionDto {
   @Matches(/^\d{2}\/\d{2}\/\d{4}$/)
   election_date: string;
 
-  @IsUUID()
+  @IsString() // Was IsUUID
   election_id: string;
 
-  @IsEnum(['Primary', 'General', 'Special', 'Runoff'])
+  @IsIn(['Primary', 'General', 'Special', 'Runoff'] as const)
   election_type: string;
 
   @IsBoolean()

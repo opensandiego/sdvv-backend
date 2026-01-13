@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CandidateEntity } from './candidates.entity';
 
@@ -19,13 +19,13 @@ interface GetCandidatesInput {
 @Injectable()
 export class CandidateQLService {
   constructor(
-    private connection: Connection,
+    private dataSource: DataSource,
     @InjectRepository(CandidateEntity)
     private candidateRepository: Repository<CandidateEntity>,
   ) {}
 
   async getCandidate({ candidateId }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .andWhere('candidate_id = :candidateId', { candidateId });
@@ -46,7 +46,7 @@ export class CandidateQLService {
   }
 
   async getCandidateFromCommittee({ committeeName }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .andWhere('candidate_controlled_committee_name = :committeeName', {
@@ -76,7 +76,7 @@ export class CandidateQLService {
   }
 
   async getCandidatesWithFilters({ filters }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
 

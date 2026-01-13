@@ -1,0 +1,46 @@
+
+services:
+  api_smoke_test:
+    extends:
+      file: common-services.yml
+      service: api
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+      # should this depentd on: run_migrations?
+    command: >
+      bash -c "node dist/apps/sdvv-backend-nest/main"
+    profiles:
+      - smoke-test
+
+  run_migrations:
+    extends:
+      file: common-services.yml
+      service: run_migrations
+    depends_on:
+      postgres_db_dev:
+        condition: service_healthy
+    profiles:
+      - migrations
+
+  postgres_db_dev:
+    extends:
+      file: common-services.yml
+      service: postgres_base
+    command: >
+      -c ssl=on 
+      -c ssl_cert_file=/etc/ssl/private/server.crt 
+      -c ssl_key_file=/etc/ssl/private/server.key
+    profiles:
+      - smoke-test
+      - migrations
+
+  test_service:
+    extends:
+      file: common-services.yml
+      service: tester
+    depends_on:
+      api_smoke_test:
+        condition: service_healthy
+    profiles:
+      - smoke-test

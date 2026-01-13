@@ -1,11 +1,11 @@
 import { S496Entity } from '@app/sdvv-database/tables-xlsx/s496/s496.entity';
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { EXPNEntity } from '../../tables-xlsx/expn/expn.entity';
 
 @Injectable()
 export class IndependentExpendituresService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private EXPNTypes = ['D'];
   private monthDay = '12/31';
@@ -59,7 +59,7 @@ export class IndependentExpendituresService {
     supOppCd: string,
     electionDate: string,
   ): Promise<number> {
-    const { sum: expSum } = await this.connection
+    const { sum: expSum } = await this.dataSource
       .getRepository(EXPNEntity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')
@@ -92,7 +92,7 @@ export class IndependentExpendituresService {
     supOppCd: string,
     electionDate: string,
   ): Promise<number> {
-    const { sum: expSum } = await this.connection
+    const { sum: expSum } = await this.dataSource
       .getRepository(S496Entity)
       .createQueryBuilder()
       .select('COALESCE(ROUND(SUM(amount)), 0)', 'sum')

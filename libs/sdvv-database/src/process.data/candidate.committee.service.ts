@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CandidateEntity } from '../candidate/candidates.entity';
 import { TransactionCommitteeService } from './transaction-committee.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -8,7 +8,7 @@ import { Logger } from 'winston';
 @Injectable()
 export class CandidateCommitteeService {
   constructor(
-    private connection: Connection,
+    private dataSource: DataSource,
     private transactionCommitteeService: TransactionCommitteeService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
@@ -40,7 +40,7 @@ export class CandidateCommitteeService {
       ? candidate.office.split(' ')[1]
       : candidate.office;
 
-    const committeeMatches = await this.connection
+    const committeeMatches = await this.dataSource
       .getRepository('committee')
       .createQueryBuilder('committee')
       .where(
@@ -86,7 +86,7 @@ export class CandidateCommitteeService {
   }
 
   private async getAllCandidates(): Promise<CandidateEntity[]> {
-    return await this.connection
+    return await this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .getMany();
@@ -95,6 +95,6 @@ export class CandidateCommitteeService {
   private async updateCandidateCommittees() {
     let candidates: CandidateEntity[] = await this.getAllCandidates();
     candidates = await this.setCommitteesForCandidates(candidates);
-    await this.connection.getRepository(CandidateEntity).save(candidates);
+    await this.dataSource.getRepository(CandidateEntity).save(candidates);
   }
 }

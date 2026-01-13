@@ -11,6 +11,14 @@ export class CLIService {
   constructor(private queueController: QueueController) {}
 
   @Command({
+    command: 'database-health-check',
+    description: 'Check the connection to the database.',
+  })
+  async checkDatabaseConnection(): Promise<void> {
+    await this.queueController.checkDatabaseConnection();
+  }
+
+  @Command({
     command: 'update-elections',
     description:
       'Download the list of elections from eFile and add/update them in the database.',

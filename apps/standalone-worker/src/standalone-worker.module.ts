@@ -3,7 +3,6 @@ import { BullModule } from '@nestjs/bull';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
 import { DatabaseModule } from '@app/sdvv-database';
 import { StandaloneWorkerService } from './standalone-worker.service';
 import { QueueDispatchModule } from './queue.dispatch/queue.dispatch.module';
@@ -18,17 +17,27 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { HealthModule } from 'apps/sdvv-backend-nest/src/health/health.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+    }),
     TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true,
-          entities: null,
-          migrations: null,
-        }),
+      useFactory: async () => ({
+        type: 'postgres',
+        url: process.env.DATABASE_URL,
+        synchronize: false,
+        autoLoadEntities: true,
+        ssl:
+          process.env.NODE_ENV === 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : false,
+      }),
     }),
     BullModule.forRoot({
       redis: process.env.REDIS_URL,
@@ -55,6 +64,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     EFileApiModule,
     ProcessDataModule,
     SchedulerModule,
+    HealthModule,
   ],
   providers: [StandaloneWorkerService],
   exports: [],

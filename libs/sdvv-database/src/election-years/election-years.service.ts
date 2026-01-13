@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CandidateEntity } from '../candidate/candidates.entity';
 
 @Injectable()
 export class ElectionYearsService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   async getYears({ electionYear = null }) {
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .select('election_year', 'year')

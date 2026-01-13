@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CandidateEntity } from './candidates.entity';
 
 @Injectable()
 export class CandidateAddService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   public async addCandidate(dataTypeArray: any[]) {
     const fieldsToOverwrite = ['district', 'full_office_name', 'updatedAt'];
     const primaryColumns = ['candidate_id'];
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(CandidateEntity)
       .createQueryBuilder()
       .insert()

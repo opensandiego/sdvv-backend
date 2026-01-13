@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { QueueController } from './queue.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    BullModule.forRoot({
-      redis: process.env.REDIS_URL,
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async () => ({
+        url: process.env.REDIS_URL,
+      }),
+      inject: [ConfigService],
     }),
     BullModule.registerQueue({
       name: 'worker-update-data',

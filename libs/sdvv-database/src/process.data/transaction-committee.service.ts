@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CandidateEntity } from '../candidate/candidates.entity';
 import { RCPTEntity } from '../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class TransactionCommitteeService {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   public async getCommitteeFromRCPT(
     candidate: CandidateEntity,
@@ -13,7 +13,7 @@ export class TransactionCommitteeService {
     const lastName = this.getCandidateLastName(candidate);
     const office = this.getCandidateOffice(candidate);
 
-    const query = await this.connection
+    const query = await this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('filer_naml', 'committee_name')

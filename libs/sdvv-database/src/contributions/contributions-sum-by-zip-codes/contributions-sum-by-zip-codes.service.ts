@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 
 @Injectable()
 export class ContributionsSumByZipCodes {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 
   private RCPTTypes = ['A', 'C'];
 
   async getContributionInZipCodes(committeeName: string, zipCodes: string[]) {
-    const query = this.connection
+    const query = this.dataSource
 
       .getRepository(RCPTEntity)
       .createQueryBuilder()
@@ -25,7 +25,7 @@ export class ContributionsSumByZipCodes {
   }
 
   async getContributionOutZipCodes(committeeName: string, zipCodes: string[]) {
-    const query = this.connection
+    const query = this.dataSource
 
       .getRepository(RCPTEntity)
       .createQueryBuilder()

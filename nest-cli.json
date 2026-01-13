@@ -28,15 +28,6 @@
         "tsConfigPath": "apps/sdvv-backend-nest/tsconfig.app.json"
       }
     },
-    "standalone-worker": {
-      "type": "application",
-      "root": "apps/standalone-worker",
-      "entryFile": "main",
-      "sourceRoot": "apps/standalone-worker/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/standalone-worker/tsconfig.app.json"
-      }
-    },
     "sdvv-database": {
       "type": "library",
       "root": "libs/sdvv-database",
@@ -44,6 +35,15 @@
       "sourceRoot": "libs/sdvv-database/src",
       "compilerOptions": {
         "tsConfigPath": "libs/sdvv-database/tsconfig.lib.json"
+      }
+    },
+    "update-command": {
+      "type": "application",
+      "root": "apps/update-command",
+      "entryFile": "main",
+      "sourceRoot": "apps/update-command/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/update-command/tsconfig.app.json"
       }
     },
     "efile-api-data": {

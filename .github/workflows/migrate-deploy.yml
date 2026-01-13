@@ -1,0 +1,63 @@
+name: Migrate and Deploy
+
+concurrency: 
+  group: deployment
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #     - main
+
+  pull_request:
+    types: [ closed ]
+    branches:
+      - main
+
+jobs:
+  migrate-deploy-staging:
+    name: Run Migration and Deploy to staging
+    runs-on: ubuntu-22.04
+    environment:
+      name: staging
+      url: "https://${HEROKU_APP_ID}.herokuapp.com"
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: typeorm
+        uses: ./.github/actions/typeorm
+        with:
+          command: migration:run
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ secrets.HEROKU_APP_ID }}
+
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_ID }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+
+  migrate-deploy-production:
+    needs: migrate-deploy-staging
+    name: Run Migration and Deploy to production
+    runs-on: ubuntu-22.04
+    environment:
+      name: production
+      url: "https://${HEROKU_APP_ID}.herokuapp.com"
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: typeorm
+        uses: ./.github/actions/typeorm
+        with:
+          command: migration:run
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          APP_ID: ${{ secrets.HEROKU_APP_ID }}
+
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_ID }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}

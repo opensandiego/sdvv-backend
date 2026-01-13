@@ -1,0 +1,22 @@
+name: Smoke Test
+
+on:
+  workflow_call:
+
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Containers
+        run : docker compose -f docker-compose.ci.yml --profile migrations --profile smoke_test build 
+
+      - name: Setup the database by running any needed migrations
+        run: docker compose -f docker-compose.ci.yml --profile migrations up --exit-code-from run_migrations
+
+      - name: Run smoke test
+        run: docker compose -f docker-compose.ci.yml --profile smoke-test up --exit-code-from test_service

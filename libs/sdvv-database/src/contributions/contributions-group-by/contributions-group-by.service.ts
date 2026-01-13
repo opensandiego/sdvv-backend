@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { RCPTEntity } from '../../tables-xlsx/rcpt/rcpt.entity';
 import { ContributionsDetailsService } from '../contributions-details/contributions-details.service';
 
 @Injectable()
 export class ContributionsGroupByService {
   constructor(
-    private connection: Connection,
+    private dataSource: DataSource,
     private contributionsDetailsService: ContributionsDetailsService,
   ) {}
 
@@ -22,7 +22,7 @@ export class ContributionsGroupByService {
       return [];
     }
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('ctrib_occ', 'name')
@@ -64,7 +64,7 @@ export class ContributionsGroupByService {
       return [];
     }
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('ctrib_emp', 'name')
@@ -104,7 +104,7 @@ export class ContributionsGroupByService {
       return [];
     }
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
       .select('ctrib_zip4', 'name')
@@ -141,7 +141,7 @@ export class ContributionsGroupByService {
       return [];
     }
 
-    const query = this.connection
+    const query = this.dataSource
       .getRepository(RCPTEntity)
       .createQueryBuilder()
 

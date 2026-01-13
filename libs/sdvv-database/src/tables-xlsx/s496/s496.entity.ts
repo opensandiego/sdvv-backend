@@ -15,7 +15,7 @@ export class S496Entity {
   @Column({ nullable: true })
   filer_id: string;
 
-  @Column() // From s496.dto
+  @Column({ nullable: true }) // From s496.dto
   rpt_id_num: string;
 
   @Column()
@@ -67,7 +67,7 @@ export class S496Entity {
   @Column()
   expn_dscr: string;
 
-  @Column()
+  @Column({ nullable: true })
   supp_opp_cd: string;
 
   @Column({ nullable: true })

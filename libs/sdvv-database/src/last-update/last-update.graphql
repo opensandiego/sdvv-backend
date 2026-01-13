@@ -4,5 +4,5 @@ type LastUpdate {
 }
 
 type Query {
-  lastUpdate: LastUpdate
+  lastUpdate(year: String = "2022"): LastUpdate
 }

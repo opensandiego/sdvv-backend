@@ -1,0 +1,90 @@
+services:
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: build
+    environment:
+      DATABASE_URL: postgres://postgres:example@postgres_db_dev:5432/postgres
+  
+  api:
+    extends:
+      service: server
+    build:
+      target: web
+    healthcheck:
+      test: "${DOCKER_HEALTHCHECK_TEST:-curl localhost:3000/health}"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    ports:
+      - 3000:3000
+
+  updater:
+    extends:
+      service: server
+    build:
+      target: updater
+
+  initialize_data:
+    extends:
+      service: server
+    build:
+      target: development
+    command: >
+      bash -c "npm run initialize:data"
+
+  run_migrations:
+    extends:
+      service: server
+    build:
+      target: development
+    command: >
+      bash -c "npm run db:migration:run"
+
+  pgadmin:
+    image: dpage/pgadmin4:6.20
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./pgadmin_servers.json:/pgadmin4/servers.json # preconfigured servers/connections
+      # - ./pgpass:/pgpass # passwords for the connections in this file, this is not yet setup
+
+    # The password field for connecting to Local Postgres Server can be left blank
+
+  postgres_base:
+    build:
+      dockerfile: docker/Dockerfile.database
+      target: build
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postgres_ssl:
+    extends:
+      service: postgres_base
+    command: >
+      -c ssl=on 
+      -c ssl_cert_file=/etc/ssl/private/server.crt 
+      -c ssl_key_file=/etc/ssl/private/server.key
+
+  tester:
+    image: bash:4.4
+    command: >
+      bash -c "'true' ; echo $?"
