@@ -8,7 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { EfileApiDataModule } from '@app/efile-api-data';
-import { DatabaseModule } from '@app/sdvv-database';
+import { APIModule, DatabaseModule } from '@app/sdvv-database';
 import { RCPTModule } from '@app/sdvv-database/tables-xlsx/rcpt/rcpt.module';
 import { EXPNModule } from '@app/sdvv-database/tables-xlsx/expn/expn.module';
 import { S496Module } from '@app/sdvv-database/tables-xlsx/s496/s496.module';
@@ -40,6 +40,7 @@ import { HealthModule } from './health/health.module';
     EfileApiDataModule,
     DatabaseModule,
     HealthModule,
+    APIModule,
   ],
   controllers: [AppController],
   providers: [AppService, RCPTModule, EXPNModule, S496Module],
