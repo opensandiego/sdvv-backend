@@ -168,6 +168,8 @@ export class CandidateIndependentExpendituresService {
       .addGroupBy('combined.filer_naml')
       .addGroupBy('combined.supp_opp_cd')
 
+      .where('c.candidate_controlled_committee_name IS NOT NULL')
+
       .addOrderBy('amount', 'ASC');
 
     if (year) {
