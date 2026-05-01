@@ -195,7 +195,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'johnny_lee_dang_6030.png',
     website: '',
-    committeeNameOverride: 'Dang for San Diego City Council District 5 2026',
+    committeeNameOverride: 'Dang for San Diego City Council District 4 2026',
   },
   {
     year: '2026',
