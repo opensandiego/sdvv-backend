@@ -12,8 +12,10 @@ export class ContributionsSumByJurisdictionService {
   ) {}
 
   async getJurisdictionSums({ committeeName }) {
-    const district = await this.candidateQLService.getDistrict(committeeName);
-    const zipCodes = await this.getJurisdictionZipCodes(district);
+    // Disable sums by district, due to not having correct zip code to
+    // district mapping for districts after 2020.
+    // const district = await this.candidateQLService.getDistrict(committeeName);
+    const zipCodes = await this.getJurisdictionZipCodes();
 
     const insideSum =
       await this.contributionsSumByZipCodes.getContributionInZipCodes(
@@ -30,7 +32,7 @@ export class ContributionsSumByJurisdictionService {
     return { inside: insideSum, outside: outsideSum };
   }
 
-  private async getJurisdictionZipCodes(district) {
+  private async getJurisdictionZipCodes(district?: string) {
     let zipCodes = null;
 
     if (district) {
