@@ -74,7 +74,8 @@ export interface CandidateInfo {
 */
 
 export const CandidateElectionInfo: CandidateInfo[] = [
-  // 2026 - Council District 2
+  //#region	2026
+  //#region 2026 - Council District 2
   {
     year: '2026',
     candidateId: '3f8ae407-1d1b-450c-90e6-a3ee8dafc7ab|2026',
@@ -156,8 +157,18 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     imageFileName: 'daniel_smiechowski_3042.png',
     website: '',
   },
+  {
+    year: '2026',
+    candidateId: '7e600fb6-f374-45c0-b03a-4d93b61e9ad4|2026',
+    optionalName: 'Bailey, Richard',
+    inPrimary: true,
+    description: '',
+    imageFileName: 'richard_bailey_3896.png',
+    website: '',
+  },
+  //#endregion
 
-  // 2026 - Council District 4
+  //#region 2026 - Council District 4
   {
     year: '2026',
     candidateId: 'cce3d23b-5fba-4df2-93dd-fbdcc3e455ed|2026',
@@ -224,7 +235,9 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     imageFileName: 'tylisa_suseberry_9754.png',
     website: '',
   },
-  // 2026 - Council District 6
+  //#endregion
+
+  //#region 2026 - Council District 6
   {
     year: '2026',
     candidateId: '1b777142-886d-45f2-afaa-4633c6487eb3|2026',
@@ -258,10 +271,12 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Powell, Mark',
     inPrimary: true,
     description: '',
-    imageFileName: null,
+    imageFileName: 'mark_powell_7492.png',
     website: '',
   },
-  // 2026 - Council District 8
+  //#endregion
+
+  //#region 2026 - Council District 8
   {
     year: '2026',
     candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2026',
@@ -325,6 +340,8 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     imageFileName: 'gerardo_ramirez_0275.png',
     website: '',
   },
+  //#endregion
+  //#endregion
 
   // 2024
   {
