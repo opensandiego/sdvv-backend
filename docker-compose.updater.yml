@@ -26,7 +26,7 @@ services:
     environment:
       CI: true
       COMMAND: ${CONSOLE_COMMAND}
-      DATABASE_URL:
+      DATABASE_URL: ${DATABASE_URL}
     command: >
       bash -c "node dist/apps/update-command/main"
     profiles:
