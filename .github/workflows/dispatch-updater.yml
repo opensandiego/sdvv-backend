@@ -31,10 +31,13 @@ on:
 jobs:
   run-updater-action:
     name: Run command ${{ inputs.command }} on ${{ inputs.environment }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          # Dynamically select release/production or release/staging
+          ref: ${{ github.event.inputs.environment == 'production' && 'release/production' || 'release/staging' }}
 
       - name: set App id for staging
         if: ${{ inputs.environment == 'staging' }} 
