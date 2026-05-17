@@ -35,8 +35,8 @@ export interface CandidateInfo {
    * part of the candidateId is the filer_id field of the elections page
    * https://efile.sandiego.gov/public/search/campaign/by-election
    */
-  candidateId: string;
-  optionalName: string;
+  candidateId: string | null;
+  optionalName: string | null;
 
   /**
    * If a candidate files a Candidate Intention Statement (Form 501)
@@ -48,8 +48,8 @@ export interface CandidateInfo {
    */
   inPrimary: boolean;
   description: string;
-  imageFileName: string;
-  website: string;
+  imageFileName: string | null;
+  website: string | null;
 
   /**
    * committeeNameOverride is used to correct committee names from efile that do not match names in the xlxs files.
@@ -127,6 +127,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Mitchell, Jacob J.',
     inPrimary: true,
     description: '',
+    committeeNameOverride: 'Mitchell For San Diego City Council',
     imageFileName: null,
     website: '',
   },
@@ -216,6 +217,8 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'henry_foster_5532.png',
     website: '',
+    committeeNameOverride:
+      'Re-Elect Henry Foster III for San Diego City Council 2026',
   },
   {
     year: '2026',
@@ -232,7 +235,18 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Suseberry, Tylisa D.',
     inPrimary: true,
     description: '',
+    committeeNameOverride: 'The Committee to Elect Tylisa D. Suseberry',
     imageFileName: 'tylisa_suseberry_9754.png',
+    website: '',
+  },
+  {
+    year: '2026',
+    candidateId: '7a8442da-87de-4fbc-bf51-dd5e161dcc26|2026',
+    optionalName: 'Ibarra, Erik',
+    inPrimary: false,
+    description: '',
+    committeeNameOverride: 'Erik Ibarra Committee to Elect for San Diego City Council District',
+    imageFileName: '',
     website: '',
   },
   //#endregion
