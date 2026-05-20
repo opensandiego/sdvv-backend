@@ -37,20 +37,22 @@ export class CandidatesInfoUpdateService {
           candidatesWithID.candidateId === candidate.candidate_id,
       );
 
-      candidate.in_primary_election = candidateWithInfo?.inPrimary;
-      candidate.description = candidateWithInfo?.description
-        ? candidateWithInfo?.description
-        : null;
+      if (!candidateWithInfo) continue;
+
+      candidate.in_primary_election = candidateWithInfo?.inPrimary || false;
+      candidate.description = candidateWithInfo?.description || null;
       candidate.image_url = candidateWithInfo?.imageFileName
-        ? `images/` + candidateWithInfo?.imageFileName
+        ? `images/${candidateWithInfo.imageFileName}`
         : null;
-      candidate.website = candidateWithInfo?.website
-        ? candidateWithInfo?.website
-        : null;
+      candidate.website = candidateWithInfo?.website || null;
       candidate.candidate_controlled_committee_name =
-        candidateWithInfo?.committeeNameOverride
-          ? candidateWithInfo?.committeeNameOverride
-          : candidate.candidate_controlled_committee_name;
+        candidateWithInfo?.committeeNameOverride ||
+        candidate.candidate_controlled_committee_name;
+
+      candidate.alternate_candidate_names =
+        candidateWithInfo?.alternateCandidateNames?.map((name) =>
+          name.toLowerCase(),
+        ) ?? null;
     }
 
     return candidates;

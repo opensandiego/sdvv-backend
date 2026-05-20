@@ -21,6 +21,7 @@ const PostgresDataSource = new DataSource({
   synchronize: false,
   logging: false,
   entities: [
+    'libs/sdvv-database/src/candidate/*.entity{.ts,.js}',
     'libs/efile-api-data/src/tables/entity/**/*.entity{.ts,.js}',
     'libs/sdvv-database/src/f460d/*.entity{.ts,.js}',
     'libs/sdvv-database/src/tables-xlsx/expn/*.entity{.ts,.js}',
@@ -28,7 +29,6 @@ const PostgresDataSource = new DataSource({
     'libs/sdvv-database/src/tables-xlsx/s496/*.entity{.ts,.js}',
     'libs/sdvv-database/src/jurisdictions/*.entity{.ts,.js}',
     'libs/sdvv-database/src/zipCodes/*.entity{.ts,.js}',
-    'libs/sdvv-database/src/candidate/*.entity{.ts,.js}',
   ],
   migrationsTableName: 'migrations_typeorm',
   migrations: ['apps/migration/**/*{.ts,.js}'],

@@ -4,7 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from 'typeorm';
+import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
+
 /**
  * This table is for transactions of type expenditures which have Rec_Type of EXPN.
  * The transactions are from sheets: F460-D-ContribIndepExpn, F460-E-Expenditures,
@@ -13,42 +16,42 @@ import {
 @Entity({ name: 'expn' })
 export class EXPNEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   // From common.dto
   @Column({ nullable: true })
-  filer_id: string;
+  filer_id?: string;
 
   @Column()
-  filer_naml: string;
+  filer_naml!: string;
 
   @Column()
-  report_num: string;
+  report_num!: string;
 
   @Column()
-  e_filing_id: string;
+  e_filing_id!: string;
 
   @Column()
-  orig_e_filing_id: string;
+  orig_e_filing_id!: string;
 
   @Column()
-  cmtte_type: string;
+  cmtte_type!: string;
 
   @Column()
-  rpt_date: string;
+  rpt_date!: string;
 
   @Column()
-  from_date: string;
+  from_date!: string;
 
   @Column()
-  thru_date: string;
+  thru_date!: string;
 
   @Column({ nullable: true })
-  elect_date: string;
+  elect_date?: string;
 
   // From expn.dto
   @Column()
-  rec_type: string;
+  rec_type!: string;
 
   /**
    * Values for form_type: D, E, G
@@ -57,165 +60,168 @@ export class EXPNEntity {
    * G: Schedule G - Payments Made "on behalf" of this Committee
    */
   @Column()
-  form_type: string;
+  form_type!: string;
 
   @Column()
-  tran_id: string;
+  tran_id!: string;
 
   @Column({ nullable: true })
-  entity_cd: string;
+  entity_cd?: string;
 
   @Column({ nullable: true })
-  payee_naml: string;
+  payee_naml?: string;
 
   @Column({ nullable: true })
-  payee_namf: string;
+  payee_namf?: string;
 
   @Column({ nullable: true })
-  payee_namt: string;
+  payee_namt?: string;
 
   @Column({ nullable: true })
-  payee_nams: string;
+  payee_nams?: string;
 
   @Column({ nullable: true })
-  payee_adr1: string;
+  payee_adr1?: string;
 
   @Column({ nullable: true })
-  payee_adr2: string;
+  payee_adr2?: string;
 
   @Column({ nullable: true })
-  payee_city: string;
+  payee_city?: string;
 
   @Column({ nullable: true })
-  payee_st: string;
+  payee_st?: string;
 
   @Column({ nullable: true })
-  payee_zip4: string;
+  payee_zip4?: string;
 
   @Column({ nullable: true })
-  expn_date: string;
+  expn_date?: string;
 
   @Column({ type: 'numeric' })
-  amount: number;
+  amount!: number;
 
   @Column({ type: 'numeric', nullable: true })
-  cum_ytd: number;
+  cum_ytd?: number;
 
   @Column({ nullable: true })
-  expn_code: string;
+  expn_code?: string;
 
   @Column({ nullable: true })
-  expn_dscr: string;
+  expn_dscr?: string;
 
   @Column({ nullable: true })
-  agent_naml: string;
+  agent_naml?: string;
 
   @Column({ nullable: true })
-  agent_namf: string;
+  agent_namf?: string;
 
   @Column({ nullable: true })
-  agent_namt: string;
+  agent_namt?: string;
 
   @Column({ nullable: true })
-  agent_nams: string;
+  agent_nams?: string;
 
   @Column({ nullable: true })
-  cmte_id: string;
+  cmte_id?: string;
 
   @Column({ nullable: true })
-  tres_naml: string;
+  tres_naml?: string;
 
   @Column({ nullable: true })
-  tres_namf: string;
+  tres_namf?: string;
 
   @Column({ nullable: true })
-  tres_namt: string;
+  tres_namt?: string;
 
   @Column({ nullable: true })
-  tres_nams: string;
+  tres_nams?: string;
 
   @Column({ nullable: true })
-  tres_adr1: string;
+  tres_adr1?: string;
 
   @Column({ nullable: true })
-  tres_adr2: string;
+  tres_adr2?: string;
 
   @Column({ nullable: true })
-  tres_city: string;
+  tres_city?: string;
 
   @Column({ nullable: true })
-  tres_st: string;
+  tres_st?: string;
 
   @Column({ nullable: true })
-  tres_zip4: string;
+  tres_zip4?: string;
 
   @Column({ nullable: true })
-  cand_naml: string;
+  cand_naml?: string;
 
   @Column({ nullable: true })
-  cand_namf: string;
+  cand_namf?: string;
 
   @Column({ nullable: true })
-  cand_namt: string;
+  cand_namt?: string;
 
   @Column({ nullable: true })
-  cand_nams: string;
+  cand_nams?: string;
 
   @Column({ nullable: true })
-  office_cd: string;
+  office_cd?: string;
 
   @Column({ nullable: true })
-  office_dscr: string;
+  office_dscr?: string;
 
   @Column({ nullable: true })
-  juris_cd: string;
+  juris_cd?: string;
 
   @Column({ nullable: true })
-  juris_dscr: string;
+  juris_dscr?: string;
 
   @Column({ nullable: true })
-  dist_no: string;
+  dist_no?: string;
 
   @Column({ nullable: true })
-  off_s_h_cd: string;
+  off_s_h_cd?: string;
 
   @Column({ nullable: true })
-  bal_name: string;
+  bal_name?: string;
 
   @Column({ nullable: true })
-  bal_num: string;
+  bal_num?: string;
 
   @Column({ nullable: true })
-  bal_juris: string;
+  bal_juris?: string;
 
   @Column({ nullable: true })
-  supp_opp_cd: string;
+  supp_opp_cd?: string;
 
   @Column()
-  memo_code: boolean;
+  memo_code!: boolean;
 
   @Column({ nullable: true })
-  memo_refno: string;
+  memo_refno?: string;
 
   @Column({ nullable: true })
-  bakref_tid: string;
+  bakref_tid?: string;
 
   @Column({ nullable: true })
-  g_from_e_f: string;
+  g_from_e_f?: string;
 
   @Column({ nullable: true })
-  xref_schnm: string;
+  xref_schnm?: string;
 
   @Column({ nullable: true })
-  xref_match: string;
+  xref_match?: string;
 
   // Added fields that are not in the XLSX file.
   @Column({ nullable: true })
-  xlsx_file_year: string;
+  xlsx_file_year?: string;
+
+  @ManyToOne(() => CandidateEntity, (candidate) => candidate.expn_supp_opp_transactions)
+  candidate_supp_opp!: CandidateEntity;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }

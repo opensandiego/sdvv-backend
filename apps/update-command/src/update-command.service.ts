@@ -9,6 +9,7 @@ import { TransactionsXLSXService } from './transactions.xlsx/transactions.xlsx.s
 import { DeduplicateExpendituresService } from '@app/sdvv-database/process.data/deduplicate-expenditures.service';
 import { ZipCodeCSVService } from './zip.code.csv/zip.code.csv.service';
 import { JurisdictionZipCodeService } from './zip.code.csv/jurisdiction.zip.codes.service';
+import { UpdateTransactionsReferencesService } from '@app/sdvv-database/process.data/update-transaction-references.service';
 
 @Injectable()
 export class UpdateCommandService {
@@ -23,6 +24,7 @@ export class UpdateCommandService {
     private deduplicateExpendituresService: DeduplicateExpendituresService,
     private zipCodeCSVService: ZipCodeCSVService,
     private jurisdictionZipCodeService: JurisdictionZipCodeService,
+    private updateTransactionsReferencesService: UpdateTransactionsReferencesService,
   ) {}
 
   async runCommand(): Promise<void> {
@@ -59,14 +61,19 @@ export class UpdateCommandService {
         await this.candidatesInfoUpdateService.updateCandidatesInfo();
         break;
 
+      case 'update-candidate-refs-in-independent-expenditures':
+        // update-candidates-info and update-transactions-current should be fun before this
+        await this.updateTransactionsReferencesService.addCandidateReferencesToExpenses();
+        break;
+
       case 'update-transactions-current':
         await this.transactionsXLSXService.updateTransactionsCurrent();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
         break;
 
       case 'update-transactions-past':
         await this.transactionsXLSXService.updateTransactionsPast();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
         break;
 
       case 'update-zip-codes':
@@ -85,7 +92,8 @@ export class UpdateCommandService {
 
         await this.transactionsXLSXService.updateTransactionsCurrent();
         await this.transactionsXLSXService.updateTransactionsPast();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
+        await this.updateTransactionsReferencesService.addCandidateReferencesToExpenses();
 
         await this.zipCodeCSVService.populateDatabaseWithZipCodes();
         await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
