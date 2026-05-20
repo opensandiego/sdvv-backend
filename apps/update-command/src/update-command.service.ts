@@ -61,12 +61,12 @@ export class UpdateCommandService {
 
       case 'update-transactions-current':
         await this.transactionsXLSXService.updateTransactionsCurrent();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
         break;
 
       case 'update-transactions-past':
         await this.transactionsXLSXService.updateTransactionsPast();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
         break;
 
       case 'update-zip-codes':
@@ -85,7 +85,7 @@ export class UpdateCommandService {
 
         await this.transactionsXLSXService.updateTransactionsCurrent();
         await this.transactionsXLSXService.updateTransactionsPast();
-        await this.deduplicateExpendituresService.removeDuplicateIndependentExpenditures();
+        await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
 
         await this.zipCodeCSVService.populateDatabaseWithZipCodes();
         await this.jurisdictionZipCodeService.populateDatabaseWithJurisdictionZipCodes();
