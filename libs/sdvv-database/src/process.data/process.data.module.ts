@@ -3,6 +3,7 @@ import { CandidateCommitteeService } from './candidate.committee.service';
 import { CandidateYearService } from './candidates.year.service';
 import { TransactionCommitteeService } from './transaction-committee.service';
 import { DeduplicateExpendituresService } from './deduplicate-expenditures.service';
+import { UpdateTransactionsReferencesService } from './update-transaction-references.service';
 
 @Module({
   imports: [],
@@ -11,11 +12,13 @@ import { DeduplicateExpendituresService } from './deduplicate-expenditures.servi
     TransactionCommitteeService,
     CandidateYearService,
     DeduplicateExpendituresService,
+    UpdateTransactionsReferencesService,
   ],
   exports: [
     CandidateCommitteeService,
     CandidateYearService,
     DeduplicateExpendituresService,
+    UpdateTransactionsReferencesService,
   ],
 })
 export class ProcessDataModule {}

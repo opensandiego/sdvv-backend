@@ -13,6 +13,90 @@ interface PartialTransaction {
 export class DeduplicateExpendituresService {
   constructor(private dataSource: DataSource) {}
 
+  public async flagDuplicateLateExpenditures() {
+    const s496Repository = this.dataSource.getRepository(S496Entity);
+
+    // 1. Get list of a unique filers (filer names) in s496
+    const filerNamesQuery = s496Repository
+      .createQueryBuilder('s496')
+      .select('LOWER(s496.filer_naml)', 'filer_naml_lower')
+      .groupBy('LOWER(s496.filer_naml)');
+
+    const filers = (await filerNamesQuery.getRawMany()) as {
+      filer_naml_lower: string;
+    }[];
+
+    const expnRepository = this.dataSource.getRepository(EXPNEntity);
+
+    // 2. For each filer look for their 460D transactions in expn
+    for await (const filer of filers) {
+      const { filer_naml_lower: filerName } = filer;
+
+      // 2-1 get the max thru date for the filer's transactions
+      const expnQuery = expnRepository
+        .createQueryBuilder('expn')
+        .select("LOWER(TRIM(COALESCE(expn.filer_naml, '')))")
+        .addSelect('MAX(expn.thru_date)', 'max_thru_date')
+        .where('expn.form_type = :formTypeEXPN', {
+          formTypeEXPN: 'D',
+        })
+        .andWhere(
+          "LOWER(TRIM(COALESCE(expn.filer_naml, ''))) = :s496FilerName",
+          {
+            s496FilerName: filerName,
+          },
+        )
+        .groupBy("LOWER(TRIM(COALESCE(expn.filer_naml, '')))");
+
+      const expnRow = (await expnQuery.getRawOne()) as {
+        max_thru_date: string;
+      };
+
+      if (!expnRow) continue;
+      const { max_thru_date: maxThruDate } = expnRow;
+
+      // 2-1 For any of the filer's s496 transactions that are on or older then
+      // the max thru date set is_duplicate to TRUE
+      const s496Update = s496Repository
+        .createQueryBuilder('s496')
+        .update(S496Entity)
+        .set({ is_duplicate: true })
+        .andWhere(
+          "LOWER(TRIM(COALESCE(s496.filer_naml, ''))) = :s496FilerName",
+          {
+            s496FilerName: filerName,
+          },
+        )
+        .andWhere('s496.exp_date <= :maxThruDate ', {
+          maxThruDate: maxThruDate,
+        });
+
+      await s496Update.execute();
+
+      // 2-2 For any of the filer's s496 transactions that are newer then
+      // the max thru date set is_duplicate to FALSE.
+      await s496Repository
+        .createQueryBuilder('s496')
+        .update(S496Entity)
+        .set({ is_duplicate: false })
+        .andWhere(
+          "LOWER(TRIM(COALESCE(s496.filer_naml, ''))) = :s496FilerName",
+          {
+            s496FilerName: filerName,
+          },
+        )
+        .andWhere('s496.exp_date > :maxThruDate ', {
+          maxThruDate: maxThruDate,
+        })
+        .execute();
+
+      // Setting is_duplicate to FALSE useful when researching the transaction
+      // data in a database viewer. When the value is NULL then there was
+      // no associated filer in expn found for the transaction's filer.
+    }
+  }
+
+  /** @deprecated use flagDuplicateLateExpenditures */
   public async removeDuplicateIndependentExpenditures(): Promise<number> {
     const filingIds = await this.getS496FilerIds();
     const filings = await this.get460DFilings(filingIds);

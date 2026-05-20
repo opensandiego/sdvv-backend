@@ -15,6 +15,7 @@ on:
           - update-candidates-info
           - update-transactions-current
           - update-transactions-past
+          - update-candidate-refs-in-independent-expenditures
           # - zip-codes
           # - jurisdiction-zip-codes
           - update-zip-codes
