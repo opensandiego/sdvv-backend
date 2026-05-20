@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "San Diego Voters Voice backend and data store",
   "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=20.0.0"
+    "npm": ">=11.0.0",
+    "node": ">=24.0.0"
   },
   "author": "Open San Diego",
   "private": true,
