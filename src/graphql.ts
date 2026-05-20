@@ -86,7 +86,7 @@ export interface IQuery {
     committee(committeeName: string): Nullable<Committee> | Promise<Nullable<Committee>>;
     electionYears(): Nullable<Nullable<ElectionYear>[]> | Promise<Nullable<Nullable<ElectionYear>[]>>;
     electionYear(year: string, filters?: Nullable<YearCandidateFilters>): Nullable<ElectionYear> | Promise<Nullable<ElectionYear>>;
-    lastUpdate(): Nullable<LastUpdate> | Promise<Nullable<LastUpdate>>;
+    lastUpdate(year?: Nullable<string>): Nullable<LastUpdate> | Promise<Nullable<LastUpdate>>;
     office(electionYear: string, title: string): Nullable<Office> | Promise<Nullable<Office>>;
 }
 
