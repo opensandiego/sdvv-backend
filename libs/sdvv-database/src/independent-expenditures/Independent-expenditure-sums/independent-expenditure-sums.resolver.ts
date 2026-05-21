@@ -8,26 +8,28 @@ export class IndependentExpenditureSumsResolver {
   ) {}
 
   @ResolveField()
-  async support(@Parent() candidate) {
-    const { lastName, electionYear } = candidate;
+  async support(@Parent() candidate: { id: string }) {
+    const { id } = candidate;
 
-    const sum = await this.independentExpendituresService.supportSum(
-      lastName,
-      electionYear,
-    );
+    const sum =
+      await this.independentExpendituresService.getIndependentExpendituresSupOppSum({
+        candidateId: id,
+        supOppCd: 'SUPPORT',
+      });
 
-    return sum;
+    return Math.round(sum);
   }
 
   @ResolveField()
-  async oppose(@Parent() candidate) {
-    const { lastName, electionYear } = candidate;
+  async oppose(@Parent() candidate: { id: string }) {
+    const { id } = candidate;
 
-    const sum = await this.independentExpendituresService.opposeSum(
-      lastName,
-      electionYear,
-    );
+    const sum =
+      await this.independentExpendituresService.getIndependentExpendituresSupOppSum({
+        candidateId: id,
+        supOppCd: 'OPPOSE',
+      });
 
-    return sum;
+    return Math.round(sum);
   }
 }
