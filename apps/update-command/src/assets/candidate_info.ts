@@ -35,8 +35,14 @@ export interface CandidateInfo {
    * part of the candidateId is the filer_id field of the elections page
    * https://efile.sandiego.gov/public/search/campaign/by-election
    */
-  candidateId: string;
-  optionalName: string;
+  candidateId: string | null;
+  optionalName: string | null;
+
+  /**
+   * alternateCandidateNames is needed for matching independent expenditures
+   * transactions relating to candidate. 
+   */
+  alternateCandidateNames?: string[];
 
   /**
    * If a candidate files a Candidate Intention Statement (Form 501)
@@ -48,8 +54,8 @@ export interface CandidateInfo {
    */
   inPrimary: boolean;
   description: string;
-  imageFileName: string;
-  website: string;
+  imageFileName: string | null;
+  website: string | null;
 
   /**
    * committeeNameOverride is used to correct committee names from efile that do not match names in the xlxs files.
@@ -74,11 +80,13 @@ export interface CandidateInfo {
 */
 
 export const CandidateElectionInfo: CandidateInfo[] = [
-  // 2026 - Council District 2
+  //#region	2026
+  //#region 2026 - Council District 2
   {
     year: '2026',
     candidateId: '3f8ae407-1d1b-450c-90e6-a3ee8dafc7ab|2026',
     optionalName: 'Coyne, Joshua',
+    alternateCandidateNames: ['Josh Coyne'],
     inPrimary: true,
     description: '',
     imageFileName: 'joshua_coyne_6229.png',
@@ -88,6 +96,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'a81b1432-e927-4695-b0f9-761814fd6d3d|2026',
     optionalName: 'Crosby, Nicole',
+    alternateCandidateNames: ['Nicole Crosby'],
     inPrimary: true,
     description: '',
     imageFileName: 'nicole_crosby_1370.png',
@@ -115,6 +124,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '12bec5c1-9fe5-4d30-9621-9039258ded42|2026',
     optionalName: 'Lukacs, Linda A.',
+    alternateCandidateNames: ['Linda Lukacs'],
     inPrimary: true,
     description: '',
     imageFileName: 'linda_lukacs_2795.png',
@@ -124,8 +134,10 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '0cad9b72-64c1-488b-bcb6-a123fe83dcaa|2026',
     optionalName: 'Mitchell, Jacob J.',
+    alternateCandidateNames: ['Jacob Mitchell'],
     inPrimary: true,
     description: '',
+    committeeNameOverride: 'Mitchell For San Diego City Council',
     imageFileName: null,
     website: '',
   },
@@ -133,6 +145,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '2f4a0302-2d1b-4952-a895-a069a2304ed9|2026',
     optionalName: 'Quillin, Nicole A.',
+    alternateCandidateNames: ['Nicole Quillin'],
     inPrimary: true,
     description: '',
     imageFileName: null,
@@ -156,8 +169,19 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     imageFileName: 'daniel_smiechowski_3042.png',
     website: '',
   },
+  {
+    year: '2026',
+    candidateId: '7e600fb6-f374-45c0-b03a-4d93b61e9ad4|2026',
+    optionalName: 'Bailey, Richard',
+    alternateCandidateNames: ['Richard Bailey'],
+    inPrimary: true,
+    description: '',
+    imageFileName: 'richard_bailey_3896.png',
+    website: '',
+  },
+  //#endregion
 
-  // 2026 - Council District 4
+  //#region 2026 - Council District 4
   {
     year: '2026',
     candidateId: 'cce3d23b-5fba-4df2-93dd-fbdcc3e455ed|2026',
@@ -180,6 +204,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '5c1d693a-0880-4d9e-9073-8a38fe22e907|2026',
     optionalName: 'Williams III, Roosevelt',
+    alternateCandidateNames: ['Roosevelt Williams'],
     inPrimary: false,
     description: '',
     imageFileName: 'roosevelt_williams_III_1138.png',
@@ -195,16 +220,19 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     description: '',
     imageFileName: 'johnny_lee_dang_6030.png',
     website: '',
-    committeeNameOverride: 'Dang for San Diego City Council District 5 2026',
+    committeeNameOverride: 'Dang for San Diego City Council District 4 2026',
   },
   {
     year: '2026',
     candidateId: '75f6cced-89e2-4ca9-b2cc-10f457cfabf7|2026',
     optionalName: 'Foster III, Henry L.',
+    alternateCandidateNames: ['Henry Foster'],
     inPrimary: true,
     description: '',
     imageFileName: 'henry_foster_5532.png',
     website: '',
+    committeeNameOverride:
+      'Re-Elect Henry Foster III for San Diego City Council 2026',
   },
   {
     year: '2026',
@@ -219,12 +247,26 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'b192068d-8937-a263-0803-0c1282d559e7|2026',
     optionalName: 'Suseberry, Tylisa D.',
+    alternateCandidateNames: ['Tylisa Suseberry'],
     inPrimary: true,
     description: '',
+    committeeNameOverride: 'The Committee to Elect Tylisa D. Suseberry',
     imageFileName: 'tylisa_suseberry_9754.png',
     website: '',
   },
-  // 2026 - Council District 6
+  {
+    year: '2026',
+    candidateId: '7a8442da-87de-4fbc-bf51-dd5e161dcc26|2026',
+    optionalName: 'Ibarra, Erik',
+    inPrimary: false,
+    description: '',
+    committeeNameOverride: 'Erik Ibarra Committee to Elect for San Diego City Council District',
+    imageFileName: '',
+    website: '',
+  },
+  //#endregion
+
+  //#region 2026 - Council District 6
   {
     year: '2026',
     candidateId: '1b777142-886d-45f2-afaa-4633c6487eb3|2026',
@@ -238,6 +280,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '3ae9be22-53e7-437a-39e2-a72412c614f7|2026',
     optionalName: 'Glasson, Jane L.',
+    alternateCandidateNames: ['Jane Glasson'],
     inPrimary: true,
     description: '',
     imageFileName: 'jane_glasson_7726.png',
@@ -247,6 +290,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'fe7d8f9d-9a13-4942-ba28-e8d690ae9136|2026',
     optionalName: 'Lee, Kent F.',
+    alternateCandidateNames: ['Kent Lee'],
     inPrimary: true,
     description: '',
     imageFileName: 'kent_lee_5838.png',
@@ -256,16 +300,20 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '5cd9e443-30f4-4f52-aea2-f430bb44f8d9|2026',
     optionalName: 'Powell, Mark',
+    alternateCandidateNames: ['Mark Powell'],
     inPrimary: true,
     description: '',
-    imageFileName: null,
+    imageFileName: 'mark_powell_7492.png',
     website: '',
   },
-  // 2026 - Council District 8
+  //#endregion
+
+  //#region 2026 - Council District 8
   {
     year: '2026',
     candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2026',
     optionalName: 'Martinez, Antonio',
+    alternateCandidateNames: ['Antonio Martinez'],
     inPrimary: true,
     description: '',
     imageFileName: 'antonio_martinez_5314.png',
@@ -275,6 +323,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'a93b24ca-c805-4d5c-a490-cd8eb5b7b243|2026',
     optionalName: 'Mayoral Munoz, Francisco A.',
+    alternateCandidateNames: ['Francisco Mayoral Munoz'],
     inPrimary: true,
     description: '',
     imageFileName: null,
@@ -284,6 +333,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: '1a5fddf2-6e48-4533-aecd-ec6d909f4ea0|2026',
     optionalName: 'Molina, Venus',
+    alternateCandidateNames: ['Venus Molina'],
     inPrimary: true,
     description: '',
     imageFileName: 'venus_molina_0716.png',
@@ -302,6 +352,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'bcaa9098-3bf4-479c-9f80-5201b4167c6a|2026',
     optionalName: 'Peraza, Kenia A.',
+    alternateCandidateNames: ['Kenia Peraza'],
     inPrimary: true,
     description: '',
     imageFileName: 'kenia_peraza_8953.png',
@@ -311,6 +362,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'a6366ab5-330d-4bbe-963d-4be736b30740|2026',
     optionalName: 'Perez, Rafael A.',
+    alternateCandidateNames: ['Raphael Perez', 'Rafael Perez'],
     inPrimary: true,
     description: '',
     imageFileName: 'rafael_perez_4423.png',
@@ -320,11 +372,14 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'ffe8ebab-7a28-4781-b8ba-40477f5776d8|2026',
     optionalName: 'Ramirez, Gerardo',
+    alternateCandidateNames: ['Gerardo Ramirez'],
     inPrimary: true,
     description: '',
     imageFileName: 'gerardo_ramirez_0275.png',
     website: '',
   },
+  //#endregion
+  //#endregion
 
   // 2024
   {
@@ -358,6 +413,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '24738d25-2b55-4ef8-b78e-dcc4442a6327|2024',
     optionalName: 'Gloria, Todd',
+    alternateCandidateNames: ['Todd Gloria'],
     inPrimary: true,
     description: 'Assemblymember',
     imageFileName: 'todd_gloria_8906.png',
@@ -385,6 +441,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '881fec4e-6835-4172-ba69-17bcd6aa0c60|2024',
     optionalName: 'California Jones III, Ellis',
+    alternateCandidateNames: ['Ellis California Jones'],
     inPrimary: true,
     description: '',
     imageFileName: 'ellis_california_jones_2753.png',
@@ -422,10 +479,12 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '75f6cced-89e2-4ca9-b2cc-10f457cfabf7|2024',
     optionalName: 'Foster III, Henry',
+    alternateCandidateNames: ['Henry Foster'],
     inPrimary: true,
     description: '',
     imageFileName: 'henry_foster_5532.png',
     website: 'https://www.henryfoster4sd.com/',
+    committeeNameOverride: 'Foster for City Council 2024',
   },
   {
     year: '2024',
@@ -469,6 +528,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '8f7705a5-edf9-4c9d-879c-64de6455cf6c|2024',
     optionalName: 'Elo-Rivera, Sean',
+    alternateCandidateNames: ['Sean Elo'],
     inPrimary: true,
     description: '',
     imageFileName: 'sean_elo_rivera_4216.png',
@@ -478,6 +538,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '57c92498-2cd7-40ef-ac8d-652140e5fbde|2024',
     optionalName: 'Hoskins, Terry',
+    alternateCandidateNames: ['Terry Hoskins'],
     inPrimary: true,
     description: '',
     imageFileName: 'terry_hoskins_7271.png',
@@ -487,6 +548,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '088998d8-962a-4655-aea2-de66c52db433|2024',
     optionalName: 'Maienschein, Brian',
+    alternateCandidateNames: ['Brian Maienschein'],
     inPrimary: true,
     description: '',
     imageFileName: 'brian_maienschein_5491.png',
@@ -496,6 +558,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2024',
     candidateId: '14feb473-f937-46f6-89e6-d0a35dd6cffb|2024',
     optionalName: 'Ferbert, Heather',
+    alternateCandidateNames: ['Heather Ferbert'],
     inPrimary: true,
     description: '',
     imageFileName: 'heather_ferbert_1385.png',
@@ -505,6 +568,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: 'd3d1c6e7-0add-49f1-9b3d-e9289e7efcf6|2022',
     optionalName: 'Campbell, Jennifer',
+    alternateCandidateNames: ['Jen Campbell', 'Dr. Jen Campbell'],
     inPrimary: true,
     description: 'San Diego City Councilmember/Family Physician',
     imageFileName: 'jennifer_campbell_2129.png',
@@ -533,6 +597,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: '12bec5c1-9fe5-4d30-9621-9039258ded42|2022',
     optionalName: 'Lukacs, Linda',
+    alternateCandidateNames: ['Linda Lukacs'],
     inPrimary: true,
     description: 'Dentist/Professor',
     imageFileName: 'linda_lukacs_2795.png',
@@ -542,6 +607,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: 'b3743dcf-ba16-1389-aa07-d28f26d4a94d|2022',
     optionalName: 'Saldaña, Lori',
+    alternateCandidateNames: ['Lori Saldana'],
     inPrimary: true,
     description: 'Retired Business Technology Professor',
     imageFileName: 'lori_saldana_4515.png',
@@ -570,6 +636,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: '82cae978-49df-4a77-8793-0efffb7772b5|2022',
     optionalName: 'Montgomery Steppe, Monica',
+    alternateCandidateNames: ['Monica Montgomery', 'Monica Montgomery Steppe', 'Monica Montgomery-Steppe'],
     inPrimary: true,
     description: 'Councilmember',
     imageFileName: 'monica_montgomery_steppe_7929.png',
@@ -606,6 +673,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: 'fe7d8f9d-9a13-4942-ba28-e8d690ae9136|2022',
     optionalName: 'Lee, Kent',
+    alternateCandidateNames: ['Kent Lee'],
     inPrimary: true,
     description: 'Nonprofit Executive Director',
     imageFileName: 'kent_lee_5838.png',
@@ -615,6 +683,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2022',
     optionalName: 'Martinez, Antonio',
+    alternateCandidateNames: ['Antonio Martinez'],
     inPrimary: true,
     description: 'Congressional Community Representative',
     imageFileName: 'antonio_martinez_5314.png',
@@ -625,6 +694,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: '4adb5c04-3d8d-4fdd-9cd4-1227cbde766e|2022',
     optionalName: 'Moreno, Vivian',
+    alternateCandidateNames: ['Vivian Moreno', 'Vivn Moreno', 'Vivivan Moreno'],
     inPrimary: true,
     description: 'Councilmember',
     imageFileName: 'vivian_moreno_5899.png',
@@ -643,6 +713,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: 'a81b1432-e927-4695-b0f9-761814fd6d3d|2022',
     optionalName: 'Nicole Crosby',
+    alternateCandidateNames: ['Nicole Crosby'],
     inPrimary: false,
     description: '',
     imageFileName: null,
@@ -652,6 +723,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2022',
     candidateId: '64e34a9b-4ded-490e-a086-02040d36916f|2022',
     optionalName: 'Mazares III, Joseph V',
+    alternateCandidateNames: ['Joseph Mazares'],
     inPrimary: true,
     description: '',
     imageFileName: null,
@@ -681,6 +753,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: '24738d25-2b55-4ef8-b78e-dcc4442a6327|2020',
     optionalName: 'Gloria, Todd',
+    alternateCandidateNames: ['Todd Gloria'],
     inPrimary: true,
     description: 'Assemblymember',
     imageFileName: 'todd_gloria_8906.png',
@@ -699,6 +772,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: 'f311f300-4421-5320-a6b7-a2641a33c6ce|2020',
     optionalName: 'Sherman, Scott',
+    alternateCandidateNames: ['Scott Sherman'],
     inPrimary: true,
     description: 'City Councilman',
     imageFileName: null,
@@ -726,6 +800,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: 'f7957bf1-8701-4456-93dc-6c7022c86b6d|2020',
     optionalName: 'Elliott, Mara W.',
+    alternateCandidateNames: ['Mara Elliott', 'Mara Elliot'],
     inPrimary: true,
     description: 'San Diego City Attorney',
     imageFileName: null,
@@ -825,6 +900,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: 'adeffeff-b9bc-45af-4df2-218db023f1c3|2020',
     optionalName: 'Kwiatkowski, Adrian',
+    alternateCandidateNames: ['Adrian Kwiatkowski', 'Adrain Kwiatkowski'],
     inPrimary: true,
     description: 'CEO Non-Profit Management/Strategist',
     imageFileName: null,
@@ -879,6 +955,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: '00e28002-c35b-4775-a1b4-8bcae533f6c0|2020',
     optionalName: 'von Wilpert, Marni',
+    alternateCandidateNames:['Marni VonWilpert', 'Marni Von Wilpert'],
     inPrimary: true,
     description: 'Deputy City Attorney',
     imageFileName: 'marni_von_wilpert_1942.png',
@@ -897,6 +974,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: '3a37df55-6db8-463c-a874-d9d858898cb5|2020',
     optionalName: 'Campillo, Raul',
+    alternateCandidateNames: ['Raul Campillo'],
     inPrimary: true,
     description: 'Deputy City Attorney',
     imageFileName: 'raul_campillo_2263.png',
@@ -924,6 +1002,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: 'e225c92e-c99b-bae4-1169-3305ebaad363|2020',
     optionalName: 'Zosa, Noli',
+    alternateCandidateNames: ['Noli Zosa'],
     inPrimary: true,
     description: 'Small Business Owner',
     imageFileName: null,
@@ -951,6 +1030,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2020',
     candidateId: '8f7705a5-edf9-4c9d-879c-64de6455cf6c|2020',
     optionalName: 'Elo, Sean',
+    alternateCandidateNames: ['Sean Elo'],
     inPrimary: true,
     description: 'Board Trustee, San Diego Community College District',
     imageFileName: 'sean_elo_8355.png',
@@ -1005,6 +1085,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: 'd3d1c6e7-0add-49f1-9b3d-e9289e7efcf6|2018',
     optionalName: 'Campbell, Jennifer',
+    alternateCandidateNames: ['Jen Campbell', 'Dr. Jen Campbell'],
     inPrimary: true,
     description: 'Medical Doctor/Professor',
     imageFileName: null,
@@ -1051,6 +1132,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: 'de716602-9097-7b64-0b50-09eeb5b8bb29|2018',
     optionalName: 'Zapf, Lorie',
+    alternateCandidateNames: ['Lorie Zapf'],
     inPrimary: true,
     description: 'San Diego City Councilmember',
     imageFileName: null,
@@ -1069,6 +1151,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: 'e4d5c830-0198-30a7-a5f8-a3053aed8df6|2018',
     optionalName: 'Cole, Myrtle',
+    alternateCandidateNames: ['Myrtle Cole'],
     inPrimary: true,
     description: 'City Councilmember',
     imageFileName: null,
@@ -1078,6 +1161,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: '82cae978-49df-4a77-8793-0efffb7772b5|2018',
     optionalName: 'Montgomery, Monica',
+    alternateCandidateNames: ['Monica Montgomery', 'Monica Montgomery Steppe', 'Monica Montgomery-Steppe'],
     inPrimary: true,
     description: 'Attorney/Civil Rights Advocate',
     imageFileName: null,
@@ -1105,6 +1189,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: '5687636e-2833-4df9-81a7-bcfa558d3f8e|2018',
     optionalName: 'Cate, Chris',
+    alternateCandidateNames: ['Chris Cate'],
     inPrimary: true,
     description: '',
     imageFileName: null,
@@ -1159,6 +1244,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: '47f2d909-5f52-d85c-b465-3ad7714b1da5|2018',
     optionalName: 'Martinez, Antonio',
+    alternateCandidateNames: ['Antonio Martinez'],
     inPrimary: true,
     description: 'School Boardmember/Community Healthcare Counselor',
     imageFileName: null,
@@ -1168,6 +1254,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2018',
     candidateId: '4adb5c04-3d8d-4fdd-9cd4-1227cbde766e|2018',
     optionalName: 'Moreno, Vivian',
+    alternateCandidateNames: ['Vivian Moreno', 'Vivn Moreno', 'Vivivan Moreno'],
     inPrimary: true,
     description: 'Council Representative',
     imageFileName: null,
@@ -1216,6 +1303,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: 'b3743dcf-ba16-1389-aa07-d28f26d4a94d|2016',
     optionalName: 'Saldaña, Lori',
+    alternateCandidateNames: ['Lori Saldana'],
     inPrimary: true,
     description: 'Community College Technology Teacher',
     imageFileName: null,
@@ -1244,6 +1332,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: 'f7957bf1-8701-4456-93dc-6c7022c86b6d|2016',
     optionalName: 'Elliott, Mara',
+    alternateCandidateNames: ['Mara Elliott', 'Mara Elliot'],
     inPrimary: true,
     description: 'Chief Deputy City Attorney',
     imageFileName: null,
@@ -1253,6 +1342,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: '2944c707-5507-ee79-23f4-dc72ff5cf8e1|2016',
     optionalName: 'Hickey, Robert',
+    alternateCandidateNames: ['Robert Hickey', 'Bob Hickey'],
     inPrimary: true,
     description: 'Deputy District Attorney',
     imageFileName: null,
@@ -1280,6 +1370,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: 'e8b85437-f58a-42b4-e31e-176d55f0a66d|2016',
     optionalName: 'Ellis, Ray', // Raymond Gibbons Ellis
+    alternateCandidateNames: ['Ray Ellis'],
     inPrimary: true,
     description: 'Community Volunteer',
     imageFileName: null,
@@ -1317,6 +1408,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: 'bcf9f527-4eec-598e-f65c-1eaf37efbe76|2016',
     optionalName: 'Bernal, Anthony',
+    alternateCandidateNames: ['Anthony Bernal'],
     inPrimary: true,
     description: 'City Council Representative',
     imageFileName: null,
@@ -1335,6 +1427,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: '841e9204-e2a0-1849-c1af-97bbea39db09|2016',
     optionalName: 'Ward, Chris',
+    alternateCandidateNames: ['Chris Ward'],
     inPrimary: true,
     description: 'Senate Chief of Staff',
     imageFileName: null,
@@ -1382,6 +1475,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: '2490aa6b-ef13-2850-e47f-e3a23d936ffa|2016',
     optionalName: 'Decesare, Justin',
+    alternateCandidateNames: ['Justin Decesare'],
     inPrimary: true,
     description: 'Businessman / Entrepreneur',
     imageFileName: null,
@@ -1391,6 +1485,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2016',
     candidateId: 'f311f300-4421-5320-a6b7-a2641a33c6ce|2016',
     optionalName: 'Sherman, Scott',
+    alternateCandidateNames: ['Scott Sherman'],
     inPrimary: true,
     description: 'Small Business Owner / Councilmember',
     imageFileName: null,

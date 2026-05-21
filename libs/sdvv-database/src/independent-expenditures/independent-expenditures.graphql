@@ -3,5 +3,5 @@ type IndependentExpenditures {
   candidateName: String
   electionYear: String
   sums: IndependentExpenditureSums
-  committees: IndependentExpendituresByCommittees
+  committees: IndependentExpendituresByCommittees @deprecated(reason: "Use candidate/summaries/independent-expenditures REST endpoint instead.")
 }

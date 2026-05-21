@@ -2,17 +2,35 @@ name: Scheduled Staging Updates
 
 on:
   schedule:
-  - cron: '10 3 * * *'
-  - cron: '25 3 * * sat'
-  - cron: '40 3 * * sun'
+    - cron: '10 3 * * *'
+    - cron: '25 3 * * sat'
+    - cron: '40 3 * * sun'
+  workflow_dispatch:
+    inputs:
+      test_job:
+        description: 'Which job do you want to test/run manually?'
+        type: choice
+        default: 'Current Transactions Update'
+        options:
+          - 'Current Transactions Update'
+          # - 'Past Transactions Update'
+          # - 'Current Candidates Update'
 
 jobs:
   update-transactions-current-staging:
-    if: github.event.schedule == '10 3 * * *'
+    if: |
+      github.event.schedule == '10 3 * * *' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.test_job == 'Current Transactions Update')
     name: Current Transactions Update
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          ref: release/staging
+
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
 
       - uses: ./.github/actions/updater
         with:
@@ -23,9 +41,15 @@ jobs:
   update-transactions-past-staging:
     if: github.event.schedule == '25 3 * * sat'
     name: Past Transactions Update
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          ref: release/staging
+
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
 
       - uses: ./.github/actions/updater
         with:
@@ -36,9 +60,15 @@ jobs:
   update-candidates-current-staging:
     if: github.event.schedule == '40 3 * * sun'
     name: Current Candidates Update
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          ref: release/staging
+
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
 
       - uses: ./.github/actions/updater
         with:

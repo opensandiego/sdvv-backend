@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "San Diego Voters Voice backend and data store",
   "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=20.0.0"
+    "npm": ">=11.0.0",
+    "node": ">=24.0.0"
   },
   "author": "Open San Diego",
   "private": true,
@@ -31,7 +31,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/sdvv-backend-nest/test/jest-e2e.json",
-    "typeorm": "ts-node ./node_modules/.bin/typeorm"
+    "typeorm": "ts-node  -r tsconfig-paths/register ./node_modules/.bin/typeorm"
   },
   "dependencies": {
     "@apollo/client": "^3.14.0",
@@ -59,6 +59,7 @@
     "class-validator": "^0.14.2",
     "cross-fetch": "^4.1.0",
     "currency.js": "^2.0.4",
+    "dayjs": "^1.11.20",
     "dotenv": "^17.2.3",
     "expose-gc": "^1.0.0",
     "graphql": "^16.12.0",

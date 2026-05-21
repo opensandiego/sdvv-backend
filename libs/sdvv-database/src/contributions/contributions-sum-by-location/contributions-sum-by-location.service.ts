@@ -12,6 +12,10 @@ export class ContributionsSumByLocationService {
   ) {}
 
   async getDistrictSum({ committeeName }) {
+    // Disable sums by district, due to not having correct zip code to
+    // district mapping for districts after 2020.
+    return 0;
+
     const district = await this.candidateQLService.getDistrict(committeeName);
 
     if (!district) {
