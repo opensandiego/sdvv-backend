@@ -62,18 +62,20 @@ export class UpdateCommandService {
         break;
 
       case 'update-candidate-refs-in-independent-expenditures':
-        // update-candidates-info and update-transactions-current should be fun before this
+        // update-candidates-info and update-transactions-current should be run before this
         await this.updateTransactionsReferencesService.addCandidateReferencesToExpenses();
         break;
 
       case 'update-transactions-current':
         await this.transactionsXLSXService.updateTransactionsCurrent();
         await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
+        await this.updateTransactionsReferencesService.addCandidateReferencesToExpenses();
         break;
 
       case 'update-transactions-past':
         await this.transactionsXLSXService.updateTransactionsPast();
         await this.deduplicateExpendituresService.flagDuplicateLateExpenditures();
+        await this.updateTransactionsReferencesService.addCandidateReferencesToExpenses();
         break;
 
       case 'update-zip-codes':
