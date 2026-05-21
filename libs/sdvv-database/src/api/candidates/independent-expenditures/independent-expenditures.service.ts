@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { CandidateIndependentExpenditures } from './interfaces/independent-expenditures.interface';
@@ -9,6 +9,68 @@ import { getIEFilers } from '@app/sdvv-database/shared/ie-filers';
 export class CandidateIndependentExpendituresService {
   constructor(@InjectDataSource() private dataSource: DataSource) {}
 
+  private buildCandidateIEFilers({
+    candidate,
+  }: {
+    candidate: CandidateEntity;
+  }): CandidateIndependentExpenditures {
+    return {
+      candidateId: candidate.candidate_id,
+      candidateName: candidate.candidate_name,
+      inPrimaryElection: candidate.in_primary_election,
+      inGeneralElection: candidate.in_general_election,
+      f460d: {
+        support: getIEFilers({
+          transactions: candidate.expn_supp_opp_transactions,
+          supp_opp_cd: 'SUPPORT',
+        }),
+        oppose: getIEFilers({
+          transactions: candidate.expn_supp_opp_transactions,
+          supp_opp_cd: 'OPPOSE',
+        }),
+      },
+      s496: {
+        support: getIEFilers({
+          transactions: candidate.s496_supp_opp_transactions,
+          supp_opp_cd: 'SUPPORT',
+        }),
+        oppose: getIEFilers({
+          transactions: candidate.s496_supp_opp_transactions,
+          supp_opp_cd: 'OPPOSE',
+        }),
+      },
+    };
+  }
+
+  async getIndependentExpendituresCandidate({
+    candidateId,
+  }: {
+    candidateId?: string;
+  }): Promise<CandidateIndependentExpenditures> {
+    const candidateQuery = this.dataSource
+      .getRepository(CandidateEntity)
+      .createQueryBuilder('c')
+      .leftJoinAndSelect(
+        'c.expn_supp_opp_transactions',
+        'expn_supp_opp_transactions',
+      )
+      .leftJoinAndSelect(
+        'c.s496_supp_opp_transactions',
+        's496_supp_opp_transactions',
+        's496_supp_opp_transactions.is_duplicate IS NULL OR s496_supp_opp_transactions.is_duplicate = :isDuplicate',
+        { isDuplicate: false },
+      )
+      .where('c.candidate_id = :candidateId', { candidateId });
+
+    const candidate = await candidateQuery.getOne();
+
+    if (!candidate) {
+      throw new NotFoundException(`Candidate with ID ${candidateId} not found`);
+    }
+
+    return this.buildCandidateIEFilers({ candidate });
+  }
+
   async getIndependentExpendituresCandidates({
     year,
     office,
@@ -17,7 +79,7 @@ export class CandidateIndependentExpendituresService {
     year?: string;
     office?: string;
     district?: string;
-  }) {
+  }): Promise<CandidateIndependentExpenditures[]> {
     // replace dashes '-' in office name with spaces
     office = office?.split('-').join(' ');
 
@@ -51,34 +113,8 @@ export class CandidateIndependentExpendituresService {
 
     const candidatesFound = await candidatesQuery.getMany();
 
-    const candidateListRows: CandidateIndependentExpenditures[] =
-      candidatesFound.map((candidate) => ({
-        candidateId: candidate.candidate_id,
-        candidateName: candidate.candidate_name,
-        inPrimaryElection: candidate.in_primary_election,
-        inGeneralElection: candidate.in_general_election,
-        f460d: {
-          support: getIEFilers({
-            transactions: candidate.expn_supp_opp_transactions,
-            supp_opp_cd: 'SUPPORT',
-          }),
-          oppose: getIEFilers({
-            transactions: candidate.expn_supp_opp_transactions,
-            supp_opp_cd: 'OPPOSE',
-          }),
-        },
-        s496: {
-          support: getIEFilers({
-            transactions: candidate.s496_supp_opp_transactions,
-            supp_opp_cd: 'SUPPORT',
-          }),
-          oppose: getIEFilers({
-            transactions: candidate.s496_supp_opp_transactions,
-            supp_opp_cd: 'OPPOSE',
-          }),
-        },
-      }));
-
-    return candidateListRows;
+    return candidatesFound.map((candidate) =>
+      this.buildCandidateIEFilers({ candidate }),
+    );
   }
 }

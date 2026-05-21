@@ -57,10 +57,8 @@ export class UpdateTransactionsReferencesService {
     });
 
     for await (const candidate of candidates) {
-      // Since 'City Council' elections for a district are every
-      // 4 years use longer time range for filtering
-      const pastMonthsLimit =
-        candidate.office.toLowerCase() === 'city council' ? 48 : 24;
+      // All offices are 4-year terms
+      const pastMonthsLimit = 48;
 
       let candidateNames = [candidate.candidate_name];
 
