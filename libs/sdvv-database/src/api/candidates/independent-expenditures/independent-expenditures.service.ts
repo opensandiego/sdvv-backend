@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import {
-  CandidateIndependentExpenditures,
-  IndependentExpenditureFiler,
-} from './interfaces/independent-expenditures.interface';
+import { CandidateIndependentExpenditures } from './interfaces/independent-expenditures.interface';
 import { CandidateEntity } from '@app/sdvv-database/candidate/candidates.entity';
+import { getIEFilers } from '@app/sdvv-database/shared/ie-filers';
 
 @Injectable()
 export class CandidateIndependentExpendituresService {
@@ -34,7 +32,10 @@ export class CandidateIndependentExpendituresService {
       .leftJoinAndSelect(
         'c.s496_supp_opp_transactions',
         's496_supp_opp_transactions',
-        's496_supp_opp_transactions.is_duplicate IS NULL',
+        // when is_duplicate either NULL OR false then it is
+        // not a duplicate so include it in the query results
+        's496_supp_opp_transactions.is_duplicate IS NULL OR s496_supp_opp_transactions.is_duplicate = :isDuplicate',
+        { isDuplicate: false },
       )
       .where('c.candidate_controlled_committee_name IS NOT NULL');
 
@@ -57,21 +58,21 @@ export class CandidateIndependentExpendituresService {
         inPrimaryElection: candidate.in_primary_election,
         inGeneralElection: candidate.in_general_election,
         f460d: {
-          support: this.getIEFilers({
+          support: getIEFilers({
             transactions: candidate.expn_supp_opp_transactions,
             supp_opp_cd: 'SUPPORT',
           }),
-          oppose: this.getIEFilers({
+          oppose: getIEFilers({
             transactions: candidate.expn_supp_opp_transactions,
             supp_opp_cd: 'OPPOSE',
           }),
         },
         s496: {
-          support: this.getIEFilers({
+          support: getIEFilers({
             transactions: candidate.s496_supp_opp_transactions,
             supp_opp_cd: 'SUPPORT',
           }),
-          oppose: this.getIEFilers({
+          oppose: getIEFilers({
             transactions: candidate.s496_supp_opp_transactions,
             supp_opp_cd: 'OPPOSE',
           }),
@@ -79,38 +80,5 @@ export class CandidateIndependentExpendituresService {
       }));
 
     return candidateListRows;
-  }
-
-  getIEFilers({
-    transactions,
-    supp_opp_cd,
-  }: {
-    transactions: {
-      filer_naml: string;
-      amount: number;
-      supp_opp_cd?: string;
-    }[];
-    supp_opp_cd: 'SUPPORT' | 'OPPOSE';
-  }) {
-    const filerMap = new Map<string, IndependentExpenditureFiler>();
-
-    transactions
-      .filter((transaction) => transaction.supp_opp_cd === supp_opp_cd)
-      .forEach((transaction) => {
-        // add filer to map if filer does not already exists
-        if (!filerMap.has(transaction.filer_naml)) {
-          filerMap.set(transaction.filer_naml, {
-            filerName: transaction.filer_naml,
-            amount: 0,
-          });
-        }
-
-        const filer = filerMap.get(transaction.filer_naml);
-        if (!filer) return;
-
-        filer.amount = filer.amount + Number(transaction.amount || 0);
-      });
-
-    return Array.from(filerMap.values());
   }
 }
