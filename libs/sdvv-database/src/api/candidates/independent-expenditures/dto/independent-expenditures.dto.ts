@@ -13,3 +13,8 @@ export class CandidatesIndependentExpendituresDto {
   @IsOptional()
   district?: string;
 }
+
+export class CandidateIndependentExpendituresDto {
+  @IsString()
+  candidateId!: string;
+}

@@ -1,6 +1,7 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { IndependentExpenditureCommitteesService } from './Independent-expenditure-committees.service';
 
+/** @deprecated use candidate/summaries/independent-expenditures REST endpoint */
 @Resolver('IndependentExpendituresByCommittees')
 export class IndependentExpendituresByCommitteesResolver {
   constructor(
