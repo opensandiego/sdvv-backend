@@ -57,8 +57,9 @@ export class UpdateTransactionsReferencesService {
     });
 
     for await (const candidate of candidates) {
-      // All offices are 4-year terms
-      const pastMonthsLimit = 48;
+      // All offices are 4-year terms, but an office 
+      // can have an election more frequently.
+      const pastMonthsLimit = 24;
 
       let candidateNames = [candidate.candidate_name];
 
