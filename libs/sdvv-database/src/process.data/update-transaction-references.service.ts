@@ -56,9 +56,31 @@ export class UpdateTransactionsReferencesService {
       order: { candidate_controlled_committee_name: 'ASC' },
     });
 
+    // reset candidate_supp_opp fields in s496 before an update
+    await this.dataSource
+      .getRepository(S496Entity)
+      .createQueryBuilder('s496')
+      .update(S496Entity)
+      .set({ candidate_supp_opp: null })
+      .where('candidate_supp_opp IS NOT NULL')
+      .execute();
+
+    // reset candidate_supp_opp fields in expn before an update
+    await this.dataSource
+      .getRepository(EXPNEntity)
+      .createQueryBuilder('expn')
+      .update(EXPNEntity)
+      .set({ candidate_supp_opp: null })
+      .where('candidate_supp_opp IS NOT NULL')
+      .andWhere('expn.form_type = :formTypeEXPN', {
+        formTypeEXPN: 'D',
+      })
+      .execute();
+
     for await (const candidate of candidates) {
-      // All offices are 4-year terms
-      const pastMonthsLimit = 48;
+      // All offices are 4-year terms, but an office
+      // can have an election more frequently.
+      const pastMonthsLimit = 24;
 
       let candidateNames = [candidate.candidate_name];
 
@@ -99,7 +121,13 @@ export class UpdateTransactionsReferencesService {
           formTypeEXPN: 'D',
         })
         .andWhere(
-          "LOWER(CONCAT_WS(' ', NULLIF(expn.cand_namf, ''), NULLIF(expn.cand_naml, ''))) IN (:...names)",
+          `LOWER(
+            CASE 
+              WHEN expn.cand_naml IS NULL OR TRIM(expn.cand_naml) = '' 
+              THEN CONCAT_WS(' ', NULLIF(expn.payee_namf, ''), NULLIF(expn.payee_naml, ''))
+              ELSE CONCAT_WS(' ', NULLIF(expn.cand_namf, ''), NULLIF(expn.cand_naml, ''))
+            END
+          ) IN (:...names)`,
           { names: candidateNames },
         );
 

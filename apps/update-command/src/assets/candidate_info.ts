@@ -316,6 +316,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     alternateCandidateNames: ['Antonio Martinez'],
     inPrimary: true,
     description: '',
+    committeeNameOverride: 'Antonio Martinez for City Council 2026',
     imageFileName: 'antonio_martinez_5314.png',
     website: '',
   },
