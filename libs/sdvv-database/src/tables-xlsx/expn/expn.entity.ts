@@ -216,8 +216,16 @@ export class EXPNEntity {
   @Column({ nullable: true })
   xlsx_file_year?: string;
 
-  @ManyToOne(() => CandidateEntity, (candidate) => candidate.expn_supp_opp_transactions)
-  candidate_supp_opp!: CandidateEntity;
+  @ManyToOne(
+    () => CandidateEntity,
+    (candidate) => candidate.expn_supp_opp_transactions,
+    {
+      nullable: true,
+      onDelete: 'NO ACTION',
+      onUpdate: 'NO ACTION',
+    },
+  )
+  candidate_supp_opp!: CandidateEntity | null;
 
   @CreateDateColumn()
   created_at!: Date;

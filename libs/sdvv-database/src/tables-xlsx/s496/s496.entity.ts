@@ -121,10 +121,15 @@ export class S496Entity {
   @ManyToOne(
     () => CandidateEntity,
     (candidate) => candidate.s496_supp_opp_transactions,
+    {
+      nullable: true,
+      onDelete: 'NO ACTION',
+      onUpdate: 'NO ACTION',
+    },
   )
-  candidate_supp_opp!: CandidateEntity;
+  candidate_supp_opp!: CandidateEntity | null;
 
-  // Setting is_duplicate to TRUE indicates that the transaction is 
+  // Setting is_duplicate to TRUE indicates that the transaction is
   // most likely also in f460 filing.
   @Column({ nullable: true })
   is_duplicate?: boolean;
