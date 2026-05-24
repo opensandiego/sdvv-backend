@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, DeleteResult } from 'typeorm';
+import { DataSource, DeleteResult, Brackets } from 'typeorm';
 import { EXPNEntity } from '../tables-xlsx/expn/expn.entity';
 import { S496Entity } from '../tables-xlsx/s496/s496.entity';
 
@@ -16,35 +16,57 @@ export class DeduplicateExpendituresService {
   public async flagDuplicateLateExpenditures() {
     const s496Repository = this.dataSource.getRepository(S496Entity);
 
-    // 1. Get list of a unique filers (filer names) in s496
+    // 1. Get list of a unique filers (filer name, filer id) in s496
     const filerNamesQuery = s496Repository
       .createQueryBuilder('s496')
       .select('LOWER(s496.filer_naml)', 'filer_naml_lower')
+      // get the unique filer ids that are numeric strings into an array
+      .addSelect(
+        `COALESCE(ARRAY_AGG(DISTINCT s496.filer_id) FILTER (WHERE s496.filer_id ~ '^[0-9]+$'), '{}')`,
+        'filer_ids',
+      )
       .groupBy('LOWER(s496.filer_naml)');
 
-    const filers = (await filerNamesQuery.getRawMany()) as {
+    const rawFilers = (await filerNamesQuery.getRawMany()) as {
       filer_naml_lower: string;
+      filer_ids: string[];
     }[];
+
+    const filers = rawFilers.map((filer) => ({
+      ...filer,
+      filer_id: filer.filer_ids[0],
+    }));
 
     const expnRepository = this.dataSource.getRepository(EXPNEntity);
 
     // 2. For each filer look for their 460D transactions in expn
     for await (const filer of filers) {
-      const { filer_naml_lower: filerName } = filer;
+      const { filer_naml_lower: filerName, filer_id: filerId } = filer;
 
       // 2-1 get the max thru date for the filer's transactions
       const expnQuery = expnRepository
         .createQueryBuilder('expn')
-        .select("LOWER(TRIM(COALESCE(expn.filer_naml, '')))")
-        .addSelect('MAX(expn.thru_date)', 'max_thru_date')
+        .select('MAX(expn.thru_date)', 'max_thru_date')
         .where('expn.form_type = :formTypeEXPN', {
           formTypeEXPN: 'D',
         })
+        .addSelect("LOWER(TRIM(COALESCE(expn.filer_naml, '')))")
+        // Multiple filer names may have the same filerId 
+        // but not all transactions/filings have a filerId
+        // filers with the same filerId may use one name for a 
+        // 496 filing and a different name for a 460 filing
+        // this looks for both filer name and filer id matching
         .andWhere(
-          "LOWER(TRIM(COALESCE(expn.filer_naml, ''))) = :s496FilerName",
-          {
-            s496FilerName: filerName,
-          },
+          new Brackets((qb) => {
+            qb.where(
+              "LOWER(TRIM(COALESCE(expn.filer_naml, ''))) = :s496FilerName",
+              {
+                s496FilerName: filerName,
+              },
+            ).orWhere('expn.filer_id = :filerId', {
+              filerId: filerId,
+            });
+          }),
         )
         .groupBy("LOWER(TRIM(COALESCE(expn.filer_naml, '')))");
 
@@ -135,6 +157,7 @@ export class DeduplicateExpendituresService {
   private async removeDuplicates(
     filings: PartialTransaction[],
   ): Promise<number> {
+    return 0;
     const queryRunner = this.dataSource.createQueryRunner();
 
     let transactionsDeleted = 0;
