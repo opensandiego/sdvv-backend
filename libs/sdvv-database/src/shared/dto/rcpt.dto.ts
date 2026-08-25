@@ -100,7 +100,7 @@ export class RCPTDto {
   ctrib_dscr: string;
 
   @IsString()
-  @MaxLength(9)
+  @MaxLength(12)
   cmte_id: string;
 
   @IsString()
