@@ -105,7 +105,7 @@ export class EXPNDto {
   agent_nams: string;
 
   @IsString()
-  @MaxLength(9)
+  @MaxLength(12)
   cmte_id: string;
 
   @IsString()
