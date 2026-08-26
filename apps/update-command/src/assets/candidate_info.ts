@@ -121,6 +121,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     optionalName: 'Kay, Sandra',
     inPrimary: true,
     description: '',
+    isNotOnBallot: true,
     imageFileName: null,
     website: '',
   },
