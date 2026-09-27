@@ -82,6 +82,7 @@ export class CandidateContributionsService {
       .addSelect(
         `
             CASE
+              WHEN LOWER(rcpt.entity_cd) = 'pty' THEN 'political-party'
               WHEN REPLACE(LOWER(rcpt.ctrib_city), ' ', '') = REPLACE(LOWER(:city), ' ', '') AND REPLACE(LOWER(rcpt.ctrib_st), ' ', '') = LOWER(:state) THEN 'in-city'
               ELSE 'out-city'
             END`,
@@ -129,12 +130,13 @@ export class CandidateContributionsService {
       formType: 'A' | 'C' | 'F496P3';
       totalSum: string;
       totalCount: string;
-      location: 'in-city' | 'out-city';
+      location: 'in-city' | 'out-city' | 'political-party';
     }[];
 
     const template = {
       inCity: 0,
       outCity: 0,
+      politicalParty: 0,
       formContributions: 0,
       formTransactionCount: 0,
     };
@@ -181,6 +183,8 @@ export class CandidateContributionsService {
         formType.inCity += sum;
       } else if (row.location === 'out-city') {
         formType.outCity += sum;
+      } else if (row.location === 'political-party') {
+        formType.politicalParty += sum;
       }
 
       // Increment the form totals regardless of location
