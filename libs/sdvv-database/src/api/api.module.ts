@@ -8,6 +8,8 @@ import { CandidateContributionsService } from './candidates/contributions/contri
 import { CandidateIndependentExpendituresController } from './candidates/independent-expenditures/independent-expenditures.controller';
 import { CandidateIndependentExpendituresService } from './candidates/independent-expenditures/independent-expenditures.service';
 import { CandidateEntity } from '../candidate/candidates.entity';
+import { CityCouncilDistrictsSpendingController } from './city-council-districts/city-council-districts-spending.controller';
+import { CityCouncilDistrictsSpendingService } from './city-council-districts/city-council-districts-spending.service';
 
 @Module({
   imports: [
@@ -19,10 +21,12 @@ import { CandidateEntity } from '../candidate/candidates.entity';
   controllers: [
     CandidateContributionsController,
     CandidateIndependentExpendituresController,
+    CityCouncilDistrictsSpendingController,
   ],
   providers: [
     CandidateContributionsService,
     CandidateIndependentExpendituresService,
+    CityCouncilDistrictsSpendingService,
   ],
 })
 export class APIModule {}
