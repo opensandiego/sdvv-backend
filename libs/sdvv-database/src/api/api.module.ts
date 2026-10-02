@@ -8,6 +8,10 @@ import { CandidateContributionsService } from './candidates/contributions/contri
 import { CandidateIndependentExpendituresController } from './candidates/independent-expenditures/independent-expenditures.controller';
 import { CandidateIndependentExpendituresService } from './candidates/independent-expenditures/independent-expenditures.service';
 import { CandidateEntity } from '../candidate/candidates.entity';
+import { CityCouncilDistrictsSpendingController } from './city-council-districts/city-council-districts-spending.controller';
+import { CityCouncilDistrictsSpendingService } from './city-council-districts/city-council-districts-spending.service';
+import { LastUpdatedDateController } from './transactions/last-updated/last-updated.controller';
+import { LastUpdatedDateService } from './transactions/last-updated/last-updated.service';
 
 @Module({
   imports: [
@@ -19,10 +23,14 @@ import { CandidateEntity } from '../candidate/candidates.entity';
   controllers: [
     CandidateContributionsController,
     CandidateIndependentExpendituresController,
+    CityCouncilDistrictsSpendingController,
+    LastUpdatedDateController,
   ],
   providers: [
     CandidateContributionsService,
     CandidateIndependentExpendituresService,
+    CityCouncilDistrictsSpendingService,
+    LastUpdatedDateService,
   ],
 })
 export class APIModule {}

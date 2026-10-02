@@ -1,6 +1,7 @@
 export type ContributionsByForm = {
   inCity: number;
   outCity: number;
+  politicalParty: number;
   formContributions: number;
   formTransactionCount: number;
 };
