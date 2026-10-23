@@ -391,7 +391,7 @@ export const CandidateElectionInfo: CandidateInfo[] = [
     year: '2026',
     candidateId: 'ffe8ebab-7a28-4781-b8ba-40477f5776d8|2026',
     optionalName: 'Ramirez, Gerardo',
-    alternateCandidateNames: ['Gerardo Ramirez'],
+    alternateCandidateNames: ['Gerardo Ramirez', 'Gerardo Ramirez(I)'],
     inPrimary: true,
     description: '',
     imageFileName: 'gerardo_ramirez_0275.png',
